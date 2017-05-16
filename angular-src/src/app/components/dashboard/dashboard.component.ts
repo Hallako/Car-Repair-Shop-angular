@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
   start: Date;
   end: Date;
   description: String;
-  
+
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
@@ -80,13 +80,13 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
-            
+
             this.description = calEvent.description;
             this.url = calEvent.url;
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
-            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm'); 
-            
+            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+
         };
 
         let eventRender = function (event, element) {
@@ -99,18 +99,18 @@ export class DashboardComponent implements OnInit {
             this.monthChanged.emit(view.intervalStart.month());
             console.log('view rendered');
         };
-        
+
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
 
             if(view.type == 'month'){
               this.end = moment(end).subtract(12, 'hours').format('YYYY-MM-DD[T]HH:mm');
-              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm'); 
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
             } else {
               this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm'); 
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
             }
-            
+
             this.description = null;
             this.url = null;
             this.title = null;
@@ -129,58 +129,26 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             events: [],
             height: 471,
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:(mm)',
-=======
-            events: [],  
-            businessHours: {
-              dow: [1, 2, 3, 4, 5],
-              start: '7:00', 
-              end: '18:00', 
-            },
             hiddenDays:[0,6],
             minTime: "07:00:00",
             maxTime: "18:00:00",
             allDaySlot: false,
-            height: 550,  
-            selectable: true,
-            defaultView: 'agendaWeek',
-            timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
->>>>>>> refs/remotes/Hallako/master
-=======
-            events: [],  
-            height: 550,  
-            selectable: true,
-            defaultView: 'month',
-            timeFormat: 'H(:mm)',
->>>>>>> parent of 6d2659a... udate calendar view
             aspectRatio: 1,
             fixedWeekCount : false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            slotLabelFormat: 'H:mm',
-            hiddenDays: [0],
-            allDaySlot: false,
-            maxTime: '17:00:00',
-            minTime: '08:00:00',
-        }
-
-=======
             select: boundSelect
         };
->>>>>>> refs/remotes/Hallako/master
-=======
-        };
->>>>>>> parent of 6d2659a... udate calendar view
+
+
 
         if (this.height > 0) {
             options.height = this.height;
@@ -195,17 +163,11 @@ export class DashboardComponent implements OnInit {
         options.events = newEvents;
         this.calElement.fullCalendar('renderEvents', newEvents, true);
       });
-<<<<<<< HEAD
 
-      
+
+
   }
 
-  
-
-=======
-  }
-
->>>>>>> refs/remotes/Hallako/master
   //event add form
   onEventSubmit(){
    var curuser = this.authService.getUser();
