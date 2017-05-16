@@ -106,17 +106,23 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: [],  
-            height: 550,  
+            events: [],
+            height: 471,
             selectable: true,
-            defaultView: 'month',
-            timeFormat: 'H(:mm)',
+            defaultView: 'agendaWeek',
+            timeFormat: 'H:(mm)',
             aspectRatio: 1,
             fixedWeekCount : false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
-        };
+            slotLabelFormat: 'H:mm',
+            hiddenDays: [0],
+            allDaySlot: false,
+            maxTime: '17:00:00',
+            minTime: '08:00:00',
+        }
+
 
         if (this.height > 0) {
             options.height = this.height;
@@ -132,10 +138,10 @@ export class DashboardComponent implements OnInit {
         this.calElement.fullCalendar('renderEvents', newEvents, true);
       });
 
-      
+
   }
 
-  
+
 
   //event add form
   onEventSubmit(){
