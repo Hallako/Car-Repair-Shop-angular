@@ -130,6 +130,7 @@ export class DashboardComponent implements OnInit {
                 right: 'month,agendaWeek,agendaDay'
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
             events: [],
             height: 471,
             selectable: true,
@@ -152,11 +153,19 @@ export class DashboardComponent implements OnInit {
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
 >>>>>>> refs/remotes/Hallako/master
+=======
+            events: [],  
+            height: 550,  
+            selectable: true,
+            defaultView: 'month',
+            timeFormat: 'H(:mm)',
+>>>>>>> parent of 6d2659a... udate calendar view
             aspectRatio: 1,
             fixedWeekCount : false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
+<<<<<<< HEAD
 <<<<<<< HEAD
             slotLabelFormat: 'H:mm',
             hiddenDays: [0],
@@ -169,6 +178,9 @@ export class DashboardComponent implements OnInit {
             select: boundSelect
         };
 >>>>>>> refs/remotes/Hallako/master
+=======
+        };
+>>>>>>> parent of 6d2659a... udate calendar view
 
         if (this.height > 0) {
             options.height = this.height;
@@ -185,10 +197,10 @@ export class DashboardComponent implements OnInit {
       });
 <<<<<<< HEAD
 
-
+      
   }
 
-
+  
 
 =======
   }
