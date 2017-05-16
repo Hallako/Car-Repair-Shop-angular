@@ -1,7 +1,3 @@
-.calendar-container {
-    width: 65%;
-}
-
 .login-form {
     padding-top: 20px;
 }
@@ -10,6 +6,22 @@
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 12px;
+}
+
+.calendar-div {
+    padding-top: 20px;
+    width: 65%;
+    float: left;
+}
+
+.eventinfo {
+    padding: 20px;
+    float: left;
+    width: 35%;
+}
+
+.clearfix {
+    clear: both
 }
 
 footer {
