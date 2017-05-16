@@ -1,0 +1,17 @@
+.calendar-container {
+    width: 65%;
+}
+
+.login-form {
+    padding-top: 20px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+footer {
+    padding-top: 40px;
+}
