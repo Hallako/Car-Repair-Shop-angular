@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const event = require('../models/event');
 
-//Add Post 
+//Add Post
 router.post('/addevent', (req, res, next) => {
 
     let newEvent = new event({
