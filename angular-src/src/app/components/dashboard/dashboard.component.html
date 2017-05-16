@@ -18,14 +18,47 @@
     </div>
     -->
 
-    <div>
+    <div class="calendar-div">
         <angular2-fullcalendar [options]="options" id="myCalendar"></angular2-fullcalendar>
-        <div title="regular tooltip" id="toolTip">
+        <!--<div title="regular tooltip" id="toolTip">
             <p>{{this.tooltip}}</p>
-        </div>
+        </div>-->
     </div>
 
+    <div class="eventinfo">
+        <h1>Event</h1>
+        <form (submit)="onEventSubmit()" class="login-form">
+            <div class="form-group">
+                <label>Event title</label>
+                <input type="text" class="form-control" [(ngModel)]="title" name="title">
+            </div>
 
+            <div class="from-group">
+                <label>Starting time</label>
+                <input type="datetime-local" step=900 class="form-control" [(ngModel)]="start" name="start">
+            </div>
+
+            <div class="from-group">
+                <label>Ending time</label>
+                <input type="datetime-local" step=900 class="form-control" [(ngModel)]="end" name="end">
+            </div>
+
+            <div class="from-group">
+                <label>Link</label>
+                <input type="url" class="form-control" [(ngModel)]="url" name="url">
+            </div>
+
+            <div class="from-group">
+                <label>description</label>
+                <input type="text-area" class="form-control" [(ngModel)]="description" name="description">
+            </div>
+            <input type="submit" class="btn btn-primary" value="update">
+        </form>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!--
     <form (submit)="onEventSubmit()" class="login-form">
         <div class="form-group">
             <label>Event title</label>
@@ -34,11 +67,11 @@
 
         <div class="from-group">
             <label>Starting time</label>
-            <input type="datetime" class="form-control" [(ngModel)]="start" name="start">
+            <input type="datetime-local" class="form-control" [(ngModel)]="start" name="start">
         </div>
         <div class="from-group">
             <label>Ending time (Optional)</label>
-            <input type="datetime" class="form-control" value="cur" [(ngModel)]="end" name="end">
+            <input type="datetime-local" class="form-control" [(ngModel)]="end" name="end">
         </div>
         <div class="from-group">
             <label>Link (Optional)</label>
@@ -50,5 +83,5 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Add">
     </form>
-
+-->
 </div>

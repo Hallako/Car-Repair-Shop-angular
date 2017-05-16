@@ -11,6 +11,7 @@ router.post('/addevent', (req, res, next) => {
     let newEvent = new event({
         title: req.body.title,
         start: req.body.start,
+        end: req.body.end,
         carplate: req.body.carplate,
         description: req.body.description,
         user: req.body.user

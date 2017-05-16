@@ -36,15 +36,18 @@ export class LoginComponent implements OnInit {
         this.authService.storeUserData(data.token, data.user);
         this.flashMessage.show('you are now logged in', {
           cssClass: 'alert-success',
+<<<<<<< HEAD
           timeout: 5000})
+=======
+          timeout: 3000});
+>>>>>>> refs/remotes/Hallako/master
           this.router.navigate(['dashboard']);
       } else {
         this.flashMessage.show(data.msg, {
           cssClass: 'alert-danger',
-          timeout: 5000});
+          timeout: 3000});
         this.router.navigate(['login']);
       }
   });
-
   }
 }

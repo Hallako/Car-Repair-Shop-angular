@@ -4,13 +4,12 @@ import { CalendarEvent } from 'angular-calendar';
 import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
-
-import 'fullcalendar';
 import { Options } from 'fullcalendar';
+import * as moment from 'moment';
+import 'fullcalendar';
 import _ from 'lodash';
-
-
 import * as $ from 'jquery';
+
 
 export interface IEvent {
     title: string;
@@ -33,6 +32,7 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
 
+    //declare emitters
     @Input('height')
     public height: number;
 
@@ -44,6 +44,9 @@ export class DashboardComponent implements OnInit {
 
     @Output('date-change')
     dateChange = new EventEmitter();
+
+    @Output('select-changed')
+    selectionChanged = new EventEmitter();
 
     calElement = null;
 
@@ -59,13 +62,11 @@ export class DashboardComponent implements OnInit {
         return currentdate.month();
     }
 
-  nevent:Object;
   title: String;
   start: Date;
-  end: String;
+  end: Date;
   description: String;
-  user: String;
-  tooltip: any;
+  
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
@@ -79,8 +80,13 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
-            this.tooltip = calEvent.title;
-            console.log('Event');
+            
+            this.description = calEvent.description;
+            this.url = calEvent.url;
+            this.title = calEvent.title;
+            this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
+            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm'); 
+            
         };
 
         let eventRender = function (event, element) {
@@ -93,11 +99,28 @@ export class DashboardComponent implements OnInit {
             this.monthChanged.emit(view.intervalStart.month());
             console.log('view rendered');
         };
+        
+        let selectCall = function (start, end, jsEvent, view) {
+            this.selectionChanged.emit(start, end, jsEvent, view);
+
+            if(view.type == 'month'){
+              this.end = moment(end).subtract(12, 'hours').format('YYYY-MM-DD[T]HH:mm');
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm'); 
+            } else {
+              this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm'); 
+            }
+            
+            this.description = null;
+            this.url = null;
+            this.title = null;
+        };
 
         //binds
         let boundRender = eventRender.bind(this);
         let boundClick = clickFunc.bind(this);
         let boundView = viewRender.bind(this);
+        let boundSelect = selectCall.bind(this);
 
         //options
         let options: any = {
@@ -106,16 +129,35 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
+<<<<<<< HEAD
             events: [],
             height: 471,
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:(mm)',
+=======
+            events: [],  
+            businessHours: {
+              dow: [1, 2, 3, 4, 5],
+              start: '7:00', 
+              end: '18:00', 
+            },
+            hiddenDays:[0,6],
+            minTime: "07:00:00",
+            maxTime: "18:00:00",
+            allDaySlot: false,
+            height: 550,  
+            selectable: true,
+            defaultView: 'agendaWeek',
+            timeFormat: 'H:mm',
+            slotLabelFormat: 'H:mm',
+>>>>>>> refs/remotes/Hallako/master
             aspectRatio: 1,
             fixedWeekCount : false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
+<<<<<<< HEAD
             slotLabelFormat: 'H:mm',
             hiddenDays: [0],
             allDaySlot: false,
@@ -123,6 +165,10 @@ export class DashboardComponent implements OnInit {
             minTime: '08:00:00',
         }
 
+=======
+            select: boundSelect
+        };
+>>>>>>> refs/remotes/Hallako/master
 
         if (this.height > 0) {
             options.height = this.height;
@@ -137,15 +183,21 @@ export class DashboardComponent implements OnInit {
         options.events = newEvents;
         this.calElement.fullCalendar('renderEvents', newEvents, true);
       });
+<<<<<<< HEAD
 
 
   }
 
 
 
+=======
+  }
+
+>>>>>>> refs/remotes/Hallako/master
   //event add form
   onEventSubmit(){
    var curuser = this.authService.getUser();
+   var user: String;
 
    const event = {
         title: this.title,
@@ -158,10 +210,9 @@ export class DashboardComponent implements OnInit {
       this.authService.addEvent(event).subscribe(data => {
         if(data.success){
             this.flashMessage.show('event added succesfully', {cssClass: 'alert-success', timeout:3000});
-            this.router.navigate(['/dashboard']);
+            location.reload();
         } else {
             this.flashMessage.show('Something went wrong', {cssClass: 'alert-success', timeout:3000});
-            this.router.navigate(['/dashboard']);
         }
       });
   }
