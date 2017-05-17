@@ -12,7 +12,7 @@
     <form (submit)="onEventSubmit()" class="login-form">
       <div class="form-group">
         <label>Korjauksen aihe</label>
-        <select class="form-control" name="title" [(ngModel)]="title">
+        <select class="form-control" name="title" [(ngModel)]="title" required="true">
           <option value="Moottori">Moottori</option>
           <option value="Öljynvaihto">Öljynvaihto</option>
           <option value="Vuosihuolto">Vuosihuolto</option>
@@ -23,19 +23,14 @@
 
       <div class="from-group">
         <label>Aloitus aika</label>
-        <input type="datetime-local" step=1800 disabled="true" class="form-control" [(ngModel)]="start" name="start">
+        <input type="datetime-local" step=1800 disabled="true" class="form-control" [(ngModel)]="start" name="start" required="true">
       </div>
 
       <div class="from-group">
         <label>Lopetus aika</label>
-        <input type="datetime-local" disabled="true" step=1800 class="form-control" [(ngModel)]="end" name="end">
+        <input type="datetime-local" disabled="true" step=1800 class="form-control" [(ngModel)]="end" name="end" required="true">
       </div>
-<!--
-      <div class="from-group">
-        <label>Link</label>
-        <input type="url" class="form-control" [(ngModel)]="url" name="url">
-      </div>
--->
+
       <div class="from-group">
         <label>Lisätietoja</label>
         <textarea class="form-control" [(ngModel)]="description" name="description"></textarea>

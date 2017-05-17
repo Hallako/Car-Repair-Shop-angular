@@ -214,10 +214,10 @@ export class DashboardComponent implements OnInit {
 
     this.authService.addEvent(event).subscribe(data => {
       if (data.success) {
-        this.flashMessage.show('event added succesfully', { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessage.show('Event added succesfully', { cssClass: 'alert-success', timeout: 3000 });
         location.reload();
       } else {
-        this.flashMessage.show('Something went wrong', { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
       }
     });
   }
