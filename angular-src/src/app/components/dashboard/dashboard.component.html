@@ -8,11 +8,15 @@
   </div>
 
   <div class="eventinfo">
-    <h1>Event</h1>
+    <h1>Varaus</h1>
     <form (submit)="onEventSubmit()" class="login-form">
       <div class="form-group">
         <label>Korjauksen aihe</label>
-        <input type="text" class="form-control" [(ngModel)]="title" name="title">
+        <select class="form-control" name="title" [(ngModel)]="title">
+          <option value="moottori">Moottori</option>
+          <option value="oljynvaihto">Öljynvaihto</option>
+          <option value="vuosihuolto">Vuosihuolto</option>
+        </select>
       </div>
 
       <div class="from-group">
@@ -24,12 +28,12 @@
         <label>Lopetus aika</label>
         <input type="datetime-local" step=1800 class="form-control" [(ngModel)]="end" name="end">
       </div>
-
+<!--
       <div class="from-group">
         <label>Link</label>
         <input type="url" class="form-control" [(ngModel)]="url" name="url">
       </div>
-
+-->
       <div class="from-group">
         <label>Lisätietoja</label>
         <input type="text-area" class="form-control" [(ngModel)]="description" name="description">
