@@ -21,6 +21,7 @@ export interface IEvent {
   textColor: string;
   className: string;
   borderColor: string;
+  color: string;
 }
 
 declare var jQuery: any;
@@ -139,7 +140,7 @@ export class DashboardComponent implements OnInit {
       height: 471,
       selectable: true,
       selectHelper: true,
-      //unselectAuto: false,
+      unselectAuto: false,
       defaultView: 'agendaWeek',
       timeFormat: 'H:mm',
       hiddenDays: [0],
