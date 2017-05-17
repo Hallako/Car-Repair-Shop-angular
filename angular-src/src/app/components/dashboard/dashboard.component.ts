@@ -7,6 +7,7 @@ import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
 import * as moment from 'moment';
 import 'fullcalendar';
+import 'fullcalendar/dist/locale-all'
 import _ from 'lodash';
 import * as $ from 'jquery';
 
@@ -137,7 +138,7 @@ export class DashboardComponent implements OnInit {
     //options
     let options: any = {
       header: {
-        left: 'prev,next today',
+        left: 'prev,next,today',
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
       },
@@ -147,6 +148,7 @@ export class DashboardComponent implements OnInit {
           titleFormat: 'D.M.YYYY'
         }
       },
+
       locale: 'fi',
       events: [],
       height: 471,
