@@ -9,7 +9,12 @@ export class AuthService {
     authToken: any;
     user: any;
 
-  constructor(private http:Http) { }
+  constructor(private http:Http) {
+    if(this.user == null){
+     this.user = JSON.parse(localStorage.getItem('user'));
+    }
+    this.loadToken();
+   }
 
   registerUser(user){
     let headers = new Headers();
@@ -38,7 +43,7 @@ export class AuthService {
     if(this.user){
       return this.user
     } else {
-    return localStorage.getItem('user');
+    return JSON.parse(localStorage.getItem('user'));
     }
   }
 
@@ -62,7 +67,6 @@ export class AuthService {
     headers.append('Content-type','application/json');
     return this.http.post('http://localhost:3000/events/addevent',event,{headers:headers})
     .map(res => res.json());
-    
   }
 
   loadToken(){

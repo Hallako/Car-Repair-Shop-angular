@@ -1,87 +1,49 @@
 <div class="calendar-container">
 
-    <!--
-      <div class="alert alert-info">
-        Click on a day on the view.
-        <strong *ngIf="clickedDate">You clicked on this day: {{ clickedDate | date:'medium' }}</strong>
-    </div>
-   
-    <mwl-dashhead [(view)]="view" [(viewDate)]="viewDate"></mwl-dashhead>
-
-    <div [ngSwitch]="view">
-        <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="true">
-        </mwl-calendar-month-view>
-        <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events">
-        </mwl-calendar-week-view>
-        <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events">
-        </mwl-calendar-day-view>
-    </div>
-    -->
-
     <div class="calendar-div">
         <angular2-fullcalendar [options]="options" id="myCalendar"></angular2-fullcalendar>
-        <!--<div title="regular tooltip" id="toolTip">
-            <p>{{this.tooltip}}</p>
-        </div>-->
     </div>
 
     <div class="eventinfo">
-        <h1>Event</h1>
+        <h1>Varaus</h1>
         <form (submit)="onEventSubmit()" class="login-form">
+
             <div class="form-group">
-                <label>Event title</label>
-                <input type="text" class="form-control" [(ngModel)]="title" name="title">
+                <label>Toimenpide</label>
+                <select type="text" class="form-control" [(ngModel)]="title" name="title" required>
+                    <option value="öljynvaihto">Öljynvaihto</option>
+                    <option value="renkaidenvaihto">Renkaidenvaihto</option>
+                    <option value="huolto">Huolto</option>
+                    <option value="korjaus">Korjaus</option>
+                    <option value="muu">Muu</option>
+                </select>
             </div>
 
-            <div class="from-group">
-                <label>Starting time</label>
-                <input type="datetime-local" step=900 class="form-control" [(ngModel)]="start" name="start">
+            <div class="form-group">
+                <label>Aloitusaika</label>
+                <input type="datetime-local" disabled class="form-control" [(ngModel)]="start" name="start">
             </div>
 
-            <div class="from-group">
-                <label>Ending time</label>
-                <input type="datetime-local" step=900 class="form-control" [(ngModel)]="end" name="end">
+            <div class="form-group">
+                <label>Päättymisaika</label>
+                <input type="datetime-local" disabled class="form-control" [(ngModel)]="end" name="end">
             </div>
 
-            <div class="from-group">
+            <!--
+            <div class="form-group">
                 <label>Link</label>
                 <input type="url" class="form-control" [(ngModel)]="url" name="url">
             </div>
+            -->
 
-            <div class="from-group">
-                <label>description</label>
-                <input type="text-area" class="form-control" [(ngModel)]="description" name="description">
+            <div class="form-group">
+                <label>Lisätietoja</label>
+                <textarea class="form-control" rows="5" [(ngModel)]="description" name="description"> </textarea>
             </div>
-            <input type="submit" class="btn btn-primary" value="update">
+
+            <input type="submit" class="btn btn-primary" value="Update/add">
         </form>
     </div>
 
     <div class="clearfix"></div>
-
-    <!--
-    <form (submit)="onEventSubmit()" class="login-form">
-        <div class="form-group">
-            <label>Event title</label>
-            <input type="text" class="form-control" [(ngModel)]="title" name="title">
-        </div>
-
-        <div class="from-group">
-            <label>Starting time</label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="start" name="start">
-        </div>
-        <div class="from-group">
-            <label>Ending time (Optional)</label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="end" name="end">
-        </div>
-        <div class="from-group">
-            <label>Link (Optional)</label>
-            <input type="url" class="form-control" [(ngModel)]="url" name="url">
-        </div>
-        <div class="from-group">
-            <label>description (Optional)</label>
-            <input type="text-area" class="form-control" [(ngModel)]="description" name="description">
-        </div>
-        <input type="submit" class="btn btn-primary" value="Add">
-    </form>
--->
 </div>

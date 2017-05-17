@@ -16,8 +16,6 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashheadComponent } from './components/dashboard/dashhead/dashhead.component';
-import { DateTimePickerComponent } from './components/dashboard/dashhead/date-time-picker.component'
 import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
 
 import { ValidateService } from './services/validate.service';
@@ -34,7 +32,6 @@ const appRoutes : Routes = [
 
 @NgModule({
   declarations: [
-    DashheadComponent,
     AppComponent,
     NavbarComponent,
     LoginComponent,
@@ -42,7 +39,6 @@ const appRoutes : Routes = [
     DashboardComponent,
     RegisterComponent,
     ProfileComponent,
-    DateTimePickerComponent,
     CalendarComponent
   ],
 
