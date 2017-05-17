@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
     end: Date;
     description: String;
   
-    //declare emitters
+    //declaring emitters
     @Input('height')
     public height: number;
 

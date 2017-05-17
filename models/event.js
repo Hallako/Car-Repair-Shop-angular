@@ -39,6 +39,10 @@ module.exports.getEvents = function(event, callback) {
     event.find(event, callback);
 }
 
+module.exports.deleteEvent = function(toDelevent, callback) {
+    event.findByIdAndRemove(toDelevent, callback);
+}
+
 module.exports.addEvent = function(newEvent, callback) {
     if (newEvent._id == null) {
         newEvent._id = new mongoose.mongo.ObjectID();
