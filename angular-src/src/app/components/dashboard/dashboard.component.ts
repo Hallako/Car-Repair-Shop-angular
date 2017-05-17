@@ -22,6 +22,7 @@ export interface IEvent {
   className: string;
   borderColor: string;
   color: string;
+  nowDate: Date;
 }
 
 declare var jQuery: any;
@@ -108,11 +109,12 @@ export class DashboardComponent implements OnInit {
     let selectCall = function(start, end, jsEvent, view) {
       this.selectionChanged.emit(start, end, jsEvent, view);
 
+
       if (view.type == 'month') {
 
         this.calElement.fullCalendar('changeView', 'agendaWeek', start)
-        this.end = moment(end).subtract(12, 'hours').format('YYYY-MM-DD[T]HH:mm');
-        this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+        /*this.end = moment(end).subtract(12, 'hours').format('YYYY-MM-DD[T]HH:mm');
+        this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');*/
     }
       else {
         this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
@@ -123,6 +125,7 @@ export class DashboardComponent implements OnInit {
       this.description = null;
       this.url = null;
       this.title = null;
+
     };
 
     //binds
@@ -168,11 +171,10 @@ export class DashboardComponent implements OnInit {
       firstHour: 7,
       validRange: function(nowDate) {
         return {
-          start: nowDate.clone().subtract(1, 'days'),
-          end: nowDate.clone().add(1, 'months')
+          start: moment(nowDate).subtract(20, 'hours'),
+          end: moment(nowDate).add(1, 'months')
         }
       },
-
     };
 
 
