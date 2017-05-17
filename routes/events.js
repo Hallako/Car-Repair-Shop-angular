@@ -25,14 +25,24 @@ router.post('/addevent', (req, res, next) => {
             res.json({ success: true, msg: 'Event Updated' });
         }
     });
+});
 
-    //get posts
-    router.get('/getevents', (req, res, next) => {
-        event.find({}, function(req, event) {
-            res.json(event);
-        });
+//delete event 
+router.delete('/deleteevent', (req, res, next) => {
+    event.deleteEvent(req._id, (err, event) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to remove' });
+        } else {
+            res.json({ success: true, msg: 'Removed succesfully' });
+        }
     });
 });
 
+//get posts
+router.get('/getevents', (req, res, next) => {
+    event.find({}, function(req, event) {
+        res.json(event);
+    });
+});
 
 module.exports = router;
