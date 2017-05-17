@@ -1,5 +1,5 @@
 .login-form {
-    padding-top: 20px;
+    padding-top: 00px;
 }
 
 .btn-primary {
@@ -9,19 +9,24 @@
 }
 
 .calendar-div {
-    padding-top: 20px;
+    padding-top: 28px;
     width: 65%;
     float: left;
 }
 
+.form-group {
+    padding-top: 5px;
+}
+
 .eventinfo {
-    padding: 20px;
+    padding: 30px;
+    padding-top: 00px;
     float: left;
     width: 35%;
 }
 
 .clearfix {
-    clear: both
+    clear: both;
 }
 
 footer {
