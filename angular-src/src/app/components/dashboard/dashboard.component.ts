@@ -88,6 +88,8 @@ export class DashboardComponent implements OnInit {
       this.description = calEvent.description;
       this.url = calEvent.url;
       this.title = calEvent.title;
+      //calEvent.backgroundColor = '#378006'
+      //this.calElement.fullCalendar('rerenderEvents')
     };
 
 
@@ -115,6 +117,7 @@ export class DashboardComponent implements OnInit {
       else {
         this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
         this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+
       }
 
       this.description = null;
@@ -136,6 +139,12 @@ export class DashboardComponent implements OnInit {
         right: 'month,agendaWeek,agendaDay'
       },
 
+      views: {
+        agendaWeek: {
+          titleFormat: 'D.M.YYYY'
+        }
+      },
+      locale: 'fi',
       events: [],
       height: 471,
       selectable: true,
@@ -143,6 +152,7 @@ export class DashboardComponent implements OnInit {
       unselectAuto: false,
       defaultView: 'agendaWeek',
       timeFormat: 'H:mm',
+      columnFormat: 'DD.MM',
       hiddenDays: [0],
       minTime: "07:00:00",
       maxTime: "16:00:00",
@@ -155,10 +165,11 @@ export class DashboardComponent implements OnInit {
       eventClick: boundClick,
       viewRender: boundView,
       select: boundSelect,
+      firstHour: 7,
       validRange: function(nowDate) {
         return {
-          start: moment(nowDate).subtract(1, 'days'),
-          end: moment(nowDate).add(1, 'months')
+          start: nowDate.clone().subtract(1, 'days'),
+          end: nowDate.clone().add(1, 'months')
         }
       },
 
