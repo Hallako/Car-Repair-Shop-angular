@@ -16,6 +16,10 @@
 }
 
 .eventinfo {
+  height: inherit;
+}
+
+.eventinfo {
     padding: 20px;
     float: left;
     width: 35%;
@@ -27,8 +31,4 @@
 
 footer {
     padding-top: 40px;
-}
-
-.new {
-  background-color: #378006;
 }
