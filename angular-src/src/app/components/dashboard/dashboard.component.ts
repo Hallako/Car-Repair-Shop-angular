@@ -90,8 +90,11 @@ export class DashboardComponent implements OnInit {
       this.description = calEvent.description;
       this.url = calEvent.url;
       this.title = calEvent.title;
-      //calEvent.backgroundColor = '#378006'
-      //this.calElement.fullCalendar('rerenderEvents')
+      this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+      this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
+      calEvent.backgroundColor = '#378060'
+      this.calElement.fullCalendar('updateEvent', calEvent)
+      calEvent.backgroundColor = '#3a87ad'
     };
 
 
