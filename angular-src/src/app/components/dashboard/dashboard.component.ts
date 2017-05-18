@@ -10,7 +10,7 @@ import 'fullcalendar';
 import 'fullcalendar/dist/locale-all'
 import _ from 'lodash';
 import * as $ from 'jquery';
-
+import 'fullcalendar/dist/locale-all.js';
 
 export interface IEvent {
   title: string;
@@ -35,9 +35,18 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
 
+
   //declare emitters
   @Input('height')
   public height: number;
+
+    //Temporary event store
+    id: String;
+    title: String;
+    rekno: String;
+    start: Date;
+    end: Date;
+    description: String;
 
   @Output('event-click')
   eventClick = new EventEmitter();
@@ -65,16 +74,6 @@ export class DashboardComponent implements OnInit {
     return currentdate.month();
   }
 
-
-
-
-  title: String;
-  start: Date;
-  end: Date;
-  description: String;
-
-
-
   constructor(private validateService: ValidateService,
     private authService: AuthService,
     private flashMessage: FlashMessagesService,
@@ -82,6 +81,7 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.calElement = $('#myCalendar');
 
     //Events
@@ -132,57 +132,50 @@ export class DashboardComponent implements OnInit {
 
     };
 
-    //binds
-    let boundRender = eventRender.bind(this);
-    let boundClick = clickFunc.bind(this);
-    let boundView = viewRender.bind(this);
-    let boundSelect = selectCall.bind(this);
 
-    //options
-    let options: any = {
-      header: {
-        left: 'prev,next,today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay'
-      },
+        //binds
+        let boundRender = eventRender.bind(this);
+        let boundClick = clickFunc.bind(this);
+        let boundView = viewRender.bind(this);
+        let boundSelect = selectCall.bind(this);
 
-      views: {
-        agendaWeek: {
-          titleFormat: 'D.M.YYYY'
-        }
-      },
-
-      locale: 'fi',
-      events: [],
-      height: 471,
-      selectable: true,
-      selectHelper: true,
-      unselectAuto: false,
-      defaultView: 'agendaWeek',
-      timeFormat: 'H:mm',
-      columnFormat: 'DD.MM',
-      hiddenDays: [0],
-      minTime: "07:00:00",
-      maxTime: "16:00:00",
-      allDaySlot: false,
-      slotEventOverlap: true,
-      slotLabelFormat: 'H:mm',
-      aspectRatio: 1,
-      fixedWeekCount: false,
-      eventRender: boundRender,
-      eventClick: boundClick,
-      viewRender: boundView,
-      select: boundSelect,
-      firstHour: 7,
-      validRange: function(nowDate) {
-        return {
-          start: moment(nowDate).subtract(20, 'hours'),
-          end: moment(nowDate).add(1, 'months')
-        }
-      },
-    };
-
-
+        //options
+        let options: any = {
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: [],
+            businessHours: {
+              dow: [1, 2, 3, 4, 5],
+              start: '7:00',
+              end: '18:00',
+            },
+            validRange: function(nowDate) {
+                return {
+                    start: moment(nowDate).subtract(2, 'days') ,
+                    end: nowDate.clone().add(1, 'months')
+                };
+            },
+            hiddenDays:[0,6],
+            locale: 'fi',
+            minTime: "07:00:00",
+            maxTime: "18:00:00",
+            allDaySlot: false,
+            height: 560,
+            selectable: true,
+            defaultView: 'agendaWeek',
+            timeFormat: 'H:mm',
+            slotLabelFormat: 'H:mm',
+            aspectRatio: 1,
+            fixedWeekCount : false,
+            selectHelper: true,
+            eventRender: boundRender,
+            eventClick: boundClick,
+            viewRender: boundView,
+            select: boundSelect
+        };
 
     if (this.height > 0) {
       options.height = this.height;
@@ -203,25 +196,31 @@ export class DashboardComponent implements OnInit {
   }
 
   //event add form
-  onEventSubmit() {
-    var curuser = this.authService.getUser();
-    var user: String;
+  onEventSubmit(){
+   var curuser = this.authService.getUser();
+   var user: String;
 
-    const event = {
-      title: this.title,
-      start: this.start,
-      end: this.end,
-      description: this.description,
-      user: curuser['id']
-    }
-
-    this.authService.addEvent(event).subscribe(data => {
-      if (data.success) {
-        this.flashMessage.show('Event added succesfully', { cssClass: 'alert-success', timeout: 3000 });
-        location.reload();
-      } else {
-        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+   const event = {
+        _id: this.id,
+        title: this.title,
+        start: this.start,
+        end: this.end,
+        description: this.description,
+        user: curuser['id']
       }
-    });
+
+      if(event.title && event.start && event.user){
+      this.authService.addEvent(event).subscribe(data => {
+        if( data.success ){
+            this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+            location.reload();
+        } else {
+            this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+        }
+      });
+    } else {
+       this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
+     }
+
   }
 }
