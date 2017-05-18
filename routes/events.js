@@ -28,10 +28,10 @@ router.post('/addevent', (req, res, next) => {
 });
 
 //delete event 
-router.delete('/deleteevent', (req, res, next) => {
-    event.deleteEvent(req._id, (err, event) => {
+router.delete('/deleteevent/:id', (req, res) => {
+    event.deleteEvent(req.params.id, (err, event) => {
         if (err) {
-            res.json({ success: false, msg: 'Failed to remove' });
+            res.json({ success: false, msg: err });
         } else {
             res.json({ success: true, msg: 'Removed succesfully' });
         }
