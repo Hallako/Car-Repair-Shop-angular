@@ -7,23 +7,20 @@ import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
 import * as moment from 'moment';
 import 'fullcalendar';
-import 'fullcalendar/dist/locale-all'
 import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
 
 export interface IEvent {
-  title: string;
-  description: string;
-  start: Date;
-  end: Date;
-  type: string;
-  backgroundColor: string;
-  textColor: string;
-  className: string;
-  borderColor: string;
-  color: string;
-  nowDate: Date;
+    title: string;
+    description: string;
+    start: Date;
+    end: Date;
+    type: string;
+    backgroundColor: string;
+    textColor: string;
+    className: string;
+    borderColor: string;
 }
 
 declare var jQuery: any;
@@ -35,11 +32,6 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
 
-
-  //declare emitters
-  @Input('height')
-  public height: number;
-
     //Temporary event store
     id: String;
     title: String;
@@ -48,90 +40,88 @@ export class DashboardComponent implements OnInit {
     end: Date;
     description: String;
 
-  @Output('event-click')
-  eventClick = new EventEmitter();
+    //declaring emitters
+    @Input('height')
+    public height: number;
 
-  @Output('month-changed')
-  monthChanged = new EventEmitter();
+    @Output('event-click')
+    eventClick = new EventEmitter();
 
-  @Output('date-change')
-  dateChange = new EventEmitter();
+    @Output('month-changed')
+    monthChanged = new EventEmitter();
 
-  @Output('select-changed')
-  selectionChanged = new EventEmitter();
+    @Output('date-change')
+    dateChange = new EventEmitter();
 
-  calElement = null;
+    @Output('select-changed')
+    selectionChanged = new EventEmitter();
 
-  addEvents(events: IEvent[]) {
-    this.calElement = $('#myCalendar');
-    if (!_.isNil(events)) {
-      $('#myCalendar').fullCalendar('addEventSource', events);
+    calElement = null;
+
+    addEvents(events: IEvent[]) {
+        this.calElement = $('#myCalendar');
+        if (!_.isNil(events)) {
+            $('#myCalendar').fullCalendar('addEventSource', events);
+        }
     }
-  }
 
-  getCurrentMonth() {
-    const currentdate = <any>$("#myCalendar").fullCalendar('getDate');
-    return currentdate.month();
-  }
+    getCurrentMonth() {
+        const currentdate = <any>$("#myCalendar").fullCalendar('getDate');
+        return currentdate.month();
+    }
+
 
   constructor(private validateService: ValidateService,
-    private authService: AuthService,
-    private flashMessage: FlashMessagesService,
-    private router: Router) { }
+       private authService: AuthService,
+       private flashMessage: FlashMessagesService,
+       private router: Router) { }
 
 
   ngOnInit() {
+        this.calElement = $('#myCalendar');
 
-    this.calElement = $('#myCalendar');
+        //Events
+        let clickFunc = function (calEvent, jsEvent, view) {
+            this.eventClick.emit(calEvent);
 
-    //Events
-    let clickFunc = function(calEvent, jsEvent, view) {
-      this.eventClick.emit(calEvent);
-      this.description = calEvent.description;
-      this.url = calEvent.url;
-      this.title = calEvent.title;
-      this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
-      this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
-      calEvent.backgroundColor = '#378060'
-      this.calElement.fullCalendar('updateEvent', calEvent)
-      calEvent.backgroundColor = '#3a87ad'
-    };
+            /*calEvent.backgroundColor = "#235323";
+            this.calElement.fullCalendar( 'updateEvent', calEvent )
+            calEvent.backgroundColor = "#3a87ad";*/
 
+            this.id = calEvent._id,
+            this.description = calEvent.description;
+            this.url = calEvent.url;
+            this.title = calEvent.title;
+            this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
+            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+        };
 
+        let eventRender = function (event, element) {
+            const args = {event: event, view: element};
+            this.dateChange.emit(args);
 
-    let eventRender = function(event, element) {
-      const args = { event: event, view: element };
-      this.dateChange.emit(args);
-      console.log('date changed');
-    };
+        };
 
-    let viewRender = function(view, element) {
-      this.monthChanged.emit(view.intervalStart.month());
-      console.log('view rendered');
-    };
+         let viewRender = function (view, element) {
+            this.monthChanged.emit(view.intervalStart.month());
 
-    let selectCall = function(start, end, jsEvent, view) {
-      this.selectionChanged.emit(start, end, jsEvent, view);
+        };
 
-
-      if (view.type == 'month') {
-
-        this.calElement.fullCalendar('changeView', 'agendaWeek', start)
-        /*this.end = moment(end).subtract(12, 'hours').format('YYYY-MM-DD[T]HH:mm');
-        this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');*/
-    }
-      else {
-        this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-        this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-
-      }
-
-      this.description = null;
-      this.url = null;
-      this.title = null;
-
-    };
-
+        let selectCall = function (start, end, jsEvent, view) {
+            this.selectionChanged.emit(start, end, jsEvent, view);
+            //this.calElement.fullCalendar('rerenderEvents');
+            if(view.type == 'month'){
+              this.calElement.fullCalendar('changeView', 'agendaWeek');
+              this.calElement.fullCalendar('gotoDate',  start);
+            } else {
+              this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+            }
+            this.id = null;
+            this.description = null;
+            this.url = null;
+            this.title = null;
+        };
 
         //binds
         let boundRender = eventRender.bind(this);
@@ -154,7 +144,7 @@ export class DashboardComponent implements OnInit {
             },
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(2, 'days') ,
+                    start: nowDate.clone().subtract(17, 'hours'),
                     end: nowDate.clone().add(1, 'months')
                 };
             },
@@ -171,29 +161,58 @@ export class DashboardComponent implements OnInit {
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
+            unselectAuto: false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
-            select: boundSelect
+            select: boundSelect,
         };
 
-    if (this.height > 0) {
-      options.height = this.height;
-    }
 
-    this.calElement.fullCalendar(options);
+        this.calElement.fullCalendar(options);
 
-    //Populate calendar on load
-    this.authService.getEvents().subscribe(event => {
-      JSON.stringify(event);
-      let newEvents = event;
-      options.events = newEvents;
-      this.calElement.fullCalendar('renderEvents', newEvents, true);
-    });
-
-
-
+        //Populate calendar on load
+        this.authService.getEvents().subscribe(event => {
+        JSON.stringify(event);
+        let newEvents = event;
+        options.events = newEvents;
+        this.calElement.fullCalendar('renderEvents', newEvents, true);
+      });
   }
+
+
+  //event update/render
+  renderEvents(){
+    this.authService.getEvents().subscribe(event => {
+    JSON.stringify(event);
+    let newEvents = event;
+    this.calElement.options.events = newEvents;
+    this.calElement.fullCalendar('renderEvents', newEvents, true);
+    });
+  }
+
+
+  //event delete
+  onDeleteClick(){
+
+    var Id = this.id;
+
+    if(Id){
+      this.authService.delEvent(Id).subscribe(data => {
+      if( data.success ){
+            this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+            this.calElement.fullCalendar('removeEvents', Id);
+        } else {
+          console.log(data);
+            this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+        }
+      });
+    } else {
+        this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
+    }
+  }
+
+
 
   //event add form
   onEventSubmit(){
@@ -215,12 +234,12 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             location.reload();
         } else {
+
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
     } else {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
-
   }
 }
