@@ -190,7 +190,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  
 
   //event delete
   onDeleteClick(){
