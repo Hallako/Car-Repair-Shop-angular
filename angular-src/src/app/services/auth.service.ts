@@ -16,6 +16,7 @@ export class AuthService {
     this.loadToken();
    }
 
+  //###### User functions ##########
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
@@ -39,34 +40,21 @@ export class AuthService {
     .map(res => res.json());
   }
 
+
+  //###### Storage functions ##########
   getUser(){
     if(this.user){
       return this.user
     } else {
     return JSON.parse(localStorage.getItem('user'));
     }
-  }
-
-  getEvents(){
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-type','application/json');
-    return this.http.get('http://localhost:3000/events/getevents',{headers: headers})
-    .map(res => res.json());}
+  }  
 
   storeUserData(token, user){
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.authToken = token;
     this.user = user;
-  }
-
-  addEvent(event){
-    let headers = new Headers();  
-    headers.append('Content-type','application/json');
-    return this.http.post('http://localhost:3000/events/addevent',event,{headers:headers})
-    .map(res => res.json());
   }
 
   loadToken(){
@@ -83,4 +71,29 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+  //###### Event functions ##########
+  addEvent(event){
+    let headers = new Headers();  
+    headers.append('Content-type','application/json');
+    return this.http.post('http://localhost:3000/events/addevent',event,{headers:headers})
+    .map(res => res.json());
+  }
+  
+  delEvent(id){
+    let headers = new Headers();
+    
+    headers.append('Content-type','application/json');
+    return this.http.delete('http://localhost:3000/events/deleteevent/'+id,{headers: headers})
+    .map(res => res.json());
+  }
+  
+
+  getEvents(){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-type','application/json');
+    return this.http.get('http://localhost:3000/events/getevents',{headers: headers})
+    .map(res => res.json());}
 }

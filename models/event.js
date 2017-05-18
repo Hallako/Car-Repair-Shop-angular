@@ -36,7 +36,13 @@ const EventSchema = mongoose.Schema({
 const event = module.exports = mongoose.model('Event', EventSchema);
 
 module.exports.getEvents = function(event, callback) {
+
     event.find(event, callback);
+}
+
+module.exports.deleteEvent = function(id, callback) {
+    id = mongoose.mongo.ObjectID(id);
+    event.findByIdAndRemove(id, callback);
 }
 
 module.exports.addEvent = function(newEvent, callback) {
