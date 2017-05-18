@@ -21,6 +21,7 @@ import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
+import { FooterComponent } from './components/footer/footer.component';
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
@@ -39,7 +40,8 @@ const appRoutes : Routes = [
     DashboardComponent,
     RegisterComponent,
     ProfileComponent,
-    CalendarComponent
+    CalendarComponent,
+    FooterComponent
   ],
 
   imports: [

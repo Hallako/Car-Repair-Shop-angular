@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
             this.eventClick.emit(calEvent);
             
             calEvent.backgroundColor = "#235323";
-            this.calElement.fullCalendar( 'rerenderEvents' );
+            this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
             
             this.id = calEvent._id,
@@ -167,9 +167,6 @@ export class DashboardComponent implements OnInit {
             select: boundSelect
         };
 
-        if (this.height > 0) {
-            options.height = this.height;
-        }
 
         this.calElement.fullCalendar(options);
 
@@ -178,9 +175,44 @@ export class DashboardComponent implements OnInit {
         JSON.stringify(event);
         let newEvents = event;
         options.events = newEvents;
-        this.calElement.fullCalendar('renderEvents', newEvents, true);
+        this.calElement.fullCalendar('renderEvents', newEvents, false);
       });
   }
+
+
+  //event update/render
+  renderEvents(){
+    this.authService.getEvents().subscribe(event => {
+    JSON.stringify(event);
+    let newEvents = event;
+    this.calElement.options.events = newEvents;
+    this.calElement.fullCalendar('renderEvents', newEvents, true);
+    });
+  }
+
+  
+
+  //event delete
+  onDeleteClick(){
+
+    var Id = this.id;
+
+    if(Id){
+      this.authService.delEvent(Id).subscribe(data => {
+      if( data.success ){
+            this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+            this.calElement.fullCalendar('removeEvents', Id);
+        } else {
+          console.log(data);
+            this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+        }
+      });
+    } else {
+        this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
+    }
+  }
+
+
 
   //event add form
   onEventSubmit(){
@@ -202,6 +234,7 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             location.reload();
         } else {
+            
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
