@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
     start: Date;
     end: Date;
     description: String;
+    admin: Boolean = false
 
     //declaring emitters
     @Input('height')
@@ -78,7 +79,11 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+        var userId = this.authService.getUser().id;
         this.calElement = $('#myCalendar');
+        var curuser = this.authService.getUser();
+        this.admin = curuser.admin
+
 
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
@@ -87,6 +92,8 @@ export class DashboardComponent implements OnInit {
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
+            this.calElement.fullCalendar('unselect');
+
 
             this.id = calEvent._id,
             this.description = calEvent.description;
@@ -107,7 +114,7 @@ export class DashboardComponent implements OnInit {
 
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
-
+            this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
               this.calElement.fullCalendar('gotoDate',  start);
@@ -134,16 +141,32 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: [],
+
+            events: function(start, end, timezone, callback) {
+                
+              end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+              start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+                
+                $.ajax({
+                    url: 'http://localhost:3000/events/getevents/'
+                    +start+"/"+end+"/"+userId,
+                    dataType: 'json',
+                    success: function(response) {
+                        callback(response)
+                        console.log(response);
+                    }
+                });
+            },
             businessHours: {
               dow: [1, 2, 3, 4, 5],
               start: '7:00',
               end: '18:00',
             },
+
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(20, 'hours') ,
-                    end: nowDate.clone().add(2, 'months')
+                    start: moment(nowDate).subtract(1,'days'),
+                    end: nowDate.clone().add(60, 'days')
                 };
             },
             hiddenDays:[0,6],
@@ -153,41 +176,23 @@ export class DashboardComponent implements OnInit {
             allDaySlot: false,
             height: 560,
             selectable: true,
-            defaultView: 'month',
+            defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
             unselectAuto: true,
-            unselectCancel: '.eventinfo',
+            unselectCancel: ".eventinfo",
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
-            select: boundSelect
+            select: boundSelect,
         };
 
 
         this.calElement.fullCalendar(options);
-
-        //Populate calendar on load
-        this.authService.getEvents().subscribe(event => {
-        JSON.stringify(event);
-        let newEvents = event;
-        options.events = newEvents;
-        this.calElement.fullCalendar('renderEvents', newEvents, true);
-      });
-  }
-
-
-  //event update/render
-  renderEvents(){
-    this.authService.getEvents().subscribe(event => {
-    JSON.stringify(event);
-    let newEvents = event;
-    this.calElement.options.events = newEvents;
-    this.calElement.fullCalendar('renderEvents', newEvents, true);
-    });
+    
   }
 
   //event delete
@@ -209,8 +214,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
-
   //event add form
   onEventSubmit(){
    var curuser = this.authService.getUser();
@@ -231,6 +234,7 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             location.reload();
         } else {
+
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });

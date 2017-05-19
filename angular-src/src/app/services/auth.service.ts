@@ -48,7 +48,7 @@ export class AuthService {
     } else {
     return JSON.parse(localStorage.getItem('user'));
     }
-  }  
+  }
 
   storeUserData(token, user){
     localStorage.setItem('id_token', token);
@@ -65,7 +65,7 @@ export class AuthService {
   loggedIn(){
     return tokenNotExpired('id_token');
   }
-  
+
   logout(){
     this.authToken = null;
     this.user = null;
@@ -74,26 +74,25 @@ export class AuthService {
 
   //###### Event functions ##########
   addEvent(event){
-    let headers = new Headers();  
+    let headers = new Headers();
     headers.append('Content-type','application/json');
     return this.http.post('http://localhost:3000/events/addevent',event,{headers:headers})
     .map(res => res.json());
   }
-  
+
   delEvent(id){
     let headers = new Headers();
-    
     headers.append('Content-type','application/json');
     return this.http.delete('http://localhost:3000/events/deleteevent/'+id,{headers: headers})
     .map(res => res.json());
   }
-  
 
-  getEvents(){
+  getEvents(start, end, user){
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get('http://localhost:3000/events/getevents',{headers: headers})
+    return this.http.get('http://localhost:3000/events/getevents/'
+    +start+"/"+end+"/"+user,{headers: headers})
     .map(res => res.json());}
 }
