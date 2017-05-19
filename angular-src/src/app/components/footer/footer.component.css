@@ -1,15 +1,22 @@
 .footer {
     position: absolute;
     margin-bottom: 0px;
-    height: 120px;
+    height: 150px;
     text-align: center;
     border: 1px groove #000000;
     background-color: #202020;
     opacity: 0.6;
     color: #eeeeee;
     width: 100%;
+
 }
 
 .footer-container {
     width: 100%;
+}
+
+.text-container {
+  width: 60%;
+  align: center;
+  padding-top: 10px;
 }

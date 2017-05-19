@@ -16,7 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
+import { CalendarComponent } from 'C:/Users/admin/Documents/GitHub/MeanAppi/angular-src/node_modules/angular2-fullcalendar/src/calendar/calendar'//'angular2-fullcalendar/src/calendar/calendar';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
@@ -51,7 +51,7 @@ const appRoutes : Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     NgbDatepickerModule,
     NgbTimepickerModule,
     CalendarModule.forRoot(),
