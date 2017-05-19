@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
-
+            this.calElement.fullCalendar('unselect')
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
@@ -163,11 +163,12 @@ export class DashboardComponent implements OnInit {
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
-            unselectAuto: false,
+            unselectAuto: true,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
             select: boundSelect,
+            unselectCancel: '.eventinfo',
         };
 
 
