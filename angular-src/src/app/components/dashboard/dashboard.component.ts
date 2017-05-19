@@ -94,6 +94,7 @@ export class DashboardComponent implements OnInit {
             calEvent.backgroundColor = "#3a87ad";
             this.calElement.fullCalendar('unselect');
 
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -140,6 +141,7 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
+
             events: function(start, end, timezone, callback) {
                 
               end = moment(end).format('YYYY-MM-DD[T]HH:mm');
