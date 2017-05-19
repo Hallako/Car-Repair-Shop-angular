@@ -9,6 +9,7 @@ const event = require('../models/event');
 router.post('/addevent', (req, res, next) => {
 
     let newEvent = new event({
+        _id: req.body._id,
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
@@ -17,17 +18,27 @@ router.post('/addevent', (req, res, next) => {
         user: req.body.user
     });
 
-    event.addEvent(newEvent, (err, user) => {
+    event.addEvent(newEvent, (err, event) => {
         if (err) {
-            res.json({ success: false, msg: 'Failed to add event' });
+            res.json({ success: false, msg: err.errors.title.message });
         } else {
-            res.json({ success: true, msg: 'Event added' });
+            res.json({ success: true, msg: 'Event Updated' });
+        }
+    });
+});
+
+//delete event
+router.delete('/deleteevent/:id', (req, res) => {
+    event.deleteEvent(req.params.id, (err, event) => {
+        if (err) {
+            res.json({ success: false, msg: err });
+        } else {
+            res.json({ success: true, msg: 'Removed succesfully' });
         }
     });
 });
 
 //get posts
-
 router.get('/getevents', (req, res, next) => {
     event.find({}, function(req, event) {
         res.json(event);
