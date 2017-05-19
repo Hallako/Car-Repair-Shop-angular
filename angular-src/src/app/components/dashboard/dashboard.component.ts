@@ -99,12 +99,18 @@ export class DashboardComponent implements OnInit {
         let eventRender = function (event, element) {
             const args = {event: event, view: element};
             this.dateChange.emit(args);
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/Hallako/master
         };
 
          let viewRender = function (view, element) {
             this.monthChanged.emit(view.intervalStart.month());
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/Hallako/master
         };
 
         let selectCall = function (start, end, jsEvent, view) {
@@ -144,8 +150,13 @@ export class DashboardComponent implements OnInit {
             },
             validRange: function(nowDate) {
                 return {
+<<<<<<< HEAD
                     start: nowDate.clone().subtract(17, 'hours'),
                     end: nowDate.clone().add(1, 'months')
+=======
+                    start: moment(nowDate).subtract(20, 'hours') ,
+                    end: nowDate.clone().add(2, 'months')
+>>>>>>> refs/remotes/Hallako/master
                 };
             },
             hiddenDays:[0,6],
@@ -155,7 +166,7 @@ export class DashboardComponent implements OnInit {
             allDaySlot: false,
             height: 560,
             selectable: true,
-            defaultView: 'agendaWeek',
+            defaultView: 'month',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
@@ -191,10 +202,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
   //event delete
   onDeleteClick(){
-
     var Id = this.id;
 
     if(Id){
@@ -234,7 +243,10 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             location.reload();
         } else {
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/Hallako/master
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
