@@ -143,10 +143,10 @@ export class DashboardComponent implements OnInit {
             },
 
             events: function(start, end, timezone, callback) {
-                
+
               end = moment(end).format('YYYY-MM-DD[T]HH:mm');
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-                
+
                 $.ajax({
                     url: 'http://localhost:3000/events/getevents/'
                     +start+"/"+end+"/"+userId,
@@ -183,10 +183,6 @@ export class DashboardComponent implements OnInit {
             fixedWeekCount : false,
             selectHelper: true,
             unselectAuto: true,
-<<<<<<< HEAD
-=======
-            unselectCancel: ".eventinfo",
->>>>>>> refs/remotes/Hallako/master
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
@@ -196,7 +192,7 @@ export class DashboardComponent implements OnInit {
 
 
         this.calElement.fullCalendar(options);
-    
+
   }
 
   //event delete
