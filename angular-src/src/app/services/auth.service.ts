@@ -87,12 +87,12 @@ export class AuthService {
     .map(res => res.json());
   }
 
-  getEvents(start, end, user){
+  getEvents(start, end, user, admin){
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
     return this.http.get('http://localhost:3000/events/getevents/'
-    +start+"/"+end+"/"+user,{headers: headers})
+    +start+"/"+end+"/"+user+"/"+admin,{headers: headers})
     .map(res => res.json());}
 }
