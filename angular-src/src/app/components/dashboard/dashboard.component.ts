@@ -88,13 +88,11 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
+
             this.calElement.fullCalendar('unselect')
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
-            this.calElement.fullCalendar('unselect');
-
-
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -183,11 +181,11 @@ export class DashboardComponent implements OnInit {
             fixedWeekCount : false,
             selectHelper: true,
             unselectAuto: true,
+            unselectCancel: ".eventinfo",
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
             select: boundSelect,
-            unselectCancel: '.eventinfo',
         };
 
 
