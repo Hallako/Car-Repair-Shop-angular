@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
         var userId = this.authService.getUser().id;
         this.calElement = $('#myCalendar');
         var curuser = this.authService.getUser();
-        this.admin = curuser.admin
+        this.admin = curuser.admin;
 
 
         //Events
@@ -149,7 +149,7 @@ export class DashboardComponent implements OnInit {
                 
                 $.ajax({
                     url: 'http://localhost:3000/events/getevents/'
-                    +start+"/"+end+"/"+userId,
+                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
                         callback(response)
