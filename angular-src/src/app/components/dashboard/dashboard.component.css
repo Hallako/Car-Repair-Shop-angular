@@ -1,3 +1,4 @@
+
 .login-form {
     padding-top: 00px;
 }
@@ -20,7 +21,9 @@
     padding-top: 5px;
 }
 
+
 .eventinfo {
+    padding: 20px;
     padding: 30px;
     padding-top: 00px;
     float: left;
