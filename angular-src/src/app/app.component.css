@@ -1,0 +1,12 @@
+.router-outlet {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    padding-bottom: 120px;
+    position: relative;
+}
+
+.container {
+    min-height: 82%;
+    position: relative;
+}
