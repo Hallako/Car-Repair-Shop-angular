@@ -1,7 +1,8 @@
-<div *ngIf='user'>
+<div *ngIf='user' class="user-class">
     <h2 class="page-header">{{user.name}}</h2>
     <ul class="list-group">
         <li class="list-group-item">Username: {{user.username}}</li>
         <li class="list-group-item">email: {{user.email}}</li>
+        <li class="list-group-item" *ngIf="user.admin">Admin</li>
     </ul>
 </div>

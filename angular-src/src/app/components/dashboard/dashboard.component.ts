@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
     start: Date;
     end: Date;
     description: String;
+    admin: Boolean = false
 
     //declaring emitters
     @Input('height')
@@ -79,6 +80,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
         this.calElement = $('#myCalendar');
+        var curuser = this.authService.getUser();
+        this.admin = curuser.admin
+
 
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {

@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarModule } from 'angular-calendar';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -54,7 +53,6 @@ const appRoutes : Routes = [
     BrowserAnimationsModule,
     NgbDatepickerModule,
     NgbTimepickerModule,
-    CalendarModule.forRoot(),
   ],
   providers: [ValidateService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
