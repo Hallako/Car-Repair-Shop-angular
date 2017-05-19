@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const event = require('../models/event');
 
-//Add Post
+//Add Post 
 router.post('/addevent', (req, res, next) => {
 
     let newEvent = new event({
@@ -27,7 +27,7 @@ router.post('/addevent', (req, res, next) => {
     });
 });
 
-//delete event
+//delete event 
 router.delete('/deleteevent/:id', (req, res) => {
     event.deleteEvent(req.params.id, (err, event) => {
         if (err) {
@@ -38,9 +38,12 @@ router.delete('/deleteevent/:id', (req, res) => {
     });
 });
 
+
 //get posts
-router.get('/getevents', (req, res, next) => {
-    event.find({}, function(req, event) {
+router.get('/getevents/:start/:end?/:user?', (req, res, next) => {
+    event.find({
+        start: { $gte: req.params.start, $lt: req.params.end }
+    }, function(req, event) {
         res.json(event);
     });
 });
