@@ -84,9 +84,9 @@ export class DashboardComponent implements OnInit {
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
-            /*calEvent.backgroundColor = "#235323";
+            calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";*/
+            calEvent.backgroundColor = "#3a87ad";
 
             this.id = calEvent._id,
             this.description = calEvent.description;
@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit {
 
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
-            //this.calElement.fullCalendar('rerenderEvents');
+            this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
               this.calElement.fullCalendar('gotoDate',  start);
