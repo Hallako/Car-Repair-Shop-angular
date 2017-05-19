@@ -88,19 +88,12 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
-<<<<<<< HEAD
 
-            calEvent.backgroundColor = "#235323";
-            this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";
-=======
             this.calElement.fullCalendar('unselect')
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
             this.calElement.fullCalendar('unselect');
-
->>>>>>> refs/remotes/origin/testi
 
             this.id = calEvent._id,
             this.description = calEvent.description;
