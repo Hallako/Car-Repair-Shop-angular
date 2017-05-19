@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
     start: Date;
     end: Date;
     description: String;
-  
+
     //declaring emitters
     @Input('height')
     public height: number;
@@ -83,17 +83,17 @@ export class DashboardComponent implements OnInit {
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
-            
+
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
-            
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
-            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm'); 
+            this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
 
         let eventRender = function (event, element) {
@@ -104,7 +104,7 @@ export class DashboardComponent implements OnInit {
          let viewRender = function (view, element) {
             this.monthChanged.emit(view.intervalStart.month());
         };
-        
+
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
 
@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
               this.calElement.fullCalendar('gotoDate',  start);
             } else {
               this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm'); 
+              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
             }
             this.id = null;
             this.description = null;
@@ -134,11 +134,11 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: [],  
+            events: [],
             businessHours: {
               dow: [1, 2, 3, 4, 5],
-              start: '7:00', 
-              end: '18:00', 
+              start: '7:00',
+              end: '18:00',
             },
             validRange: function(nowDate) {
                 return {
@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
             minTime: "07:00:00",
             maxTime: "18:00:00",
             allDaySlot: false,
-            height: 560,  
+            height: 560,
             selectable: true,
             defaultView: 'month',
             timeFormat: 'H:mm',
@@ -159,7 +159,8 @@ export class DashboardComponent implements OnInit {
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
-            unselectAuto: false,
+            unselectAuto: true,
+            unselectCancel: '.eventinfo',
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
