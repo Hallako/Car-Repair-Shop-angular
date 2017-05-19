@@ -6,7 +6,7 @@
 
     <div class="eventinfo">
         <h1>Varaus</h1>
-        <form (submit)="onEventSubmit()" class="login-form">
+        <form class="login-form">
 
             <div class="form-group">
                 <label>Toimenpide</label>
@@ -29,19 +29,12 @@
                 <input type="datetime-local" disabled class="form-control" [(ngModel)]="end" name="end">
             </div>
 
-            <!--
-            <div class="form-group">
-                <label>Link</label>
-                <input type="url" class="form-control" [(ngModel)]="url" name="url">
-            </div>
-            -->
-
             <div class="form-group">
                 <label>Lisätietoja</label>
                 <textarea class="form-control" rows="5" [(ngModel)]="description" name="description"> </textarea>
             </div>
 
-            <input type="submit" class="btn btn-primary" value="Update/add">
+            <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Update/add">
             <input type="submit" (click)="onDeleteClick()" class="btn btn-primary" value="Delete">
         </form>
 

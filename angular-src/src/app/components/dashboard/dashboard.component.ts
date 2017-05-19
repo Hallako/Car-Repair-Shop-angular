@@ -99,12 +99,10 @@ export class DashboardComponent implements OnInit {
         let eventRender = function (event, element) {
             const args = {event: event, view: element};
             this.dateChange.emit(args);
-            
         };
 
          let viewRender = function (view, element) {
             this.monthChanged.emit(view.intervalStart.month());
-            
         };
         
         let selectCall = function (start, end, jsEvent, view) {
@@ -144,8 +142,8 @@ export class DashboardComponent implements OnInit {
             },
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(2, 'days') ,
-                    end: nowDate.clone().add(1, 'months')
+                    start: moment(nowDate).subtract(20, 'hours') ,
+                    end: nowDate.clone().add(2, 'months')
                 };
             },
             hiddenDays:[0,6],
@@ -155,12 +153,13 @@ export class DashboardComponent implements OnInit {
             allDaySlot: false,
             height: 560,  
             selectable: true,
-            defaultView: 'agendaWeek',
+            defaultView: 'month',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
+            unselectAuto: false,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
@@ -175,7 +174,7 @@ export class DashboardComponent implements OnInit {
         JSON.stringify(event);
         let newEvents = event;
         options.events = newEvents;
-        this.calElement.fullCalendar('renderEvents', newEvents, false);
+        this.calElement.fullCalendar('renderEvents', newEvents, true);
       });
   }
 
@@ -190,10 +189,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
   //event delete
   onDeleteClick(){
-
     var Id = this.id;
 
     if(Id){
@@ -233,7 +230,6 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             location.reload();
         } else {
-            
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
