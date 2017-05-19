@@ -27,9 +27,14 @@
         "passport": "*",
         "passport-jwt": "*"
     },
+    "engines": {
+        "node": "7.10.0",
+        "npm": "4.2.0"
+    },
     "author": "Toni",
     "license": "ISC",
     "devDependencies": {
         "@angular/cli": "^1.0.2"
     }
+
 }
