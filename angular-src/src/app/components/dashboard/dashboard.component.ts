@@ -88,7 +88,8 @@ export class DashboardComponent implements OnInit {
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
-            
+            this.calElement.fullCalendar('unselect');
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -135,20 +136,6 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            /*events: {
-                    url: 'http://localhost:3000/events/getevents/',
-                    type: 'GET',
-                    data: {
-                           // userId: this.authService.getUser().id
-                           // start: this.start,
-                           // end: this.end
-                    },
-                    error: function() {
-                        //alert('there was an error while fetching events!');
-                    },
-                    
-            },
-            */
             events: function(start, end, timezone, callback) {
                 
               end = moment(end).format('YYYY-MM-DD[T]HH:mm');
@@ -183,13 +170,14 @@ export class DashboardComponent implements OnInit {
             allDaySlot: false,
             height: 560,  
             selectable: true,
-            defaultView: 'agendaWeek',
+            defaultView: 'month',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
-            unselectAuto: false,
+            unselectAuto: true,
+            unselectCancel: ".eventinfo",
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
@@ -198,29 +186,8 @@ export class DashboardComponent implements OnInit {
 
 
         this.calElement.fullCalendar(options);
-        /*
-        //Populate calendar on load
-        this.authService.getEvents(
-          moment().subtract(1,'days').toDate(),
-          moment().add(1,'months').toDate(),
-          this.authService.getUser().id
-        ).subscribe(event => {
-        JSON.stringify(event);
-        let newEvents = event;
-        options.events = newEvents;
-        this.calElement.fullCalendar('renderEvents', newEvents, true);
-      });*/
+    
   }
-
-  //event update/render
- /* renderEvents(){
-    this.authService.getEvents().subscribe(event => {
-    JSON.stringify(event);
-    let newEvents = event;
-    this.calElement.options.events = newEvents;
-    this.calElement.fullCalendar('renderEvents', newEvents, true);
-    });
-  }*/
 
   //event delete
   onDeleteClick(){
@@ -240,8 +207,6 @@ export class DashboardComponent implements OnInit {
         this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
     }
   }
-
-
 
   //event add form
   onEventSubmit(){
