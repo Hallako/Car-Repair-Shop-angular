@@ -78,6 +78,7 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+        var userId = this.authService.getUser().id;
         this.calElement = $('#myCalendar');
 
         //Events
@@ -134,16 +135,45 @@ export class DashboardComponent implements OnInit {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: [],  
+            /*events: {
+                    url: 'http://localhost:3000/events/getevents/',
+                    type: 'GET',
+                    data: {
+                           // userId: this.authService.getUser().id
+                           // start: this.start,
+                           // end: this.end
+                    },
+                    error: function() {
+                        //alert('there was an error while fetching events!');
+                    },
+                    
+            },
+            */
+            events: function(start, end, timezone, callback) {
+                
+              end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+              start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+                
+                $.ajax({
+                    url: 'http://localhost:3000/events/getevents/'
+                    +start+"/"+end+"/"+userId,
+                    dataType: 'json',
+                    success: function(response) {
+                        callback(response)
+                        console.log(response);
+                    }
+                });
+            },
             businessHours: {
               dow: [1, 2, 3, 4, 5],
               start: '7:00', 
               end: '18:00', 
             },
+
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(20, 'hours') ,
-                    end: nowDate.clone().add(2, 'months')
+                    start: moment(nowDate).subtract(1,'days'),
+                    end: nowDate.clone().add(60, 'days')
                 };
             },
             hiddenDays:[0,6],
@@ -153,7 +183,7 @@ export class DashboardComponent implements OnInit {
             allDaySlot: false,
             height: 560,  
             selectable: true,
-            defaultView: 'month',
+            defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
@@ -168,26 +198,29 @@ export class DashboardComponent implements OnInit {
 
 
         this.calElement.fullCalendar(options);
-
+        /*
         //Populate calendar on load
-        this.authService.getEvents().subscribe(event => {
+        this.authService.getEvents(
+          moment().subtract(1,'days').toDate(),
+          moment().add(1,'months').toDate(),
+          this.authService.getUser().id
+        ).subscribe(event => {
         JSON.stringify(event);
         let newEvents = event;
         options.events = newEvents;
         this.calElement.fullCalendar('renderEvents', newEvents, true);
-      });
+      });*/
   }
 
-
   //event update/render
-  renderEvents(){
+ /* renderEvents(){
     this.authService.getEvents().subscribe(event => {
     JSON.stringify(event);
     let newEvents = event;
     this.calElement.options.events = newEvents;
     this.calElement.fullCalendar('renderEvents', newEvents, true);
     });
-  }
+  }*/
 
   //event delete
   onDeleteClick(){

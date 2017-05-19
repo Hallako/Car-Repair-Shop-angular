@@ -38,9 +38,12 @@ router.delete('/deleteevent/:id', (req, res) => {
     });
 });
 
+
 //get posts
-router.get('/getevents', (req, res, next) => {
-    event.find({}, function(req, event) {
+router.get('/getevents/:start/:end?/:user?', (req, res, next) => {
+    event.find({
+        start: { $gte: req.params.start, $lt: req.params.end }
+    }, function(req, event) {
         res.json(event);
     });
 });
