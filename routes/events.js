@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const event = require('../models/event');
+const mongoose = require('mongoose');
 
 //Add Post 
 router.post('/addevent', (req, res, next) => {
@@ -40,12 +41,23 @@ router.delete('/deleteevent/:id', (req, res) => {
 
 
 //get posts
-router.get('/getevents/:start/:end?/:user?', (req, res, next) => {
-    event.find({
-        start: { $gte: req.params.start, $lt: req.params.end }
-    }, function(req, event) {
-        res.json(event);
-    });
+router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
+
+    if (req.params.admin == "true") {
+        event.find({
+            start: { $gte: req.params.start, $lt: req.params.end }
+        }, function(req, event) {
+            res.json(event);
+        });
+    } else {
+        var User = mongoose.mongo.ObjectID(req.params.user);
+        event.find({
+            start: { $gte: req.params.start, $lt: req.params.end },
+            user: User
+        }, function(req, event) {
+            res.json(event);
+        });
+    }
 });
 
 module.exports = router;

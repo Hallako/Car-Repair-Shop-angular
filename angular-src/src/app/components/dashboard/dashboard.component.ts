@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
         var userId = this.authService.getUser().id;
         this.calElement = $('#myCalendar');
         var curuser = this.authService.getUser();
-        this.admin = curuser.admin
+        this.admin = curuser.admin;
 
 
         //Events
@@ -146,8 +146,8 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:3000/events/getevents/'
-                    +start+"/"+end+"/"+userId,
+                    url: 'https://localhost:8082/events/getevents/'
+                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
                         callback(response)
@@ -157,7 +157,7 @@ export class DashboardComponent implements OnInit {
             },
             businessHours: {
               dow: [1, 2, 3, 4, 5],
-              start: '7:00',
+              start: '7:00',  
               end: '18:00',
             },
 
