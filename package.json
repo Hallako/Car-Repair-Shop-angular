@@ -1,35 +1,39 @@
 {
-    "name": "meanapp",
-    "version": "1.0.0",
-    "description": "MeanStack test",
-    "main": "app.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node app"
-    },
-    "dependencies": {
-        "@angular/cli": "*",
-        "@angular/common": "^4.1.2",
-        "@angular/compiler": "^4.1.2",
-        "@angular/compiler-cli": "^4.1.2",
-        "@angular/core": "^4.1.2",
-        "@angular/forms": "^4.1.2",
-        "@angular/http": "^4.1.2",
-        "@angular/platform-browser": "^4.1.2",
-        "@angular/router": "^4.1.2",
-        "bcryptjs": "*",
-        "body-parser": "*",
-
-        "cors": "*",
-        "express": "*",
-        "jsonwebtoken": "*",
-        "mongoose": "*",
-        "passport": "*",
-        "passport-jwt": "*"
-    },
-    "author": "Toni",
-    "license": "ISC",
-    "devDependencies": {
-        "@angular/cli": "^1.0.2"
-    }
+  "name": "meanapp",
+  "version": "1.0.0",
+  "description": "MeanStack test",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies": {
+    "@angular/cli": "*",
+    "@angular/common": "^4.1.2",
+    "@angular/compiler": "^4.1.2",
+    "@angular/compiler-cli": "^4.1.2",
+    "@angular/core": "^4.1.2",
+    "@angular/forms": "^4.1.2",
+    "@angular/http": "^4.1.2",
+    "@angular/platform-browser": "^4.1.2",
+    "@angular/router": "^4.1.2",
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-jwt": "*"
+  },
+  "engines": {
+    "node": "7.10.0",
+    "npm": "4.2.0"
+  },
+  "author": "Toni",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/cli": "^1.0.2"
+  }
 }
