@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map'
 import {tokenNotExpired} from 'angular2-jwt';
+import { Subject } from 'rxjs/Subject'
 
 @Injectable()
 export class AuthService {
@@ -74,6 +75,13 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+  getAdmin() {
+    if(this.loggedIn())
+    return this.getUser().admin
+  }
+
+
 
   //###### Event functions ##########
   addEvent(event){
