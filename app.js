@@ -16,8 +16,7 @@ var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
 var credentials = {
     key: privateKey,
     cert: certificate,
-    requestCert: true,
-    rejectUnauthorized: false
+    passphrase: "xrikal"
 };
 
 //DB conf
