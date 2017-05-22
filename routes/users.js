@@ -65,4 +65,12 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
+router.get('/admin', passport.authenticate('jwt', { session: false }), (req,res,next) =>{
+  User.find({}, (err, user) => {
+    if(err) throw err;
+
+    return res.json(user)
+  })
+})
+
 module.exports = router;

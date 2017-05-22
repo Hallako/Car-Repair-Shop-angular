@@ -7,11 +7,14 @@ import { AuthService } from '../../services/auth.service'
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-admin: Boolean
+
+users:Object;
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-
+    this.authService.getAllUser().subscribe(users => {
+      this.users = users
+    })
   }
 
 
