@@ -15,7 +15,9 @@ var privateKey = fs.readFileSync('./sslcert/private.key', 'utf8');
 var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
 var credentials = {
     key: privateKey,
-    cert: certificate
+    cert: certificate,
+    requestCert: true,
+    rejectUnauthorized: false
 };
 
 //DB conf
