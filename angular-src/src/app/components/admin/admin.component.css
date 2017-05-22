@@ -1,0 +1,36 @@
+.panel-primary {
+  width: 30%;
+  height: 5%;
+
+}
+
+.btn-group-vertical {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 0px;
+  display: block;
+  width: 30%;
+}
+.btn {
+  border-radius: 0px;
+}
+
+.btn-primary {
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.btn-sm {
+  margin-bottom: 5px;
+  border-radius: 0px;
+}
+
+.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
+  border-radius: 6px;
+}
+
+.btn-group-vertical > .btn:first-child:not(:last-child) {
+  border-radius: 6px;
+}
+.btn-group-vertical > .btn:last-child:not(:first-child) {
+  border-radius: 6px;
+}

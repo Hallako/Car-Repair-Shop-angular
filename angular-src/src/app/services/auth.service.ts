@@ -81,6 +81,14 @@ export class AuthService {
     return this.getUser().admin
   }
 
+  getAllUser() {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-type','application/json');
+    return this.http.get(this.nodeUrl+'/users/admin',{headers: headers})
+    .map(res => res.json());
+  }
 
 
   //###### Event functions ##########
