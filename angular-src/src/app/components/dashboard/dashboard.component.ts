@@ -148,7 +148,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
                 
                 $.ajax({
-                    url: 'http://localhost:3000/events/getevents/'
+                    url: 'https://localhost:4334/events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit {
             },
             businessHours: {
               dow: [1, 2, 3, 4, 5],
-              start: '7:00',
+              start: '7:00',  
               end: '18:00',
             },
 

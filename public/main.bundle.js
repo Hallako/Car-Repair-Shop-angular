@@ -27,6 +27,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AuthService = (function () {
     function AuthService(http) {
         this.http = http;
+        this.nodeUrl = 'https://localhost:4334';
         if (this.user == null) {
             this.user = JSON.parse(localStorage.getItem('user'));
         }
@@ -36,13 +37,13 @@ var AuthService = (function () {
     AuthService.prototype.registerUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-type', 'application/json');
-        return this.http.post('http://localhost:3000/users/register', user, { headers: headers })
+        return this.http.post(this.nodeUrl + '/users/register/', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.authenticateUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-type', 'application/json');
-        return this.http.post('http://localhost:3000/users/authenticate', user, { headers: headers })
+        return this.http.post(this.nodeUrl + '/users/authenticate/', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.getProfile = function () {
@@ -50,7 +51,7 @@ var AuthService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-type', 'application/json');
-        return this.http.get('http://localhost:3000/users/profile', { headers: headers })
+        return this.http.get(this.nodeUrl + '/users/profile/', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     //###### Storage functions ##########
@@ -84,13 +85,13 @@ var AuthService = (function () {
     AuthService.prototype.addEvent = function (event) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-type', 'application/json');
-        return this.http.post('http://localhost:3000/events/addevent', event, { headers: headers })
+        return this.http.post(this.nodeUrl + '/events/addevent/', event, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.delEvent = function (id) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-type', 'application/json');
-        return this.http.delete('http://localhost:3000/events/deleteevent/' + id, { headers: headers })
+        return this.http.delete(this.nodeUrl + '/events/deleteevent/' + id, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.getEvents = function (start, end, user, admin) {
@@ -98,8 +99,8 @@ var AuthService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-type', 'application/json');
-        return this.http.get('http://localhost:3000/events/getevents/'
-            + start + "/" + end + "/" + user + "/" + admin, { headers: headers })
+        return this.http.get(this.nodeUrl + '/events/getevents/'
+            + start + "/" + end + "/" + user + "/" + admin + "/", { headers: headers })
             .map(function (res) { return res.json(); });
     };
     return AuthService;
@@ -399,7 +400,7 @@ var DashboardComponent = (function () {
                 end = __WEBPACK_IMPORTED_MODULE_5_moment__(end).format('YYYY-MM-DD[T]HH:mm');
                 start = __WEBPACK_IMPORTED_MODULE_5_moment__(start).format('YYYY-MM-DD[T]HH:mm');
                 __WEBPACK_IMPORTED_MODULE_8_jquery__["ajax"]({
-                    url: 'http://localhost:3000/events/getevents/'
+                    url: 'https://localhost:4334/events/getevents/'
                         + start + "/" + end + "/" + userId + "/" + curuser.admin,
                     dataType: 'json',
                     success: function (response) {
