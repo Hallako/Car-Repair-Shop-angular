@@ -1,14 +1,14 @@
 .footer {
     position: absolute;
     margin-bottom: 0px;
-    height: 150px;
+    height: auto;
     text-align: center;
     border: 1px groove #000000;
     background-color: #202020;
-    opacity: 0.6;
+    /*opacity: 0.6;*/
     color: #eeeeee;
     width: 100%;
-    box-shadow: 0px 10px 10px 0px #060606 inset;
+    box-shadow: 0px 2px 5px 0px #090909 inset;
 }
 
 .footer-container {
@@ -16,21 +16,32 @@
 }
 
 .text-container {
+  position: relative;
   width: 60%;
   align: center;
   padding-top: 10px;
 }
 
-.img-container {
+@media all and (max-width: 1250px) {
+
+  .img-container {
+  display: none;
+  position: relative;
+  text-align: center;
+}
 
 }
 
 .footer-img {
+  position: relative;
+  display: inline-block;
+  float: left;
+
   max-height: 75px;
   max-width: 150px;
   width: inherit;
   height: inherit;
   padding-top: 10px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
