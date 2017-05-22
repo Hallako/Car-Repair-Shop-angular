@@ -8,8 +8,11 @@ export class AuthService {
 
     authToken: any;
     user: any;
+    nodeUrl: String;
 
-  constructor(private http:Http) {
+  constructor(private http  :Http) {
+    this.nodeUrl = 'https://localhost:8082';
+
     if(this.user == null){
      this.user = JSON.parse(localStorage.getItem('user'));
     }
@@ -20,14 +23,14 @@ export class AuthService {
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post('http://localhost:3000/users/register',user,{headers:headers})
+    return this.http.post(this.nodeUrl+'/users/register/',user,{headers:headers})
     .map(res => res.json());
   }
 
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post('http://localhost:3000/users/authenticate',user,{headers:headers})
+    return this.http.post(this.nodeUrl+'/users/authenticate/',user,{headers:headers})
     .map(res => res.json());
   }
 
@@ -36,7 +39,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get('http://localhost:3000/users/profile',{headers: headers})
+    return this.http.get(this.nodeUrl+'/users/profile/',{headers: headers})
     .map(res => res.json());
   }
 
@@ -76,23 +79,23 @@ export class AuthService {
   addEvent(event){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post('http://localhost:3000/events/addevent',event,{headers:headers})
+    return this.http.post(this.nodeUrl+'/events/addevent/',event,{headers:headers})
     .map(res => res.json());
   }
 
   delEvent(id){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.delete('http://localhost:3000/events/deleteevent/'+id,{headers: headers})
+    return this.http.delete(this.nodeUrl+'/events/deleteevent/'+id,{headers: headers})
     .map(res => res.json());
   }
 
-  getEvents(start, end, user){
+  getEvents(start, end, user, admin){
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get('http://localhost:3000/events/getevents/'
-    +start+"/"+end+"/"+user,{headers: headers})
+    return this.http.get(this.nodeUrl+'/events/getevents/'
+    +start+"/"+end+"/"+user+"/"+admin+"/",{headers: headers})
     .map(res => res.json());}
 }

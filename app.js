@@ -7,14 +7,23 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
 
+var privateKey = fs.readFileSync('./sslcert/private.key', 'utf8');
+var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
+var credentials = {
+    key: privateKey,
+    cert: certificate
+};
 
 //DB conf
 mongoose.connect(config.database);
 
 //Check connection
 mongoose.connection.on('connected', () => {
-    console.log('connected to DB' + config.database);
+    console.log('connected to DB');
 });
 
 mongoose.connection.on('error', (err) => {
@@ -54,7 +63,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-//server start MSG
-app.listen(port, () => {
-    console.log('server running on ' + port)
-});
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(port);
+httpsServer.listen(8082);

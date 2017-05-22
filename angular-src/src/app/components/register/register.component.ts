@@ -36,13 +36,14 @@ export class RegisterComponent implements OnInit {
 
     //check form
     if(!this.validateService.validateRegister(user)){
-        this.flashmessage.show('Pls fill in all fields', {cssClass: 'alert-danger', timeout:3000});
+        this.flashmessage.show('Fill in all Fields', {cssClass: 'alert-danger', timeout:3000});
         return false;  
     }
     if(!this.validateService.validateEmail(user.email)){
-        this.flashmessage.show('bruh use valid email', {cssClass: 'alert-danger', timeout:3000});
+        this.flashmessage.show('Enter a valid email', {cssClass: 'alert-danger', timeout:3000});
         return false;  
     }
+    
     //register user
     this.authService.registerUser(user).subscribe(data => {
         if(data.success){
