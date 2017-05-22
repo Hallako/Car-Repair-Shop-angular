@@ -65,4 +65,12 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
+//Change password
+router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
+    User.changePassword(req.body.id, req.body.password, (err, res) => {
+      if (err) throw err;
+    });
+    res.json('Salasana vaihdettu.');
+});
+
 module.exports = router;
