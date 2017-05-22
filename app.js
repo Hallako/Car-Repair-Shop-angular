@@ -66,5 +66,5 @@ app.get('*', (req, res) => {
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(process.env.PORT || 3000);
+httpServer.listen(port);
 httpsServer.listen(8082);
