@@ -11,6 +11,7 @@ export class AdminComponent implements OnInit {
 
 users: User[]
 selectedUser: User
+editUser: User
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -22,5 +23,7 @@ selectedUser: User
     this.selectedUser = user
   }
 
-
+  editSelected(user: User) {
+    this.editUser = this.selectedUser
+  }
 }

@@ -11,8 +11,6 @@
   float: right;
   width: 100%;
   height: 5%;
-
-
 }
 
 .btn-group-vertical {
@@ -35,6 +33,15 @@
   border-radius: 0px;
 }
 
+.btn-xs {
+  margin-left: 0.6em;
+}
+
+.btn-default {
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
 .btn-group-vertical > .btn:not(:first-child):not(:last-child) {
   border-radius: 6px;
 }
@@ -44,4 +51,10 @@
 }
 .btn-group-vertical > .btn:last-child:not(:first-child) {
   border-radius: 6px;
+}
+
+.form-horizontal {
+  padding-top: 5em;
+  width: 50%;
+  float: left;
 }
