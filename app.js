@@ -32,11 +32,11 @@ options = {
     ca: [fs.readFileSync(path.join(__dirname, 'sslcert', 'ca.pem'))],
     rejectUnauthorized: false
 };
-
+/*
 var https = require('https'),
-    port = process.argv[2] || 8082,
+    httpsport = process.env.PORT || 8080,
     server, options;
-
+*/
 //DB conf
 mongoose.connect(config.database);
 
@@ -52,7 +52,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port2 = process.argv[3] || 8081;
+const httpport = process.env.PORT || 8081;
 
 //CORS Middleware
 app.use(cors());
@@ -85,10 +85,10 @@ app.get('*', (req, res) => {
 var httpServer = http.createServer(app);
 //var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(port2);
+httpServer.listen(httpport);
 //httpsServer.listen(8082);
-server = https.createServer(options, app).listen(port, function() {
+/*server = https.createServer(options, app).listen(port, function() {
     port = server.address().port;
     console.log('Listening on https://127.0.0.1:' + port);
     console.log('Listening on https://127.0.0.1:' + port2);
-});
+});*/

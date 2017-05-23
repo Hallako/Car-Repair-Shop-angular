@@ -23,14 +23,14 @@ export class AuthService {
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/users/register/',user,{headers:headers})
+    return this.http.post('users/register/',user,{headers:headers})
     .map(res => res.json());
   }
 
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/users/authenticate/',user,{headers:headers})
+    return this.http.post('users/authenticate/',user,{headers:headers})
     .map(res => res.json());
   }
 
@@ -39,7 +39,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get(this.nodeUrl+'/users/profile/',{headers: headers})
+    return this.http.get('users/profile/',{headers: headers})
     .map(res => res.json());
   }
 
@@ -48,7 +48,7 @@ export class AuthService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
     //console.log(user);
-    return this.http.post(this.nodeUrl+'/users/password/',user,{headers: headers})
+    return this.http.post('users/password/',user,{headers: headers})
     .map(res => res.json());
   }
 
@@ -87,14 +87,14 @@ export class AuthService {
   addEvent(event){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/events/addevent/',event,{headers:headers})
+    return this.http.post('events/addevent/',event,{headers:headers})
     .map(res => res.json());
   }
 
   delEvent(id){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.delete(this.nodeUrl+'/events/deleteevent/'+id,{headers: headers})
+    return this.http.delete('events/deleteevent/'+id,{headers: headers})
     .map(res => res.json());
   }
 
@@ -103,7 +103,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get(this.nodeUrl+'/events/getevents/'
+    return this.http.get('events/getevents/'
     +start+"/"+end+"/"+user+"/"+admin+"/",{headers: headers})
     .map(res => res.json());}
 }
