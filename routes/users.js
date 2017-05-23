@@ -66,12 +66,28 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
+
 //Change password
 router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
         if (err) throw err;
     });
     res.json('Salasana vaihdettu.');
+});
+
+router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    User.find({}, (err, user) => {
+        if (err) throw err;
+
+        return res.json(user);
+    });
+});
+
+router.put('/update', (req, res) => {
+
+    User.findByIdAndUpdate(req.body._id, req.body, callback => {
+        res.send('Toimiiko?');
+    });
 });
 
 module.exports = router;
