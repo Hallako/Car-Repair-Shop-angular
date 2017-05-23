@@ -52,7 +52,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port2 = 8083;
+const port2 = process.env.PORT || 8083;
 
 //CORS Middleware
 app.use(cors());
@@ -90,4 +90,5 @@ httpServer.listen(port2);
 server = https.createServer(options, app).listen(port, function() {
     port = server.address().port;
     console.log('Listening on https://127.0.0.1:' + port);
+    console.log('Listening on https://127.0.0.1:' + port2);
 });
