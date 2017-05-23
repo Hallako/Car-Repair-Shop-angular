@@ -100,6 +100,14 @@ export class AuthService {
 
 
 
+  update(user: User): Observable<User>{
+    let headers = new Headers();
+    headers.append('Content-type','application/json');
+    return this.http.put(this.nodeUrl+'/users/update', user, {headers: headers})
+    .map((res:Response )=> res.json()).catch(this.handleError);
+    }
+
+
   //###### Event functions ##########
   addEvent(event){
     let headers = new Headers();
