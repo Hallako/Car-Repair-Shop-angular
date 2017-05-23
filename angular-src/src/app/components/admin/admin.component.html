@@ -25,5 +25,30 @@
   </div>
 
 </div>
-<button class="btn btn-primary btn-xs">Muokkaa</button><button class="btn btn-primary btn-xs">Varaukset</button>
+<button class="btn btn-primary btn-xs" (click)="editSelected(user)" >Muokkaa</button><button class="btn btn-primary btn-xs">Varaukset</button>
 </div>
+
+<form *ngIf="editUser" method="put" class="form-horizontal">
+  <fieldset>
+      <legend>{{editUser.username}}</legend>
+      <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+        <div class="col-lg-10">
+          <input type="email" class="form-control" id="inputEmail"name="email" placeholder="{{editUser.email}}" text=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputUsername" class="col-lg-2 control-label">Käyttäjänimi</label>
+        <div class="col-lg-10">
+          <input type="text" class="form-control" name="username" id="inputUsername" placeholder="{{editUser.username}}" />
+        </div>
+      </div>
+
+      <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
