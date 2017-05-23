@@ -47,13 +47,6 @@ export class AuthService {
     .map(res => res.json());
   }
 
-
-  private handleError(error: any): Promise<any> {
-  console.error('An error occured', error);
-  return Promise.reject(error.message || error);
-}
-
-
   changePassword(user) {
     let headers = new Headers();
     headers.append('Authorization', this.authToken);
@@ -63,6 +56,11 @@ export class AuthService {
     .map(res => res.json());
   }
 
+
+  private handleError(error: any): Promise<any> {
+  console.error('An error occured', error);
+  return Promise.reject(error.message || error);
+}
 
   //###### Storage functions ##########
   getUser(){
