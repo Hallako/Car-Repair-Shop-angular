@@ -143,29 +143,29 @@ export class DashboardComponent implements OnInit {
             },
 
             events: function(start, end, timezone, callback) {
-                
+
               end = moment(end).format('YYYY-MM-DD[T]HH:mm');
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-                
+
                 $.ajax({
                     url: 'https://localhost:8082/events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
-                        callback(response)
+                        callback(response);
                         console.log(response);
                     }
                 });
             },
             businessHours: {
               dow: [1, 2, 3, 4, 5],
-              start: '7:00',  
+              start: '7:00',
               end: '18:00',
             },
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(1,'days'),
+                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -184,6 +184,7 @@ export class DashboardComponent implements OnInit {
             selectHelper: true,
             unselectAuto: true,
             unselectCancel: ".eventinfo",
+            nowIndicator: true,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
@@ -192,7 +193,7 @@ export class DashboardComponent implements OnInit {
 
 
         this.calElement.fullCalendar(options);
-    
+
   }
 
   //event delete
