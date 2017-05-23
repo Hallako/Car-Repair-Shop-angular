@@ -52,7 +52,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port2 = 3005;
+const port2 = 8083;
 
 //CORS Middleware
 app.use(cors());
