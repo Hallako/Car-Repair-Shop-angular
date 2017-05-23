@@ -2,7 +2,7 @@
 
 This project aim is to create a web application where users can reserve times from calendar.
 
-node 7.10
+node 7.10.0     
 Angular@cli 1.0.2
 
 Installation:
