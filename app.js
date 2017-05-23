@@ -7,17 +7,35 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
-var http = require('http');
-var https = require('https');
 var fs = require('fs');
+var http = require('http');
+
+
+/*
+require('ssl-root-cas')
+    .inject()
+    .addFile(path.join(__dirname, 'sslcert', 'ca.pem'));
 
 var privateKey = fs.readFileSync('./sslcert/private.key', 'utf8');
 var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
+
 var credentials = {
     key: privateKey,
     cert: certificate,
     passphrase: "xrikal"
 };
+*/
+
+options = {
+    key: fs.readFileSync(path.join(__dirname, 'sslcert', 'server.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'sslcert', 'server.crt')),
+    ca: [fs.readFileSync(path.join(__dirname, 'sslcert', 'ca.pem'))],
+    rejectUnauthorized: false
+};
+
+var https = require('https'),
+    port = process.argv[2] || 8082,
+    server, options;
 
 //DB conf
 mongoose.connect(config.database);
@@ -34,7 +52,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port = process.env.PORT || 3000;
+const port2 = process.env.PORT || 3000;
 
 //CORS Middleware
 app.use(cors());
@@ -65,7 +83,12 @@ app.get('*', (req, res) => {
 });
 
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+//var httpsServer = https.createServer(credentials, app);
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-httpServer.listen(port);
-httpsServer.listen(8082);
+httpServer.listen(port2);
+//httpsServer.listen(8082);
+server = https.createServer(options, app).listen(port, function() {
+    port = server.address().port;
+    console.log('Listening on https://127.0.0.1:' + port);
+});

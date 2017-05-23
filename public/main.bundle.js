@@ -27,7 +27,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AuthService = (function () {
     function AuthService(http) {
         this.http = http;
-        this.nodeUrl = 'https://localhost:8082';
+        this.nodeUrl = 'http://localhost:3000';
         if (this.user == null) {
             this.user = JSON.parse(localStorage.getItem('user'));
         }
@@ -408,7 +408,7 @@ var DashboardComponent = (function () {
                 end = __WEBPACK_IMPORTED_MODULE_5_moment__(end).format('YYYY-MM-DD[T]HH:mm');
                 start = __WEBPACK_IMPORTED_MODULE_5_moment__(start).format('YYYY-MM-DD[T]HH:mm');
                 __WEBPACK_IMPORTED_MODULE_8_jquery__["ajax"]({
-                    url: 'https://localhost:8082/events/getevents/'
+                    url: 'http://localhost:3000/events/getevents/'
                         + start + "/" + end + "/" + userId + "/" + curuser.admin,
                     dataType: 'json',
                     success: function (response) {
