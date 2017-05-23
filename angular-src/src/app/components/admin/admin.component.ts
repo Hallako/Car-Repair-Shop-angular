@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
+import { Http } from '@angular/http'
 import { User } from './user'
 
 @Component({
@@ -21,9 +22,11 @@ editUser: User
 
   onSelect(user: User) {
     this.selectedUser = user
+    this.editUser = null
   }
 
   editSelected(user: User) {
     this.editUser = this.selectedUser
   }
+
 }
