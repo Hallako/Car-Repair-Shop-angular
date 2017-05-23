@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 
+
 //Register
 router.post('/register', (req, res, next) => {
     let newUser = new User({
@@ -68,7 +69,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 //Change password
 router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
-      if (err) throw err;
+        if (err) throw err;
     });
     res.json('Salasana vaihdettu.');
 });
