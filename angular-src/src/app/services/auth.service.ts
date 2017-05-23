@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Injectable} from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/catch';
 import {tokenNotExpired} from 'angular2-jwt';
+import { Subject } from 'rxjs/Subject'
+import { User } from '../components/admin/user'
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class AuthService {
@@ -52,6 +56,12 @@ export class AuthService {
     .map(res => res.json());
   }
 
+  
+  private handleError(error: any): Promise<any> {
+  console.error('An error occured', error);
+  return Promise.reject(error.message || error);
+}
+
   //###### Storage functions ##########
   getUser(){
     if(this.user){
@@ -82,6 +92,30 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+  getAdmin() {
+    if(this.loggedIn())
+    return this.getUser().admin
+  }
+
+  getAllUser(): Observable<User[]> {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-type','application/json');
+    return this.http.get(this.nodeUrl+'/users/admin',{headers: headers})
+    .map((res:Response) => res.json()).catch(this.handleError);
+  }
+
+
+
+  update(user: User): Observable<User>{
+    let headers = new Headers();
+    headers.append('Content-type','application/json');
+    return this.http.put(this.nodeUrl+'/users/update', user, {headers: headers})
+    .map((res:Response )=> res.json()).catch(this.handleError);
+    }
+
 
   //###### Event functions ##########
   addEvent(event){
