@@ -10,33 +10,6 @@ const events = require('./routes/events');
 var fs = require('fs');
 var http = require('http');
 
-
-/*
-require('ssl-root-cas')
-    .inject()
-    .addFile(path.join(__dirname, 'sslcert', 'ca.pem'));
-
-var privateKey = fs.readFileSync('./sslcert/private.key', 'utf8');
-var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
-
-var credentials = {
-    key: privateKey,
-    cert: certificate,
-    passphrase: "xrikal"
-};
-*/
-
-options = {
-    key: fs.readFileSync(path.join(__dirname, 'sslcert', 'server.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'sslcert', 'server.crt')),
-    ca: [fs.readFileSync(path.join(__dirname, 'sslcert', 'ca.pem'))],
-    rejectUnauthorized: false
-};
-/*
-var https = require('https'),
-    httpsport = process.env.PORT || 8080,
-    server, options;
-*/
 //DB conf
 mongoose.connect(config.database);
 
@@ -83,12 +56,5 @@ app.get('*', (req, res) => {
 });
 
 var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(httpport);
-//httpsServer.listen(8082);
-/*server = https.createServer(options, app).listen(port, function() {
-    port = server.address().port;
-    console.log('Listening on https://127.0.0.1:' + port);
-    console.log('Listening on https://127.0.0.1:' + port2);
-});*/
