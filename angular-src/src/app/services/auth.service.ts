@@ -56,7 +56,7 @@ export class AuthService {
     .map(res => res.json());
   }
 
-  
+
   private handleError(error: any): Promise<any> {
   console.error('An error occured', error);
   return Promise.reject(error.message || error);
@@ -103,16 +103,14 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get(this.nodeUrl+'/users/admin',{headers: headers})
+    return this.http.get(this.nodeUrl+'users/admin',{headers: headers})
     .map((res:Response) => res.json()).catch(this.handleError);
   }
-
-
 
   update(user: User): Observable<User>{
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.put(this.nodeUrl+'/users/update', user, {headers: headers})
+    return this.http.put(this.nodeUrl+'users/update', user, {headers: headers})
     .map((res:Response )=> res.json()).catch(this.handleError);
     }
 
