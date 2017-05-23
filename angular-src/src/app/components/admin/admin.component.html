@@ -1,4 +1,29 @@
 
-<div class="btn-group-vertical" >
-  <a href="#" *ngFor="let user of users" class="btn btn-primary">{{user.name}}</a>
+<div class="col-md-4">
+  <div class="btn-group-vertical" >
+    <li *ngFor="let user of users" class="btn btn-primary" (click)="onSelect(user)">{{user.name}}</li>
+  </div>
+</div>
+
+
+<div class="col-md-4" *ngIf="selectedUser">
+  <div *ngIf="selectedUser" class="panel panel-success">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      {{selectedUser.name}}
+    </h3>
+    </div>
+
+  <div class="panel-body">
+    <li>
+      {{selectedUser.username}}
+    </li>
+    <li>
+      {{selectedUser.email}}
+    </li>
+
+  </div>
+
+</div>
+<button class="btn btn-primary btn-xs">Muokkaa</button><button class="btn btn-primary btn-xs">Varaukset</button>
 </div>

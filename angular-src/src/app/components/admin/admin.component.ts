@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
+import { User } from './user'
 
 @Component({
   selector: 'app-admin',
@@ -8,13 +9,17 @@ import { AuthService } from '../../services/auth.service'
 })
 export class AdminComponent implements OnInit {
 
-users:Object;
+users: User[]
+selectedUser: User
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.getAllUser().subscribe(users => {
-      this.users = users
-    })
+    this.authService.getAllUser().subscribe(users =>
+      this.users = users)
+  }
+
+  onSelect(user: User) {
+    this.selectedUser = user
   }
 
 
