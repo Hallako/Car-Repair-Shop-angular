@@ -73,4 +73,13 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req,res,
   })
 })
 
+router.put('/update', (req, res) => {
+
+  User.findByIdAndUpdate(req.body._id, req.body, callback => {
+    res.send('Toimiiko?')
+  })
+  })
+
+
+
 module.exports = router;

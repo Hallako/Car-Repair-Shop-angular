@@ -28,5 +28,8 @@ editUser: User
   editSelected(user: User) {
     this.editUser = this.selectedUser
   }
-
+  updateUser(): void {
+    this.authService.update(this.selectedUser).subscribe();
+    location.reload()
+  }
 }
