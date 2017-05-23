@@ -23,6 +23,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { User } from './components/admin/user'
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
@@ -44,7 +45,7 @@ const appRoutes : Routes = [
     ProfileComponent,
     CalendarComponent,
     FooterComponent,
-    AdminComponent
+    AdminComponent,
   ],
 
   imports: [

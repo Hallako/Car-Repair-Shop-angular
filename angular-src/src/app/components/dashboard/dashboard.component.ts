@@ -155,9 +155,9 @@ export class DashboardComponent implements OnInit {
                     }
                 });
             },
-            businessHours: {
+              businessHours: {
               dow: [1, 2, 3, 4, 5],
-              start: '7:00',  
+              start: '7:00',
               end: '18:00',
             },
 
