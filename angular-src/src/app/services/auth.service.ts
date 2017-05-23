@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
@@ -96,8 +96,8 @@ export class AuthService {
     headers.append('Content-type','application/json');
     return this.http.get(this.nodeUrl+'/users/admin',{headers: headers})
     .map((res:Response) => res.json()).catch(this.handleError);
-
   }
+
 
 
   //###### Event functions ##########
