@@ -11,7 +11,7 @@ export class AuthService {
     nodeUrl: String;
 
   constructor(private http  :Http) {
-    this.nodeUrl = 'http://localhost:8083';
+    this.nodeUrl = 'http://localhost:48659';
 
     if(this.user == null){
      this.user = JSON.parse(localStorage.getItem('user'));
