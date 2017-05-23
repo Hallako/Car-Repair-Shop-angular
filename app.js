@@ -52,7 +52,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port2 = process.env.PORT || 3000;
+const port2 = 3005;
 
 //CORS Middleware
 app.use(cors());
@@ -84,7 +84,6 @@ app.get('*', (req, res) => {
 
 var httpServer = http.createServer(app);
 //var httpsServer = https.createServer(credentials, app);
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 httpServer.listen(port2);
 //httpsServer.listen(8082);
