@@ -6,6 +6,7 @@ const config = require('../config/database');
 const event = require('../models/event');
 const mongoose = require('mongoose');
 
+
 //Add Post 
 router.post('/addevent', (req, res, next) => {
 

@@ -89,12 +89,10 @@ export class DashboardComponent implements OnInit {
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
+            this.calElement.fullCalendar('unselect')
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
-            this.calElement.fullCalendar('unselect');
-
-
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -148,7 +146,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'https://localhost:8082/events/getevents/'
+                    url: 'http://localhost:8081/events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
@@ -157,7 +155,7 @@ export class DashboardComponent implements OnInit {
                     }
                 });
             },
-            businessHours: {
+              businessHours: {
               dow: [1, 2, 3, 4, 5],
               start: '7:00',
               end: '18:00',

@@ -7,16 +7,8 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
-var http = require('http');
-var https = require('https');
 var fs = require('fs');
-
-var privateKey = fs.readFileSync('./sslcert/private.key', 'utf8');
-var certificate = fs.readFileSync('./sslcert/certificate.pem', 'utf8');
-var credentials = {
-    key: privateKey,
-    cert: certificate
-};
+var http = require('http');
 
 //DB conf
 mongoose.connect(config.database);
@@ -33,7 +25,7 @@ mongoose.connection.on('error', (err) => {
 const app = express();
 
 //port
-const port = process.env.PORT || 3000;
+const httpport = process.env.PORT || 8081;
 
 //CORS Middleware
 app.use(cors());
@@ -64,7 +56,5 @@ app.get('*', (req, res) => {
 });
 
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(port);
-httpsServer.listen(8082);
+httpServer.listen(httpport);
