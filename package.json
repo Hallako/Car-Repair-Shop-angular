@@ -25,7 +25,8 @@
     "jsonwebtoken": "*",
     "mongoose": "*",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "ssl-root-cas": "^1.2.3"
   },
   "engines": {
     "node": "7.10.0",

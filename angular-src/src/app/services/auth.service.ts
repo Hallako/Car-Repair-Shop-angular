@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Injectable} from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/catch';
 import {tokenNotExpired} from 'angular2-jwt';
+import { Subject } from 'rxjs/Subject'
+import { User } from '../components/admin/user'
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +15,7 @@ export class AuthService {
     nodeUrl: String;
 
   constructor(private http  :Http) {
-    this.nodeUrl = 'https://localhost:8082';
+    this.nodeUrl = 'http://localhost:8081/';
 
     if(this.user == null){
      this.user = JSON.parse(localStorage.getItem('user'));
@@ -23,14 +27,14 @@ export class AuthService {
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/users/register/',user,{headers:headers})
+    return this.http.post(this.nodeUrl+'users/register/',user,{headers:headers})
     .map(res => res.json());
   }
 
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/users/authenticate/',user,{headers:headers})
+    return this.http.post(this.nodeUrl+'users/authenticate/',user,{headers:headers})
     .map(res => res.json());
   }
 
@@ -39,7 +43,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get(this.nodeUrl+'/users/profile/',{headers: headers})
+    return this.http.get(this.nodeUrl+'users/profile/',{headers: headers})
     .map(res => res.json());
   }
 
@@ -48,9 +52,15 @@ export class AuthService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
     //console.log(user);
-    return this.http.post(this.nodeUrl+'/users/password/',user,{headers: headers})
+    return this.http.post(this.nodeUrl+'users/password/',user,{headers: headers})
     .map(res => res.json());
   }
+
+
+  private handleError(error: any): Promise<any> {
+  console.error('An error occured', error);
+  return Promise.reject(error.message || error);
+}
 
   //###### Storage functions ##########
   getUser(){
@@ -83,18 +93,40 @@ export class AuthService {
     localStorage.clear();
   }
 
+  getAdmin() {
+    if(this.loggedIn())
+    return this.getUser().admin
+  }
+
+  getAllUser(): Observable<User[]> {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-type','application/json');
+    return this.http.get(this.nodeUrl+'users/admin',{headers: headers})
+    .map((res:Response) => res.json()).catch(this.handleError);
+  }
+
+  update(user: User): Observable<User>{
+    let headers = new Headers();
+    headers.append('Content-type','application/json');
+    return this.http.put(this.nodeUrl+'users/update', user, {headers: headers})
+    .map((res:Response )=> res.json()).catch(this.handleError);
+    }
+
+
   //###### Event functions ##########
   addEvent(event){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.post(this.nodeUrl+'/events/addevent/',event,{headers:headers})
+    return this.http.post(this.nodeUrl+'events/addevent/',event,{headers:headers})
     .map(res => res.json());
   }
 
   delEvent(id){
     let headers = new Headers();
     headers.append('Content-type','application/json');
-    return this.http.delete(this.nodeUrl+'/events/deleteevent/'+id,{headers: headers})
+    return this.http.delete(this.nodeUrl+'events/deleteevent/'+id,{headers: headers})
     .map(res => res.json());
   }
 
@@ -103,7 +135,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type','application/json');
-    return this.http.get(this.nodeUrl+'/events/getevents/'
+    return this.http.get(this.nodeUrl+'events/getevents/'
     +start+"/"+end+"/"+user+"/"+admin+"/",{headers: headers})
     .map(res => res.json());}
 }
