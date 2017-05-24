@@ -38,8 +38,11 @@ export class DashboardComponent implements OnInit {
     rekno: String;
     start: Date;
     end: Date;
+    color: String;
     description: String;
-    admin: Boolean = false
+    TempEvent:any;
+
+    admin: Boolean = false;
 
     //declaring emitters
     @Input('height')
@@ -79,20 +82,22 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-        var userId = this.authService.getUser().id;
-        this.calElement = $('#myCalendar');
         var curuser = this.authService.getUser();
+        var userId = curuser.id;
         this.admin = curuser.admin;
 
-
+        this.calElement = $('#myCalendar');
+        
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
             this.calElement.fullCalendar('unselect')
+
             calEvent.backgroundColor = "#235323";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = "#3a87ad";
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -122,7 +127,7 @@ export class DashboardComponent implements OnInit {
             }
             this.id = null;
             this.description = null;
-            this.url = null;
+            this.color = null;
             this.title = null;
         };
 
@@ -188,10 +193,7 @@ export class DashboardComponent implements OnInit {
             viewRender: boundView,
             select: boundSelect,
         };
-
-
         this.calElement.fullCalendar(options);
-
   }
 
   //event delete
@@ -223,6 +225,7 @@ export class DashboardComponent implements OnInit {
         title: this.title,
         start: this.start,
         end: this.end,
+        backgroundColor: this.color,
         description: this.description,
         user: curuser['id']
       }
@@ -231,7 +234,8 @@ export class DashboardComponent implements OnInit {
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
-            location.reload();
+            this.calElement.fullCalendar( 'refetchEvents' );
+            this.calElement.fullcalendar( 'unselect' );
         } else {
 
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
@@ -240,5 +244,9 @@ export class DashboardComponent implements OnInit {
     } else {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
+  }
+
+  onColorPick(){
+      console.log(this.color);
   }
 }
