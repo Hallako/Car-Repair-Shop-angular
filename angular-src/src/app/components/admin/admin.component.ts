@@ -41,9 +41,10 @@ end: String
     location.reload()
   }
 onEvents() {
+  this.userEvents = this.selectedUser
   this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
   console.log(this.events)
-  this.userEvents = this.selectedUser
+
 }
 
 }
