@@ -180,7 +180,6 @@ export class DashboardComponent implements OnInit {
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
-            longPressDelay: 275,
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
@@ -205,6 +204,7 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
+          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
@@ -244,4 +244,7 @@ export class DashboardComponent implements OnInit {
      }
   }
 
+  onColorPick(){
+      console.log(this.color);
+  }
 }
