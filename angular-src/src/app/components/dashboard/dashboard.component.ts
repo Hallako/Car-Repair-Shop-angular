@@ -181,6 +181,7 @@ export class DashboardComponent implements OnInit {
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
+            longPressDelay: 275,
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
