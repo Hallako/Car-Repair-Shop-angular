@@ -26,7 +26,6 @@
 
 </div>
 <button class="btn btn-primary btn-xs" (click)="editSelected()" >Muokkaa</button>
-<button class="btn btn-primary btn-xs" (click)="onEvents()">Varaukset</button>
 </div>
 
 <form *ngIf="editUser" method="post" class="form-horizontal" name="edit">
@@ -60,7 +59,8 @@
   </fieldset>
 </form>
 
-<table class="table table-striped table-hover " *ngIf="userEvents">
+<div *ngIf="selectedUser">
+<table class="table table-hover " >
   <thead>
     <tr>
       <th>Toimenpide</th>
@@ -78,3 +78,4 @@
     </tr>
   </tbody>
 </table>
+</div>
