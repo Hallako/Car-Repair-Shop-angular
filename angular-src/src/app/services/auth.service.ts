@@ -107,8 +107,6 @@ export class AuthService {
     .map((res:Response) => res.json()).catch(this.handleError);
   }
 
-
-
   update(user: User): Observable<User>{
     let headers = new Headers();
     headers.append('Content-type','application/json');
