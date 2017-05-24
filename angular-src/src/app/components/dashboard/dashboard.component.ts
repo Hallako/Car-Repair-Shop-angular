@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'events/getevents/'
+                    url: 'http://localhost:8081/events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
@@ -244,4 +244,5 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
+
 }
