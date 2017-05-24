@@ -17,7 +17,6 @@ users: User[]
 events: Event[]
 selectedUser: User
 editUser: User
-userEvents: User
 start: String
 end: String
   constructor(private authService: AuthService) { }
@@ -29,8 +28,8 @@ end: String
 
   onSelect(user: User) {
     this.selectedUser = user
+    this.onEvents()
     this.editUser = null
-    this.userEvents = null
   }
 
   editSelected() {
@@ -41,10 +40,7 @@ end: String
     location.reload()
   }
 onEvents() {
-  this.userEvents = this.selectedUser
   this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
-  console.log(this.events)
-
 }
 
 }
