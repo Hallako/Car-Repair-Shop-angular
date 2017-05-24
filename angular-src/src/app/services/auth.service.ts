@@ -8,9 +8,6 @@ import { User } from '../components/admin/user'
 import {Observable} from 'rxjs/Rx';
 import { Event } from '../components/admin/event'
 
-
-
-
 @Injectable()
 export class AuthService {
 
@@ -19,7 +16,7 @@ export class AuthService {
   nodeUrl: String;
 
   constructor(private http: Http) {
-    this.nodeUrl = 'http://localhost:8081/';
+    this.nodeUrl = '';
 
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));

@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
+                    url: 'events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
@@ -206,7 +206,6 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
-          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
@@ -244,9 +243,5 @@ export class DashboardComponent implements OnInit {
     } else {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
-  }
-
-  onColorPick(){
-      console.log(this.color);
   }
 }
