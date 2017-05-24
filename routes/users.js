@@ -75,16 +75,16 @@ router.post('/password', passport.authenticate('jwt', { session: false }), (req,
     res.json('Salasana vaihdettu.');
 });
 
+//admin route
 router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     User.find({}, (err, user) => {
         if (err) throw err;
-
         return res.json(user);
     });
 });
 
+//user update (admin)
 router.put('/update', (req, res) => {
-
     User.findByIdAndUpdate(req.body._id, req.body, callback => {
         res.send('Toimiiko?');
     });
