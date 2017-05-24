@@ -37,6 +37,9 @@
   margin-left: 0.6em;
 }
 
+.btn-ok {
+  float: right;
+}
 
 .btn-default {
   border-radius: 6px;
@@ -58,4 +61,10 @@
   padding-top: 5em;
   width: 50%;
   float: left;
+}
+
+.table-hover {
+  position: relative;
+  margin-top: 5em;
+
 }

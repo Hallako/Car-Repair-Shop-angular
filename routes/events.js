@@ -43,11 +43,8 @@ router.delete('/deleteevent/:id', (req, res) => {
 
 //get posts
 router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
-  console.log(req.params.user)
     if (req.params.admin == "true") {
-        event.find({
-        }, function(req, event) {
-          console.log(event)
+        event.find({}, function(req, event) {
             res.json(event);
         });
     } else {
@@ -63,26 +60,10 @@ router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
 });
 
 router.get('/getuserevents/:user/', (req, res, next) => {
-  event.find({user: req.params.user}, (err, event) => {
-    if(err) throw(err)
-    return res.json(event)
-  })
-  })
-
-
-
-
-/*router.get('/getevents/:user?', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-  console.log('ollaanko me täällä?')
-  var User = mongoose.mongo.ObjectID(req.params.user)
-  event.find({user: req.params.user}, (req, event) =>{
-    if(err) throw(err)
-
-    console.log(req.params.user)
-
-    return res.json(event)
-  })
-
-});*/
+    event.find({ user: req.params.user }, (err, event) => {
+        if (err) throw (err)
+        return res.json(event)
+    })
+})
 
 module.exports = router;
