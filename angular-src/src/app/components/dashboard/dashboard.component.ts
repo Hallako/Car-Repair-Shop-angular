@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
         this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
-        
+
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
@@ -156,7 +156,6 @@ export class DashboardComponent implements OnInit {
                     dataType: 'json',
                     success: function(response) {
                         callback(response)
-                        console.log(response);
                     }
                 });
             },
