@@ -136,7 +136,6 @@ export class AuthService {
 
   getEvents(start, end, user, admin) {
     let headers = new Headers();
-
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type', 'application/json');
@@ -145,11 +144,13 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  getAllEvents(user): Observable<Event[]> {
     let headers = new Headers();
-    console.log(user)
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type', 'application/json');
+    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: headers })
+    .map((res: Response) => res.json()).catch(this.handleError);
   }
 
 }
