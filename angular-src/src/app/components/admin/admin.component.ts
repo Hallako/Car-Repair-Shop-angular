@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
 import { Http } from '@angular/http'
 import { User } from './user'
+import { Event } from './event'
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-admin',
@@ -11,8 +14,12 @@ import { User } from './user'
 export class AdminComponent implements OnInit {
 
 users: User[]
+events: Event[]
 selectedUser: User
 editUser: User
+userEvents: User
+start: String
+end: String
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -23,13 +30,21 @@ editUser: User
   onSelect(user: User) {
     this.selectedUser = user
     this.editUser = null
+    this.userEvents = null
   }
 
-  editSelected(user: User) {
+  editSelected() {
     this.editUser = this.selectedUser
   }
   updateUser(): void {
     this.authService.update(this.selectedUser).subscribe();
     location.reload()
   }
+onEvents() {
+  this.userEvents = this.selectedUser
+  this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
+  console.log(this.events)
+
+}
+
 }
