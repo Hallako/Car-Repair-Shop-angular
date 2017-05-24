@@ -8,9 +8,6 @@ import { User } from '../components/admin/user'
 import {Observable} from 'rxjs/Rx';
 import { Event } from '../components/admin/event'
 
-
-
-
 @Injectable()
 export class AuthService {
 
