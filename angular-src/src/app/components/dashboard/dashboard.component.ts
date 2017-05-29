@@ -11,6 +11,8 @@ import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
 
+import { Event } from '../admin/event'
+
 export interface IEvent {
     title: string;
     description: string;
@@ -41,6 +43,8 @@ export class DashboardComponent implements OnInit {
     color: String;
     description: String;
     TempEvent:any;
+    events: Event[];
+
 
     admin: Boolean = false;
 
@@ -82,12 +86,12 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-        var curuser = this.authService.getUser();
-        var userId = curuser.id;
-        this.admin = curuser.admin;
+        this.authService.getEvents().subscribe(data => {
+          this.events = data;
+        });
 
         this.calElement = $('#myCalendar');
-        
+
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
@@ -145,21 +149,12 @@ export class DashboardComponent implements OnInit {
                 right: 'month,agendaWeek,agendaDay'
             },
 
-            events: function(start, end, timezone, callback) {
+            events: {
+              url: "http://localhost:8081/events/getevents/",
+              type: "GET",
+            }
+            ,
 
-              end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-
-                $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
-                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
-                    dataType: 'json',
-                    success: function(response) {
-                        callback(response);
-                        console.log(response);
-                    }
-                });
-            },
               businessHours: {
               dow: [1, 2, 3, 4, 5],
               start: '7:00',
@@ -217,8 +212,6 @@ export class DashboardComponent implements OnInit {
 
   //event add form
   onEventSubmit(){
-   var curuser = this.authService.getUser();
-   var user: String;
 
    const event = {
         _id: this.id,
@@ -226,16 +219,15 @@ export class DashboardComponent implements OnInit {
         start: this.start,
         end: this.end,
         backgroundColor: this.color,
-        description: this.description,
-        user: curuser['id']
+        description: this.description
       }
 
-      if(event.title && event.start && event.user){
+      if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar( 'refetchEvents' );
-            this.calElement.fullcalendar( 'unselect' );
+            this.calElement.fullCalendar( 'unselect' );
         } else {
 
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});

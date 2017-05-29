@@ -10,10 +10,6 @@ import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-boots
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
-import { RegisterComponent } from './components/register/register.component';
-import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
 
@@ -22,30 +18,19 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { User } from './components/admin/user'
 
 const appRoutes : Routes = [
-    {path:'', component: HomeComponent},
-    {path:'register', component: RegisterComponent},
-    {path:'login', component: LoginComponent},
-    {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
-    {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-    {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
+    {path:'', component: DashboardComponent},
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginComponent,
-    HomeComponent,
     DashboardComponent,
-    RegisterComponent,
-    ProfileComponent,
     CalendarComponent,
     FooterComponent,
-    AdminComponent,
   ],
 
   imports: [
