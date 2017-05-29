@@ -24,7 +24,6 @@ import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { User } from './components/admin/user';
-import { SearchComponent } from './components/search/search.component'
 import { SearchService } from './services/search.service';
 
 
