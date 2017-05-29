@@ -1,27 +1,28 @@
-<div class="jumborton text-center">
-    <h1>Mean app</h1>
-    <p class="lead">Tervetuloa autokorjaamon verkkosivulle </p>
-    <p *ngIf="!authService.loggedIn()"> voit jatkaa rekisteröitymällä tai kirjautumalla</p>
-    <div>
-        <a *ngIf="!authService.loggedIn()" class="btn btn-primary" [routerLink]="['/register']"> Register</a>
-        <a *ngIf="!authService.loggedIn()" class="btn btn-default" [routerLink]="['/login']">Login</a>
+<section class="BG">
+    <div class="jumborton text-center">
+        <h1>Korjaamo Laitila</h1>
+        <p class="lead">Tervetuloa autokorjaamo Laitilan verkkosivuille</p>
+        <p *ngIf="!authService.loggedIn()">Voit jatkaa rekisteröitymällä tai kirjautumalla</p>
+        <div>
+            <a *ngIf="!authService.loggedIn()" class="btn btn-primary" [routerLink]="['/register']"> Register</a>
+            <a *ngIf="!authService.loggedIn()" class="btn btn-default" [routerLink]="['/login']">Login</a>
+        </div>
     </div>
-</div>
+</section>
 
 <div class="row">
-
     <div class="col-md-4">
-        <h3>Express </h3>
-        <p>Kivi kova nodejs express serveri, mongoose välikätenä mongoon</p>
+        <h2>Ammattitaitoa</h2>
+        <p>Omaamme erinomaista ammattitaitoa monipuolisesti erilaisiin vaatimuksiin</p>
     </div>
 
     <div class="col-md-4">
-        <h3>Angular 2</h3>
-        <p>Angular 2 frontend</p>
+        <h2>Ajanvaraus</h2>
+        <p>Rekisteröidy sivulle ja varaa aika korjaukseen ilmaiseksi tai ota yhteyttä sähköpostilla</p>
     </div>
 
     <div class="col-md-4">
-        <h3>JWT Tokens</h3>
-        <p>JSON web tokens</p>
+        <h2>Vaihto auto</h2>
+        <p>Meiltä saat myös vaihto auton sopimalla mikäli töissä kestää pitempään</p>
     </div>
 </div>

@@ -1,0 +1,7 @@
+.BG {
+    width: 100%;
+    background: url(bgimage.png), no-repeat 0 -300px;
+    background-position: 100%, 10%;
+    background-repeat: no-repeat;
+    background-size: 400px, 200px;
+}
