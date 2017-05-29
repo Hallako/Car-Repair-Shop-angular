@@ -74,6 +74,7 @@
       <td>{{event.start}}</td>
       <td>{{event.end}}</td>
       <td>{{event.description}}</td>
+      <td><button (click)="(deleteEvent(event._id))">Delete</button></td>
     </tr>
   </tbody>
 </table>
