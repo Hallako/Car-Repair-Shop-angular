@@ -19,7 +19,7 @@
                 <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a [routerLink]="['/profile']">Käyttäjä</a> </li>
                 <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a [routerLink]="['/login']">Kirjaudu</a> </li>
                 <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a [routerLink]="['/register']">Rekisteröidy</a></li>
-                <li *ngIf="authService.loggedIn()"><a (click)="onLogoutClick();" href="#">Logout</a></li>
+                <li *ngIf="authService.loggedIn()"><a (click)="onLogoutClick();" href="#">Kirjaudu ulos</a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->

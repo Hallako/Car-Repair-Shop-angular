@@ -13,3 +13,7 @@
 .navbar-left {
     text-shadow: 1px 1px 3px #111111;
 }
+
+.navbar {
+    border-radius: 0px;
+}
