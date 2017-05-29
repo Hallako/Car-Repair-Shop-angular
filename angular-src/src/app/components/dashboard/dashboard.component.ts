@@ -154,7 +154,7 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
-                        callback(response)
+                        callback(response);
                         console.log(response);
                     }
                 });
@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(1,'days'),
+                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -187,6 +187,7 @@ export class DashboardComponent implements OnInit {
             selectHelper: true,
             unselectAuto: true,
             unselectCancel: ".eventinfo",
+            nowIndicator: true,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
