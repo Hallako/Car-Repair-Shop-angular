@@ -1,4 +1,3 @@
-
 <div class="calendar-container">
 
     <div class="calendar-div">
@@ -33,18 +32,34 @@
             </div>
 
             <div class="form-group">
+
+                <label style="width:100%">Väri</label>
+
+                <div>
+                    <select type="text" class="form-control" style="width:75%" [(ngModel)]="color" name="color">
+                    <option value="#3a87ad">Oletus</option>
+                    <option value="#cc0000">Punainen</option>
+                    <option value="#009933">Vihreä</option>
+                    <option value="#005ce6">Sininen</option>
+                    <option value="#8600b3">Violetti</option>
+                    <option value="#33cccc">Syaani</option>
+                </select>
+                    <div id="colorHelper" [style.backgroundColor]="color"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label>Lisätietoja</label>
-                <textarea class="form-control" rows="5" [(ngModel)]="description" name="description"> </textarea>
+                <textarea class="form-control" rows="2" [(ngModel)]="description" name="description"> </textarea>
             </div>
 
 
             <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Update/add">
 
-            <input type="submit" (click)="onDeleteClick()"   *ngIf="admin" class="btn btn-primary" value="Delete">
+            <input type="submit" (click)="onDeleteClick()" *ngIf="admin" class="btn btn-primary" value="Delete">
 
         </form>
 
     </div>
 
-    <div class="clearfix"></div>
 </div>

@@ -4,8 +4,10 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const event = require('../models/event');
+const mongoose = require('mongoose');
 
-//Add Post 
+
+//Add Post
 router.post('/addevent', (req, res, next) => {
 
     let newEvent = new event({
@@ -13,7 +15,7 @@ router.post('/addevent', (req, res, next) => {
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
-        carplate: req.body.carplate,
+        backgroundColor: req.body.backgroundColor,
         description: req.body.description,
         user: req.body.user
     });
@@ -27,7 +29,7 @@ router.post('/addevent', (req, res, next) => {
     });
 });
 
-//delete event 
+//delete event
 router.delete('/deleteevent/:id', (req, res) => {
     event.deleteEvent(req.params.id, (err, event) => {
         if (err) {
@@ -40,12 +42,27 @@ router.delete('/deleteevent/:id', (req, res) => {
 
 
 //get posts
-router.get('/getevents/:start/:end?/:user?', (req, res, next) => {
-    event.find({
-        start: { $gte: req.params.start, $lt: req.params.end }
-    }, function(req, event) {
-        res.json(event);
-    });
+router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
+    if (req.params.admin == "true") {
+        event.find({}, function(req, event) {
+            res.json(event);
+        });
+    } else {
+        var User = mongoose.mongo.ObjectID(req.params.user);
+        event.find({
+            start: { $gte: req.params.start, $lt: req.params.end },
+            user: User
+        }, function(req, event) {
+            res.json(event);
+        });
+    }
 });
+
+router.get('/getuserevents/:user/', (req, res, next) => {
+    event.find({ user: req.params.user }, (err, event) => {
+        if (err) throw (err)
+        return res.json(event)
+    })
+})
 
 module.exports = router;

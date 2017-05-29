@@ -55,3 +55,13 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 }
+
+module.exports.changePassword = function (id, newPassword, callback) {
+  bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newPassword, salt, (err, hash) => {
+          if (err) throw err;
+          newPassword = hash;
+          User.findByIdAndUpdate(id, { password: newPassword }, callback);
+      });
+  });
+}

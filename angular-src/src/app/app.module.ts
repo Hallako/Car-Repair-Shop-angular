@@ -20,7 +20,10 @@ import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { User } from './components/admin/user'
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
@@ -28,6 +31,7 @@ const appRoutes : Routes = [
     {path:'login', component: LoginComponent},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
+    {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
 ]
 
 @NgModule({
@@ -40,7 +44,8 @@ const appRoutes : Routes = [
     RegisterComponent,
     ProfileComponent,
     CalendarComponent,
-    FooterComponent
+    FooterComponent,
+    AdminComponent,
   ],
 
   imports: [
@@ -54,7 +59,7 @@ const appRoutes : Routes = [
     NgbDatepickerModule,
     NgbTimepickerModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard],
+  providers: [ValidateService, AuthService, AuthGuard, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
