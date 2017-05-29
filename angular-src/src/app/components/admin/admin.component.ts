@@ -4,6 +4,7 @@ import { Http } from '@angular/http'
 import { User } from './user'
 import { Event } from './event'
 import * as moment from 'moment';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 
 @Component({
@@ -18,7 +19,10 @@ events: Event[]
 selectedUser: User
 editUser: User
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private flashMessage: FlashMessagesService,
+    ) { }
 
   ngOnInit() {
     this.authService.getAllUser().subscribe(users =>
@@ -43,5 +47,17 @@ editUser: User
 onEvents() {
   this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
 }
+
+  deleteEvent(eventId) {
+    this.authService.delEvent(eventId).subscribe(data => {
+      if(data.success) {
+        this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+      } else {
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+      }
+      location.reload()
+    })
+
+  }
 
 }

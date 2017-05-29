@@ -233,7 +233,7 @@ export class DashboardComponent implements OnInit {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar( 'refetchEvents' );
-            this.calElement.fullcalendar( 'unselect' );
+            this.calElement.fullCalendar( 'unselect' );
         } else {
 
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
