@@ -1,10 +1,13 @@
 
 <div class="col-md-4">
-  <div class="btn-group-vertical" >
-    <li *ngFor="let user of users" class="btn btn-primary" (click)="onSelect(user)">{{user.name}}</li>
+  <div id="search-component">
+    <h4>User Search</h4>
+    <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)"  class="form-control"/>
+    <div *ngIf="users">
+      <option class="form-control" *ngFor="let user of users" (click)="onSelect(user)">{{ user.name }}</option>
+    </div>
   </div>
 </div>
-
 
 <div class="col-md-4" *ngIf="selectedUser">
   <div *ngIf="selectedUser" class="panel panel-success">

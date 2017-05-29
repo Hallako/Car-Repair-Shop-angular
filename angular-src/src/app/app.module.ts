@@ -23,7 +23,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { User } from './components/admin/user'
+import { User } from './components/admin/user';
+import { SearchComponent } from './components/search/search.component'
+import { SearchService } from './services/search.service';
+
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
@@ -58,8 +61,9 @@ const appRoutes : Routes = [
     BrowserAnimationsModule,
     NgbDatepickerModule,
     NgbTimepickerModule,
+
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard],
+  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
