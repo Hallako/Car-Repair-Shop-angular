@@ -5,6 +5,10 @@ import { User } from './user'
 import { Event } from './event'
 import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { SearchService } from '../../services/search.service';
+import 'rxjs/Rx'
+import { Subject }           from 'rxjs/Subject';
+
 
 
 @Component({
@@ -18,11 +22,14 @@ users: User[]
 events: Event[]
 selectedUser: User
 editUser: User
+private searchTerm$ = new Subject<string>();
 
   constructor(
     private authService: AuthService,
     private flashMessage: FlashMessagesService,
-    ) { }
+    private searchService: SearchService,
+
+    ) {this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
 
   ngOnInit() {
     this.authService.getAllUser().subscribe(users =>
