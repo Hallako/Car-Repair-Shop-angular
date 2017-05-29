@@ -19,6 +19,10 @@ const EventSchema = mongoose.Schema({
         required: true
     },
 
+    backgroundColor: {
+        type: String
+    },
+
     end: {
         type: String
     },

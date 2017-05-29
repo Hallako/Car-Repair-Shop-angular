@@ -1,31 +1,55 @@
 .footer {
     position: absolute;
     margin-bottom: 0px;
-    height: 150px;
+    height: auto;
     text-align: center;
     border: 1px groove #000000;
     background-color: #202020;
-    opacity: 0.6;
+    /*opacity: 0.6;*/
     color: #eeeeee;
     width: 100%;
-
+    box-shadow: 0px 2px 5px 0px #090909 inset;
 }
 
-.footer-container {
+.footer-padding {
     width: 100%;
 }
 
 .text-container {
-  width: 60%;
-  align: center;
-  padding-top: 10px;
+    position: relative;
+    width: 60%;
+    padding-top: 10px;
+    background-color: #202020;
+}
+
+@media all and (max-width: 1250px) {
+    .img-container {
+        position: relative;
+        text-align: center;
+    }
+}
+
+.footer-text {
+    font-size: 12px;
+}
+
+.footer-cont {
+    position: relative;
+    background-color: #202020;
+    width: 60%;
+    left: 20%;
+    right: 20%;
+    margin-top: 5px;
 }
 
 .footer-img {
-  height: 75px;
-  width: 75px;
-  align: center;
-  padding-top: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
+    position: relative;
+    float: left;
+    max-height: 75px;
+    max-width: 150px;
+    width: inherit;
+    height: inherit;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }

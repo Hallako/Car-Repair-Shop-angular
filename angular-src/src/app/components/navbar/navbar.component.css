@@ -1,0 +1,15 @@
+.navbar-shadow {
+    box-shadow: 0px 2px 5px 0px #090909;
+}
+
+.navbar-brand {
+    text-shadow: 1px 1px 3px #111111;
+}
+
+.navbar-right {
+    text-shadow: 1px 1px 3px #111111;
+}
+
+.navbar-left {
+    text-shadow: 1px 1px 3px #111111;
+}

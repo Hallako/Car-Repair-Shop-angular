@@ -1,0 +1,80 @@
+
+<div class="col-md-4">
+  <div class="btn-group-vertical" >
+    <li *ngFor="let user of users" class="btn btn-primary" (click)="onSelect(user)">{{user.name}}</li>
+  </div>
+</div>
+
+
+<div class="col-md-4" *ngIf="selectedUser">
+  <div *ngIf="selectedUser" class="panel panel-success">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      {{selectedUser.name}}
+    </h3>
+    </div>
+
+  <div class="panel-body">
+    <li>
+      {{selectedUser.username}}
+    </li>
+    <li>
+      {{selectedUser.email}}
+    </li>
+
+  </div>
+
+</div>
+<button class="btn btn-primary btn-xs" (click)="editSelected()" >Muokkaa</button>
+</div>
+
+<form *ngIf="editUser" method="post" class="form-horizontal" name="edit">
+  <fieldset>
+      <legend>{{selectedUser.name}}</legend>
+      <div class="form-group">
+        <label for="inputName" class="col-lg-2 control-label">Nimi</label>
+        <div class="col-lg-10">
+          <input type="text" [(ngModel)]="selectedUser.name" class="form-control" id="inputName" name="name" placeholder="{{selectedUser.name}}" text=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+        <div class="col-lg-10">
+          <input type="email" [(ngModel)]="selectedUser.email" class="form-control" id="inputEmail" name="email" placeholder="{{selectedUser.email}}" text=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputUsername" class="col-lg-2 control-label">Käyttäjänimi</label>
+        <div class="col-lg-10">
+          <input type="text" class="form-control" [(ngModel)]="selectedUser.username" name="username" id="inputUsername" placeholder="{{selectedUser.username}}" />
+        </div>
+      </div>
+
+      <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset"  (click)="editUser = null" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="updateUser()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<div *ngIf="selectedUser">
+<table class="table table-hover " >
+  <thead>
+    <tr>
+      <th>Toimenpide</th>
+      <th>Aloitusaika</th>
+      <th>Päättymisaika</th>
+      <th>Lisätietoja</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let event of events">
+      <td>{{event.title}}</td>
+      <td>{{event.start}}</td>
+      <td>{{event.end}}</td>
+      <td>{{event.description}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
