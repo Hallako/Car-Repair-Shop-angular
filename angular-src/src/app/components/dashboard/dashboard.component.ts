@@ -21,6 +21,7 @@ export interface IEvent {
     textColor: string;
     className: string;
     borderColor: string;
+    
 }
 
 declare var jQuery: any;
@@ -93,9 +94,10 @@ export class DashboardComponent implements OnInit {
 
             this.calElement.fullCalendar('unselect')
 
-            calEvent.backgroundColor = "#235323";
+            var tempcolor = calEvent.backgroundColor;
+            calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";
+            calEvent.backgroundColor = tempcolor;
 
             this.id = calEvent._id,
             this.description = calEvent.description;
