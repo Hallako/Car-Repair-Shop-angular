@@ -1,11 +1,11 @@
 <div class="col-md-4">
-  <div id="search-component">
-    <h4>User Search</h4>
-    <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)"  class="form-control"/>
-    <div *ngIf="users">
-      <option class="form-control" *ngFor="let user of users" (click)="onSelect(user)">{{ user.name }}</option>
+    <div id="search-component">
+        <h4>User Search</h4>
+        <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
+        <div *ngIf="users">
+            <option class="form-control" *ngFor="let user of users" (click)="onSelect(user)">{{ user.name }}</option>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="col-md-4" *ngIf="selectedUser">
@@ -62,24 +62,23 @@
 </form>
 
 <div *ngIf="selectedUser">
-<<<<<<< HEAD
-<table class="table table-hover " >
-  <thead>
-    <tr>
-      <th>Toimenpide</th>
-      <th>Aloitusaika</th>
-      <th>Päättymisaika</th>
-      <th>Lisätietoja</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let event of events">
-      <td>{{event.title}}</td>
-      <td>{{event.start}}</td>
-      <td>{{event.end}}</td>
-      <td>{{event.description}}</td>
-      <td><button (click)="(deleteEvent(event._id))">Delete</button></td>
-    </tr>
-  </tbody>
-</table>
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th>Toimenpide</th>
+                <th>Aloitusaika</th>
+                <th>Päättymisaika</th>
+                <th>Lisätietoja</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of events">
+                <td>{{event.title}}</td>
+                <td>{{event.start}}</td>
+                <td>{{event.end}}</td>
+                <td>{{event.description}}</td>
+                <td><button (click)="(deleteEvent(event._id))">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
