@@ -22,6 +22,7 @@ users: User[]
 events: Event[]
 selectedUser: User
 editUser: User
+
 private searchTerm$ = new Subject<string>();
 
   constructor(
@@ -31,6 +32,7 @@ private searchTerm$ = new Subject<string>();
 
     ) {this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
 
+
   ngOnInit() {
     this.authService.getAllUser().subscribe(users =>
       this.users = users)
@@ -38,8 +40,8 @@ private searchTerm$ = new Subject<string>();
 
   onSelect(user: User) {
     this.selectedUser = user
-    this.onEvents()
     this.editUser = null
+    this.onEvents();
   }
 
   editSelected() {
@@ -51,9 +53,11 @@ private searchTerm$ = new Subject<string>();
     location.reload()
   }
 
+
 onEvents() {
   this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
 }
+
 
   deleteEvent(eventId) {
     this.authService.delEvent(eventId).subscribe(data => {

@@ -35,7 +35,6 @@ export class DashboardComponent implements OnInit {
     //Temporary event store
     id: String;
     title: String;
-    rekno: String;
     start: Date;
     end: Date;
     color: String;
@@ -84,7 +83,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
         var curuser = this.authService.getUser();
         var userId = curuser.id;
-        this.admin = curuser.admin;
+        this.admin = curuser.admin; 
 
         this.calElement = $('#myCalendar');
 
@@ -155,7 +154,12 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
+<<<<<<< HEAD
                         callback(response)
+=======
+                        callback(response);
+                        console.log(response);
+>>>>>>> refs/remotes/Hallako/master
                     }
                 });
             },
@@ -167,7 +171,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(1,'days'),
+                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -186,15 +190,17 @@ export class DashboardComponent implements OnInit {
             selectHelper: true,
             unselectAuto: true,
             unselectCancel: ".eventinfo",
+            nowIndicator: true,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
             select: boundSelect,
         };
+        //options end
         this.calElement.fullCalendar(options);
   }
 
-  //event delete
+  //Event delete
   onDeleteClick(){
     var Id = this.id;
 
@@ -213,7 +219,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  //event add form
+  //Event adding func
   onEventSubmit(){
    var curuser = this.authService.getUser();
    var user: String;
