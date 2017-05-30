@@ -1,7 +1,6 @@
 .footer {
-    position: absolute;
-    margin-bottom: 0px;
-    max-height: 8em;
+    position: relative;
+    bottom: 0px;
     height: auto;
     text-align: center;
     /*max-height: 10em;*/
