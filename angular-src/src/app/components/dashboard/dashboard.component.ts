@@ -21,6 +21,7 @@ export interface IEvent {
     textColor: string;
     className: string;
     borderColor: string;
+
 }
 
 declare var jQuery: any;
@@ -42,6 +43,7 @@ export class DashboardComponent implements OnInit {
     TempEvent:any;
 
     admin: Boolean = false;
+    eventUsername: String;
 
     //declaring emitters
     @Input('height')
@@ -93,10 +95,12 @@ export class DashboardComponent implements OnInit {
 
             this.calElement.fullCalendar('unselect')
 
-            calEvent.backgroundColor = "#235323";
+            var tempcolor = calEvent.backgroundColor;
+            calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";
+            calEvent.backgroundColor = tempcolor;
 
+            this.updatename(calEvent);
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -168,6 +172,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
+                    start: moment(nowDate).add(12, 'hours'),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -211,14 +216,14 @@ export class DashboardComponent implements OnInit {
         }
       });
     } else {
-        this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
+        this.flashMessage.show('Valitse tapahtuma', {cssClass: 'alert-danger', timeout:3000});
     }
   }
 
   onTitleChange(){
 
     switch(this.title){
-      
+
       case 'öljynvaihto':{
         this.color = '#3a87ad';
         break;
@@ -258,7 +263,11 @@ export class DashboardComponent implements OnInit {
         user: curuser['id']
       }
 
-      if(event.title && event.start && event.user){
+      if(this.admin){
+        event.user = null;
+      }
+
+      if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
@@ -273,5 +282,9 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
-
+  updatename(event){
+    this.authService.getUserById(event).subscribe(user => {
+      this.eventUsername = user.username;
+    });
+  }
 }

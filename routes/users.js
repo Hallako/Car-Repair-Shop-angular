@@ -78,6 +78,13 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
+//User get
+router.post('/getuserbyid', (req, res) => {
+    User.getUserById(req.body.user, (err, response) => {
+        res.json(response);
+    });
+});
+
 
 //Change password
 router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
@@ -96,12 +103,12 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res
 });
 
 //search router
-router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res , next) => {
-  User.find({name: new RegExp(req.params.term, "i")} , function(err, user) {
-    if (err) throw err
-    return res.json(user)
-  })
-})
+router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    User.find({ name: new RegExp(req.params.term, "i") }, function(err, user) {
+        if (err) throw err
+        return res.json(user)
+    });
+});
 
 //user update (admin)
 router.put('/update', (req, res) => {
