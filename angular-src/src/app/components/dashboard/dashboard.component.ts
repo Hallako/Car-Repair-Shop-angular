@@ -168,7 +168,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(),
+                    start: moment(nowDate).add(12, 'hours'),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
