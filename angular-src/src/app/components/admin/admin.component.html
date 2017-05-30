@@ -1,6 +1,6 @@
 <div class="col-md-4">
-    <div class="search-box" id="search-component">
-        <h4>User Search</h4>
+    <div id="search-component">
+        <h4>Hae käyttäjiä</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
             <option class="form-control" *ngFor="let user of users" (click)="onSelect(user); users=null">{{ user.name }}</option>
@@ -33,15 +33,22 @@
                         <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="inputAdmin" class="col-lg-2 control-label">Admin:</label>
+                    <div class="col-lg-10">
+                        <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}" class="form-control" />
+                    </div>
+                </div>
             </div>
         </div>
-        <button type="reset" (click)="selectedUser = null" class="btn btn-default btn-xs">Cancel</button>
-        <button type="submit" class="btn btn-primary btn-xs" (click)="updateUser()">Edit</button>
+        <button type="reset" (click)="selectedUser = null" class="btn btn-default btn-xs">Peruuta</button>
+        <button type="submit" class="btn btn-primary btn-xs" (click)="updateUser()">Tallenna</button>
     </form>
 
 </div>
 
 <div *ngIf="selectedUser">
+
     <table class="table table-hover ">
         <thead>
             <tr>
@@ -49,6 +56,7 @@
                 <th>Aloitusaika</th>
                 <th>Päättymisaika</th>
                 <th>Lisätietoja</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +65,7 @@
                 <td>{{event.start}}</td>
                 <td>{{event.end}}</td>
                 <td>{{event.description}}</td>
-                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Delete</button></td>
+                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
             </tr>
         </tbody>
     </table>
