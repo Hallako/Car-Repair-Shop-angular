@@ -154,8 +154,9 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
-                        callback(response);
-                        console.log(response);
+
+                        callback(response)
+
                     }
                 });
             },
@@ -179,7 +180,6 @@ export class DashboardComponent implements OnInit {
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
-            longPressDelay: 275,
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
@@ -206,6 +206,7 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
+          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
@@ -213,6 +214,34 @@ export class DashboardComponent implements OnInit {
         this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
     }
   }
+
+  onTitleChange(){
+
+    switch(this.title){
+      
+      case 'öljynvaihto':{
+        this.color = '#3a87ad';
+        break;
+      }
+      case 'renkaidenvaihto':{
+        this.color = '#009933';
+        break;
+      }
+      case 'huolto':{
+        this.color = '#cc0000';
+        break;
+      }
+      case 'korjaus':{
+        this.color = '#999922';
+        break;
+      }
+      case 'muu':{
+      this.color = '#333333';
+        break;
+      }
+  }
+}
+
 
   //Event adding func
   onEventSubmit(){
