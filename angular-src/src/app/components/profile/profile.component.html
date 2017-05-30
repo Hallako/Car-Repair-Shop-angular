@@ -1,6 +1,6 @@
 <div class="profile-container">
 
-  <div *ngIf='user' class="user-class">
+  <div *ngIf='user' class="profile-block user-block">
       <h2 class="page-header">{{user.name}}</h2>
       <ul class="list-group">
           <li class="list-group-item">Username: {{user.username}}</li>
@@ -9,7 +9,7 @@
       </ul>
   </div>
 
-  <div class="changePw-class">
+  <div class="profile-block changePw-block">
     <form (submit)="onPasswordChange()" class="login-form">
         <h2 class="page-header">Vaihda salasana</h2>
 
@@ -45,8 +45,5 @@
       </tbody>
     </table>
   </div>
-
-
-  <div class="clearfix"></div>
 
 </div>
