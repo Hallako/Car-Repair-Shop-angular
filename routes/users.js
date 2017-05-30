@@ -97,7 +97,7 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res
 
 //search router
 router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res , next) => {
-  User.find({name: req.params.term} , function(err, user) {
+  User.find({name: new RegExp(req.params.term, "i")} , function(err, user) {
     if (err) throw err
     return res.json(user)
   })
