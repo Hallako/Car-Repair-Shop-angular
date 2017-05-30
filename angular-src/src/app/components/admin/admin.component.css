@@ -40,6 +40,7 @@
 .btn-xs {
   margin-left: 0.6em;
   min-width: 4.5em;
+  float: right;
 }
 
 .btn-ok {
