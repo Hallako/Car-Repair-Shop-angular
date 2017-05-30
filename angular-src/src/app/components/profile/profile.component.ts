@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
-
 import { Event } from '../admin/event'
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +35,11 @@ export class ProfileComponent implements OnInit {
 
     this.authService.getAllEvents(this.authService.getUser().id).subscribe(events => {
       this.events = events;
+      this.events.forEach(event => {
+        event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
+        event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+      });
+
       //console.log(this.events);
   })
 }

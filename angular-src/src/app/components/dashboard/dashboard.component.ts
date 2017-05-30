@@ -21,6 +21,7 @@ export interface IEvent {
     textColor: string;
     className: string;
     borderColor: string;
+    
 }
 
 declare var jQuery: any;
@@ -93,9 +94,10 @@ export class DashboardComponent implements OnInit {
 
             this.calElement.fullCalendar('unselect')
 
-            calEvent.backgroundColor = "#235323";
+            var tempcolor = calEvent.backgroundColor;
+            calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";
+            calEvent.backgroundColor = tempcolor;
 
             this.id = calEvent._id,
             this.description = calEvent.description;
@@ -216,6 +218,34 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onTitleChange(){
+
+    switch(this.title){
+      
+      case 'öljynvaihto':{
+        this.color = '#3a87ad';
+        break;
+      }
+      case 'renkaidenvaihto':{
+        this.color = '#009933';
+        break;
+      }
+      case 'huolto':{
+        this.color = '#cc0000';
+        break;
+      }
+      case 'korjaus':{
+        this.color = '#999922';
+        break;
+      }
+      case 'muu':{
+      this.color = '#333333';
+        break;
+      }
+  }
+}
+
+
   //Event adding func
   onEventSubmit(){
    var curuser = this.authService.getUser();
@@ -247,7 +277,4 @@ export class DashboardComponent implements OnInit {
      }
   }
 
-  onColorPick(){
-      console.log(this.color);
-  }
 }
