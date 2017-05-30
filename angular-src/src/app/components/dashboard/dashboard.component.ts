@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
         var curuser = this.authService.getUser();
         var userId = curuser.id;
-        this.admin = curuser.admin; 
+        this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
 
@@ -167,7 +167,6 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
