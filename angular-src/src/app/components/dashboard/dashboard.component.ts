@@ -83,10 +83,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
         var curuser = this.authService.getUser();
         var userId = curuser.id;
-        this.admin = curuser.admin; 
+        this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
-        
+
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
@@ -154,8 +154,9 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
-                        callback(response);
-                        console.log(response);
+
+                        callback(response)
+
                     }
                 });
             },
@@ -180,7 +181,6 @@ export class DashboardComponent implements OnInit {
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
-            longPressDelay: 275,
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
@@ -207,6 +207,7 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
+          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
@@ -273,4 +274,5 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
+
 }

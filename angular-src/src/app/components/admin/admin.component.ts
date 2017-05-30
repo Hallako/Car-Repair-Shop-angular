@@ -4,6 +4,11 @@ import { Http } from '@angular/http'
 import { User } from './user'
 import { Event } from './event'
 import * as moment from 'moment';
+import { FlashMessagesService } from 'angular2-flash-messages';
+import { SearchService } from '../../services/search.service';
+import 'rxjs/Rx'
+import { Subject }           from 'rxjs/Subject';
+
 
 
 @Component({
@@ -17,9 +22,16 @@ users: User[]
 events: Event[]
 selectedUser: User
 editUser: User
-userEvents: User
 
-  constructor(private authService: AuthService) { }
+private searchTerm$ = new Subject<string>();
+
+  constructor(
+    private authService: AuthService,
+    private flashMessage: FlashMessagesService,
+    private searchService: SearchService,
+
+    ) {this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
+
 
   ngOnInit() {
     this.authService.getAllUser().subscribe(users =>
@@ -35,13 +47,28 @@ userEvents: User
   editSelected() {
     this.editUser = this.selectedUser
   }
+
   updateUser(): void {
     this.authService.update(this.selectedUser).subscribe();
     location.reload()
   }
 
-  onEvents() {
-    this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {this.events = events})
+
+onEvents() {
+  this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
+}
+
+
+  deleteEvent(eventId) {
+    this.authService.delEvent(eventId).subscribe(data => {
+      if(data.success) {
+        this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+      } else {
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+      }
+      location.reload()
+    })
+
   }
 
 }
