@@ -261,7 +261,11 @@ export class DashboardComponent implements OnInit {
         user: curuser['id']
       }
 
-      if(event.title && event.start && event.user){
+      if(this.admin){
+        event.user = null;
+      }
+
+      if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
