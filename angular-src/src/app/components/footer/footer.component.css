@@ -26,6 +26,8 @@
     .img-container {
         position: relative;
         text-align: center;
+        height: auto;
+        width: auto;
     }
 }
 
