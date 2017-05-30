@@ -16,7 +16,7 @@ export class SearchService {
               private authService: AuthService
   ) {}
   search(term: Observable<string>){
-    return term.debounceTime(300).distinctUntilChanged().switchMap(term => this.searchEntries(term))
+    return term.debounceTime(300).distinctUntilChanged().switchMap(term => term ? this.searchEntries(term): Observable.of<User[]>([]))
   }
 
   searchEntries(term) {
