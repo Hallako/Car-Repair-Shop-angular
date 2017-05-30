@@ -53,7 +53,6 @@ router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
             start: { $gte: req.params.start, $lt: req.params.end },
             user: User
         }, function(req, event) {
-
             res.json(event);
         });
     }

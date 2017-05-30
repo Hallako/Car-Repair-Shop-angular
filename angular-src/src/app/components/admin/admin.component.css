@@ -1,3 +1,7 @@
+.form-control {
+  width: 50%;
+}
+
 .col-md-4{
   width: 50%;
 }
@@ -66,5 +70,4 @@
 .table-hover {
   position: relative;
   margin-top: 5em;
-
 }
