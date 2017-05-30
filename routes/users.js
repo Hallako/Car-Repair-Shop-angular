@@ -25,6 +25,18 @@ router.post('/register', (req, res, next) => {
     });
 });
 
+//Checks if username exists
+router.post('/checkname', (req, res) => {
+    User.checkUsername(req.body.username, (err, user) => {
+        if (user == 0) {
+            res.json({ exists: false });
+
+        } else {
+            res.json({ exists: true });
+        }
+    });
+});
+
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username;
