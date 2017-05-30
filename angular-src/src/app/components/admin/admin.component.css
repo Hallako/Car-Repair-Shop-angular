@@ -39,6 +39,7 @@
 
 .btn-xs {
   margin-left: 0.6em;
+  min-width: 4.5em;
 }
 
 .btn-ok {
@@ -62,8 +63,8 @@
 }
 
 .form-horizontal {
-  padding-top: 5em;
-  width: 50%;
+  padding-top: 0em;
+  width: 100%;
   float: left;
 }
 
