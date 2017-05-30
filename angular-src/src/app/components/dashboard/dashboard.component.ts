@@ -21,7 +21,7 @@ export interface IEvent {
     textColor: string;
     className: string;
     borderColor: string;
-    
+
 }
 
 declare var jQuery: any;
@@ -214,14 +214,14 @@ export class DashboardComponent implements OnInit {
         }
       });
     } else {
-        this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
+        this.flashMessage.show('Valitse tapahtuma', {cssClass: 'alert-danger', timeout:3000});
     }
   }
 
   onTitleChange(){
 
     switch(this.title){
-      
+
       case 'öljynvaihto':{
         this.color = '#3a87ad';
         break;

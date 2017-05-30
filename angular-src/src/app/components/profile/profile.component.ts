@@ -12,12 +12,12 @@ import * as moment from 'moment';
 })
 export class ProfileComponent implements OnInit {
 
-  user:Object;
+  user: Object;
 
-  newPassword:String;
-  newPassword2:String;
+  newPassword: String;
+  newPassword2: String;
 
-  events:Event[];
+  events: Event[];
 
   constructor(
     private authService: AuthService,
@@ -28,10 +28,10 @@ export class ProfileComponent implements OnInit {
     this.authService.getProfile().subscribe(profile => {
       this.user = profile.user;
     },
-    err => {
-      console.log('error');
-      return false;
-    });
+      err => {
+        console.log('error');
+        return false;
+      });
 
     this.authService.getAllEvents(this.authService.getUser().id).subscribe(events => {
       this.events = events;
@@ -41,10 +41,10 @@ export class ProfileComponent implements OnInit {
       });
 
       //console.log(this.events);
-  })
-}
+    })
+  }
 
-  onPasswordChange(){
+  onPasswordChange() {
     this.newPassword;
     this.newPassword2;
 
@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
     if (this.authService.loggedIn()) {
       if (this.newPassword == this.newPassword2) {
         this.authService.changePassword(user).subscribe(res => {
-          this.flashmessage.show(res, {cssClass: 'alert-success', timeout:3000});;
+          this.flashmessage.show(res, { cssClass: 'alert-success', timeout: 3000 });;
           location.reload();
         });
       } else {
@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
           cssClass: 'alert-danger',
           timeout: 3000
         });
-        }
+      }
     }
   }
 }
