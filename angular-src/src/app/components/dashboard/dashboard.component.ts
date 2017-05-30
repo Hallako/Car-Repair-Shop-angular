@@ -215,6 +215,34 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onTitleChange(){
+
+    switch(this.title){
+      
+      case 'öljynvaihto':{
+        this.color = '#3a87ad';
+        break;
+      }
+      case 'renkaidenvaihto':{
+        this.color = '#009933';
+        break;
+      }
+      case 'huolto':{
+        this.color = '#cc0000';
+        break;
+      }
+      case 'korjaus':{
+        this.color = '#999922';
+        break;
+      }
+      case 'muu':{
+      this.color = '#333333';
+        break;
+      }
+  }
+}
+
+
   //Event adding func
   onEventSubmit(){
    var curuser = this.authService.getUser();
@@ -245,5 +273,4 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
-
 }
