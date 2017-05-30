@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
         var curuser = this.authService.getUser();
         var userId = curuser.id;
-        this.admin = curuser.admin; 
+        this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
 
@@ -154,12 +154,9 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
-<<<<<<< HEAD
+
                         callback(response)
-=======
-                        callback(response);
-                        console.log(response);
->>>>>>> refs/remotes/Hallako/master
+
                     }
                 });
             },
