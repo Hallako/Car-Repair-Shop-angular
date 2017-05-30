@@ -12,12 +12,12 @@
 
             <div class="form-group">
                 <label>Toimenpide</label>
-                <select type="text" class="form-control" [(ngModel)]="title" name="title" required>
-                    <option value="öljynvaihto">Öljynvaihto</option>
-                    <option value="renkaidenvaihto">Renkaidenvaihto</option>
-                    <option value="huolto">Huolto</option>
-                    <option value="korjaus">Korjaus</option>
-                    <option value="muu">Muu</option>
+                <select type="text" class="form-control" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
+                    <option value="öljynvaihto" style="background-color: #3a87ad; color:#ffffff">Öljynvaihto</option>
+                    <option value="renkaidenvaihto" style="background-color: #009933; color:#ffffff">Renkaidenvaihto</option>
+                    <option value="huolto" style="background-color: #cc0000; color:#ffffff">Huolto</option>
+                    <option value="korjaus" style="background-color: #999922; color:#ffffff">Korjaus</option>
+                    <option value="muu" style="background-color: #333333; color:#ffffff">Muu</option>
                 </select>
             </div>
 
@@ -31,7 +31,7 @@
                 <input type="datetime-local" disabled class="form-control" [(ngModel)]="end" name="end">
             </div>
 
-            <div class="form-group">
+            <!--div class="form-group">
 
                 <label style="width:100%">Väri</label>
 
@@ -46,7 +46,7 @@
                 </select>
                     <div id="colorHelper" [style.backgroundColor]="color"></div>
                 </div>
-            </div>
+            </div-->
 
             <div class="form-group">
                 <label>Lisätietoja</label>
