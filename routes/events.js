@@ -51,7 +51,7 @@ router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
         var User = mongoose.mongo.ObjectID(req.params.user);
         event.find({
             start: { $gte: req.params.start, $lt: req.params.end },
-            user: User
+            user: { $in: [User, null] }
         }, function(req, event) {
             res.json(event);
         });
