@@ -2,6 +2,11 @@
     width: 50%;
 }
 
+.search-box {
+  position: absolute;
+  width: 100%;
+  z-index: 99999;
+}
 .col-md-4 {
     width: 50%;
     margin-top: 2em;
