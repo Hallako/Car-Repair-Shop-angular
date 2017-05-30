@@ -9,6 +9,12 @@
 
         <form class="login-form">
 
+            <div *ngIf="admin" class="form-group">
+                <label>Asiakas</label>
+                <p>{{eventUsername}}</p>
+            </div>
+
+
             <div class="form-group">
                 <label>Toimenpide</label>
                 <select type="text" class="form-control" [disabled]="!admin" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
@@ -23,7 +29,6 @@
             <div class="form-group">
                 <label>Aloitusaika</label>
                 <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="start" name="start">
-
             </div>
 
             <div class="form-group">
