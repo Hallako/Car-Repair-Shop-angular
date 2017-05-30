@@ -10,6 +10,10 @@
     box-shadow: 1px 1.5px 1px #777777;
 }
 
+.calendar-container {
+  position: relative;
+}
+
 .calendar-div {
     padding-top: 28px;
     width: 65%;
