@@ -4,7 +4,10 @@
     max-height: 8em;
     height: auto;
     text-align: center;
+    /*max-height: 10em;*/
     border: 1px groove #000000;
+    border-radius: 0px;
+    margin: 0;
     background-color: #202020;
     /*opacity: 0.6;*/
     color: #eeeeee;
@@ -23,35 +26,40 @@
     background-color: #202020;
 }
 
-@media all and (max-width: 1250px) {
-    .img-container {
-        position: relative;
-        text-align: center;
-        height: auto;
-        width: auto;
-    }
+.img-container {
+    width: auto;
+    height: inherit;
+    position: relative;
+    text-align: center;
 }
 
 .footer-text {
     font-size: 12px;
 }
 
+.footer-item {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: inline-block;
+}
+
 .footer-cont {
+    width: 60%;
+    height: inherit;
     position: relative;
     background-color: #202020;
-    width: 60%;
+    /*width: 60%;*/
     left: 20%;
     right: 20%;
     margin-top: 5px;
+    overflow: hidden;
 }
 
 .footer-img {
     position: relative;
-    float: left;
-    max-height: 75px;
-    max-width: 150px;
-    width: inherit;
-    height: inherit;
+    max-width: 100%;
+    width: 80px;
+    height: auto;
     padding-top: 10px;
     padding-left: 5px;
     padding-right: 5px;

@@ -66,6 +66,14 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Gets user information
+  getUserById(event) {
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(this.nodeUrl + 'users/getuserbyid/', event, { headers: headers })
+      .map(res => res.json());
+  }
+
   //Password change id and new password is passed on "user" object
   changePassword(user) {
     let headers = new Headers();
