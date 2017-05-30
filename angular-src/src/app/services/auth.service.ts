@@ -21,10 +21,18 @@ export class AuthService {
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));
     }
+
     this.loadToken();
   }
 
-  //###### User functions ##########
+  //error handler
+  private handleError(error: any): Promise<any> {
+    console.error('An error occured', error);
+    return Promise.reject(error.message || error);
+  }
+
+  //###### User functions #######
+
   registerUser(user) {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
@@ -32,6 +40,15 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Checks if given username is unique
+  checkUsername(user){
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(this.nodeUrl + 'users/checkname/', user, { headers: headers })
+      .map(res => res.json());
+  }
+
+  //Compares given data if user login is valid
   authenticateUser(user) {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
@@ -39,6 +56,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Gets user information
   getProfile() {
     let headers = new Headers();
     this.loadToken();
@@ -48,6 +66,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Password change id and new password is passed on "user" object
   changePassword(user) {
     let headers = new Headers();
     headers.append('Authorization', this.authToken);
@@ -55,12 +74,6 @@ export class AuthService {
     //console.log(user);
     return this.http.post(this.nodeUrl + 'users/password/', user, { headers: headers })
       .map(res => res.json());
-  }
-
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occured', error);
-    return Promise.reject(error.message || error);
   }
 
   //###### Storage functions ##########
@@ -72,6 +85,7 @@ export class AuthService {
     }
   }
 
+  //Stores token and user info to localstorage
   storeUserData(token, user) {
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -84,6 +98,7 @@ export class AuthService {
     this.authToken = token;
   }
 
+  //checks token to see if loggedin
   loggedIn() {
     return tokenNotExpired('id_token');
   }
@@ -94,11 +109,13 @@ export class AuthService {
     localStorage.clear();
   }
 
+  //Returns boolean based on if user is admin
   getAdmin() {
     if (this.loggedIn())
       return this.getUser().admin
   }
 
+  //Returns all users
   getAllUser(): Observable<User[]> {
     let headers = new Headers();
     this.loadToken();
@@ -108,6 +125,7 @@ export class AuthService {
       .map(res => res.json().data as User[]).catch(this.handleError);
   }
 
+  //pushes user object to DB must contain existing user.id 
   update(user: User): Observable<User> {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
@@ -131,6 +149,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Gets events in certain time range based on user, returns all users events if admin is passed and is true.
   getEvents(start, end, user, admin) {
     let headers = new Headers();
     this.loadToken();
@@ -141,6 +160,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //Gets all events based on user
   getAllEvents(user): Observable<Event[]> {
     let headers = new Headers();
     this.loadToken();
