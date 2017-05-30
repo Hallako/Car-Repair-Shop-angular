@@ -3,82 +3,61 @@
         <h4>User Search</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
-            <option class="form-control" *ngFor="let user of users" (click)="onSelect(user)">{{ user.name }}</option>
+            <option class="form-control" *ngFor="let user of users" (click)="onSelect(user); users=null">{{ user.name }}</option>
         </div>
     </div>
-</div>
 
-<div class="col-md-4" *ngIf="selectedUser">
-    <div *ngIf="selectedUser" class="panel panel-success">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                {{selectedUser.name}}
-            </h3>
-        </div>
-
-        <div class="panel-body">
-            <li>
-                {{selectedUser.username}}
-            </li>
-            <li>
-                {{selectedUser.email}}
-            </li>
-
-        </div>
+    <div class="col-md-4" *ngIf="selectedUser">
+        <form class="form-horizontal">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <legend class="panel-title">{{selectedUser.name}}</legend>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="inputName" class="col-lg-2 control-label">Nimi:</label>
+                        <div class="col-lg-10">
+                            <input type="text" [(ngModel)]="selectedUser.name" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUsername" class="col-lg-2 control-label">Käyttäjänimi:</label>
+                        <div class="col-lg-10">
+                            <input type="text" [(ngModel)]="selectedUser.username" name="username" id="inputUsername" placeholder="{{selectedUser.username}}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-lg-2 control-label">Email:</label>
+                        <div class="col-lg-10">
+                            <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="reset" (click)="selectedUser = null" class="btn btn-default btn-xs">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-xs" (click)="updateUser()">Edit</button>
+        </form>
 
     </div>
-    <button class="btn btn-primary btn-xs" (click)="editSelected()">Muokkaa</button>
-</div>
 
-<form *ngIf="editUser" method="post" class="form-horizontal" name="edit">
-    <fieldset>
-        <legend>{{selectedUser.name}}</legend>
-        <div class="form-group">
-            <label for="inputName" class="col-lg-2 control-label">Nimi</label>
-            <div class="col-lg-10">
-                <input type="text" [(ngModel)]="selectedUser.name" class="form-control" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-            <div class="col-lg-10">
-                <input type="email" [(ngModel)]="selectedUser.email" class="form-control" id="inputEmail" name="email" placeholder="{{selectedUser.email}}" text="" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputUsername" class="col-lg-2 control-label">Käyttäjänimi</label>
-            <div class="col-lg-10">
-                <input type="text" class="form-control" [(ngModel)]="selectedUser.username" name="username" id="inputUsername" placeholder="{{selectedUser.username}}" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <button type="reset" (click)="editUser = null" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="updateUser()">Submit</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
-
-<div *ngIf="selectedUser">
-    <table class="table table-hover ">
-        <thead>
-            <tr>
-                <th>Toimenpide</th>
-                <th>Aloitusaika</th>
-                <th>Päättymisaika</th>
-                <th>Lisätietoja</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let event of events">
-                <td>{{event.title}}</td>
-                <td>{{event.start}}</td>
-                <td>{{event.end}}</td>
-                <td>{{event.description}}</td>
-                <td><button (click)="(deleteEvent(event._id))">Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div *ngIf="selectedUser">
+        <table class="table table-hover ">
+            <thead>
+                <tr>
+                    <th>Toimenpide</th>
+                    <th>Aloitusaika</th>
+                    <th>Päättymisaika</th>
+                    <th>Lisätietoja</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let event of events">
+                    <td>{{event.title}}</td>
+                    <td>{{event.start}}</td>
+                    <td>{{event.end}}</td>
+                    <td>{{event.description}}</td>
+                    <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
