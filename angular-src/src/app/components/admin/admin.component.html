@@ -1,5 +1,5 @@
 <div class="col-md-4">
-    <div id="search-component">
+    <div class="search-box" id="search-component">
         <h4>User Search</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
