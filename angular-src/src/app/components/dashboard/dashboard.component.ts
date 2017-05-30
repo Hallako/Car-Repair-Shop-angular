@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit {
     TempEvent:any;
 
     admin: Boolean = false;
+    eventUsername: String;
 
     //declaring emitters
     @Input('height')
@@ -99,6 +100,7 @@ export class DashboardComponent implements OnInit {
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
 
+            this.updatename(calEvent);
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -280,5 +282,9 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
-
+  updatename(event){
+    this.authService.getUserById(event).subscribe(user => {
+      this.eventUsername = user.username;
+    });
+  }
 }
