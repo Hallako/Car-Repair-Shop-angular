@@ -2,15 +2,17 @@
   width: 50%;
 }
 
-.col-md-4{
+.col-md-4 {
   width: 50%;
+  margin-top: 2em;
 }
+
 .panel-primary {
   width: 40%;
   height: 5%;
   float: left;
-
 }
+
 .panel-success {
   float: right;
   width: 100%;
@@ -24,6 +26,7 @@
   display: block;
   width: 40%;
 }
+
 .btn {
   border-radius: 0px;
 }
@@ -32,15 +35,17 @@
   border-radius: 6px;
   margin-bottom: 10px;
 }
+
 .btn-sm {
   margin-bottom: 5px;
-  border-radius: 0px;
+  border-radius: 3px;
 }
 
 .btn-xs {
   margin-left: 0.6em;
   min-width: 4.5em;
   float: right;
+  border-radius: 3px;
 }
 
 .btn-ok {
@@ -48,18 +53,18 @@
 }
 
 .btn-default {
-  border-radius: 6px;
   margin-bottom: 10px;
 }
 
-.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
+.btn-group-vertical>.btn:not(:first-child):not(:last-child) {
   border-radius: 6px;
 }
 
-.btn-group-vertical > .btn:first-child:not(:last-child) {
+.btn-group-vertical>.btn:first-child:not(:last-child) {
   border-radius: 6px;
 }
-.btn-group-vertical > .btn:last-child:not(:first-child) {
+
+.btn-group-vertical>.btn:last-child:not(:first-child) {
   border-radius: 6px;
 }
 

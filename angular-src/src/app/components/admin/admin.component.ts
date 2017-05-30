@@ -18,19 +18,19 @@ import { Subject }           from 'rxjs/Subject';
 })
 export class AdminComponent implements OnInit {
 
-users: User[]
-events: Event[]
-selectedUser: User
-editUser: User
+  users: User[]
+  events: Event[]
+  selectedUser: User
+  editUser: User
 
-private searchTerm$ = new Subject<string>();
+  private searchTerm$ = new Subject<string>();
 
   constructor(
     private authService: AuthService,
     private flashMessage: FlashMessagesService,
     private searchService: SearchService,
 
-    ) {this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
+  ) { this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
 
 
   ngOnInit() {
@@ -54,17 +54,23 @@ private searchTerm$ = new Subject<string>();
   }
 
 
-onEvents() {
-  this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
-}
+  onEvents() {
+    this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {
+    this.events = events
+      this.events.forEach(event => {
+        event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
+        event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+      });
+    })
+  }
 
 
   deleteEvent(eventId) {
     this.authService.delEvent(eventId).subscribe(data => {
-      if(data.success) {
-        this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
+      if (data.success) {
+        this.flashMessage.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
       } else {
-        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
+        this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
       }
       location.reload()
     })
