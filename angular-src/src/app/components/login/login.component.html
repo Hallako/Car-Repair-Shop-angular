@@ -1,13 +1,13 @@
-<h2 class="page-header">Login</h2>
+<h2 class="page-header">Kirjautuminen</h2>
 <form (submit)="onLoginSubmit()" class="login-form">
     <div class="form-group">
-        <label>Username</label>
+        <label>Käyttäjänimi</label>
         <input type="text" class="form-control" [(ngModel)]="username" name="username">
     </div>
 
     <div class="from-group">
-        <label>password</label>
+        <label>Salasana</label>
         <input type="password" class="form-control" [(ngModel)]="password" name="password">
     </div>
-    <input type="submit" class="btn btn-primary" value="login">
+    <input type="submit" class="btn btn-primary" value="Kirjaudu">
 </form>

@@ -23,8 +23,8 @@ const UserSchema = mongoose.Schema({
         required: true
     },
     admin: {
-      type: Boolean,
-      required: true
+        type: Boolean,
+        required: true
     }
 });
 
@@ -55,13 +55,16 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 }
+module.exports.checkUsername = function(user, callback) {
+    User.count({ 'username': user }).count(callback);
+}
 
-module.exports.changePassword = function (id, newPassword, callback) {
-  bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newPassword, salt, (err, hash) => {
-          if (err) throw err;
-          newPassword = hash;
-          User.findByIdAndUpdate(id, { password: newPassword }, callback);
-      });
-  });
+module.exports.changePassword = function(id, newPassword, callback) {
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newPassword, salt, (err, hash) => {
+            if (err) throw err;
+            newPassword = hash;
+            User.findByIdAndUpdate(id, { password: newPassword }, callback);
+        });
+    });
 }

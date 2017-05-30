@@ -34,26 +34,34 @@ export class RegisterComponent implements OnInit {
         password: this.password
       }
 
-    //check form
-    if(!this.validateService.validateRegister(user)){
-        this.flashmessage.show('Fill in all Fields', {cssClass: 'alert-danger', timeout:3000});
-        return false;  
-    }
-    if(!this.validateService.validateEmail(user.email)){
-        this.flashmessage.show('Enter a valid email', {cssClass: 'alert-danger', timeout:3000});
-        return false;  
-    }
-    
-    //register user
-    this.authService.registerUser(user).subscribe(data => {
-        if(data.success){
-            this.flashmessage.show('Registered succesfully', {cssClass: 'alert-success', timeout:3000});
-            this.router.navigate(['/login']);
-        } else {
-            this.flashmessage.show('Something went wrong', {cssClass: 'alert-success', timeout:3000});
-            this.router.navigate(['/register']);
-        }
-    });
+    //check that username is unique (returns true if exists and vice versa)
+    this.authService.checkUsername(user).subscribe(res=> {
 
+      if(res.exists == false){
+
+        //check form
+        if(!this.validateService.validateRegister(user)){
+            this.flashmessage.show('Fill in all Fields', {cssClass: 'alert-danger', timeout:3000});
+            return false;  
+        }
+        if(!this.validateService.validateEmail(user.email)){
+            this.flashmessage.show('Enter a valid email', {cssClass: 'alert-danger', timeout:3000});
+            return false;  
+        }
+        
+        //register user
+        this.authService.registerUser(user).subscribe(data => {
+            if(data.success){
+                this.flashmessage.show('Registered succesfully', {cssClass: 'alert-success', timeout:3000});
+                this.router.navigate(['/login']);
+            } else {
+                this.flashmessage.show('Something went wrong', {cssClass: 'alert-danger', timeout:3000});
+                this.router.navigate(['/register']);
+            }
+        });
+    } else {
+      this.flashmessage.show('Käyttäjänimi on jo käytössä', {cssClass: 'alert-danger', timeout:3000});
+    }
+    });
   }
 }
