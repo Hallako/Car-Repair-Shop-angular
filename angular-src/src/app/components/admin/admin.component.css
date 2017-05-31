@@ -8,6 +8,8 @@
   z-index: 99999;
 }
 .col-md-4 {
+    display: inline-block;
+    position: relative;
     width: 50%;
     margin-top: 2em;
 }
@@ -34,6 +36,7 @@
 
 .btn {
     border-radius: 0px;
+    float: right;
 }
 
 .btn-primary {
@@ -77,6 +80,13 @@
     padding-top: 0em;
     width: 100%;
     float: left;
+}
+
+.table-container {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  margin-top: 2em;
 }
 
 .table-hover {
