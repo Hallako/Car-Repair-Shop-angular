@@ -56,7 +56,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  //Gets user information
+  //Gets user information 
   getProfile() {
     let headers = new Headers();
     this.loadToken();
@@ -74,7 +74,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  //Password change id and new password is passed on "user" object
+  //Password change (id and new password is passed on "user" object)
   changePassword(user) {
     let headers = new Headers();
     headers.append('Authorization', this.authToken);
@@ -150,6 +150,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  //delete event by id
   delEvent(id) {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
