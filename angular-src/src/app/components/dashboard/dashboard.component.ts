@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).add(12, 'hours'),
+                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -196,6 +196,9 @@ export class DashboardComponent implements OnInit {
             eventClick: boundClick,
             viewRender: boundView,
             select: boundSelect,
+            dayClick: function(date, view) {
+                console.log(date);
+            }
         };
         //options end
         this.calElement.fullCalendar(options);
