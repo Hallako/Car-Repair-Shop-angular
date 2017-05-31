@@ -5,6 +5,7 @@ import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
+import {Observable} from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'fullcalendar';
 import _ from 'lodash';
@@ -63,7 +64,12 @@ export class DashboardComponent implements OnInit {
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
 
-            this.updatename(calEvent);
+            if(calEvent.user){
+              this.updatename(calEvent);
+            } else {
+              this.eventUsername = null;
+            }
+            
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -74,6 +80,15 @@ export class DashboardComponent implements OnInit {
 
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
+
+        
+          //limit events 
+          this.checkOverlap(start, end).then((data) => {
+            console.log(data);
+          })
+     
+       
+
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -240,5 +255,53 @@ export class DashboardComponent implements OnInit {
     this.authService.getUserById(event).subscribe(user => {
       this.eventUsername = user.username;
     });
+  }
+
+
+  checkOverlap(start,end){
+    return new Promise((resolve, reject) => {
+
+      var user =  null;
+      var startt = null;
+      var endd = null;
+      var admin = true;
+      var midoverlapscounter
+      var midoverlapstore : any[][];
+      var overlaps = 0, overlapsbegin = 0 , overlapsmid = 0, overlapsend = 0;
+
+      start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+      end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+
+      this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
+
+        events.forEach(event => {
+          if(moment(start).isBetween(event.start, event.end)){
+            overlapsbegin++;
+          }
+
+          if(moment(end).isBetween(event.start, event.end)){
+
+            midoverlapstore[0][midoverlapscounter] = event.start;
+            midoverlapstore[1][midoverlapscounter] = event.end;
+            midoverlapscounter++;
+
+            midoverlapstore.forEach(eventti => {
+              moment(eventti[0][midoverlapscounter]).isBetween(eventti[0][midoverlapscounter],eventti[1][midoverlapscounter]); 
+            });
+
+            overlapsend++;
+          }
+
+          if(moment(event.end).isBetween(start, end) &&
+            moment(event.start).isBetween(start, end)){
+              overlapsmid++;
+          }
+        });
+        overlapsbegin += overlapsmid;
+        overlapsend += overlapsmid;
+
+      resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
+      });
+    }); 
   }
 }
