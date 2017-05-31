@@ -11,19 +11,6 @@ import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
 
-export interface IEvent {
-    title: string;
-    description: string;
-    start: Date;
-    end: Date;
-    type: string;
-    backgroundColor: string;
-    textColor: string;
-    className: string;
-    borderColor: string;
-
-}
-
 declare var jQuery: any;
 
 @Component({
@@ -33,54 +20,30 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
 
-    //Temporary event store
+    //Variables
     id: String;
     title: String;
     start: Date;
     end: Date;
     color: String;
     description: String;
+    eventUsername: String;
     TempEvent:any;
 
     admin: Boolean = false;
-    eventUsername: String;
+    calElement = null;
 
     //declaring emitters
-    @Input('height')
-    public height: number;
-
     @Output('event-click')
     eventClick = new EventEmitter();
 
-    @Output('month-changed')
-    monthChanged = new EventEmitter();
-
-    @Output('date-change')
-    dateChange = new EventEmitter();
-
     @Output('select-changed')
     selectionChanged = new EventEmitter();
-
-    calElement = null;
-
-    addEvents(events: IEvent[]) {
-        this.calElement = $('#myCalendar');
-        if (!_.isNil(events)) {
-            $('#myCalendar').fullCalendar('addEventSource', events);
-        }
-    }
-
-    getCurrentMonth() {
-        const currentdate = <any>$("#myCalendar").fullCalendar('getDate');
-        return currentdate.month();
-    }
-
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
        private flashMessage: FlashMessagesService,
        private router: Router) { }
-
 
   ngOnInit() {
         var curuser = this.authService.getUser();
@@ -89,7 +52,7 @@ export class DashboardComponent implements OnInit {
 
         this.calElement = $('#myCalendar');
 
-        //Events
+        //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
@@ -109,15 +72,7 @@ export class DashboardComponent implements OnInit {
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
 
-        let eventRender = function (event, element) {
-            const args = {event: event, view: element};
-            this.dateChange.emit(args);
-        };
-
-         let viewRender = function (view, element) {
-            this.monthChanged.emit(view.intervalStart.month());
-        };
-
+        //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
@@ -135,9 +90,7 @@ export class DashboardComponent implements OnInit {
         };
 
         //binds
-        let boundRender = eventRender.bind(this);
         let boundClick = clickFunc.bind(this);
-        let boundView = viewRender.bind(this);
         let boundSelect = selectCall.bind(this);
 
         //options
@@ -172,7 +125,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).add(12, 'hours'),
+                    start: moment(nowDate),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -192,12 +145,10 @@ export class DashboardComponent implements OnInit {
             unselectAuto: true,
             unselectCancel: ".eventinfo",
             nowIndicator: true,
-            eventRender: boundRender,
             eventClick: boundClick,
-            viewRender: boundView,
             select: boundSelect,
         };
-        //options end
+        //options end and create calendar
         this.calElement.fullCalendar(options);
   }
 
@@ -220,6 +171,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  //changes color according to selection
   onTitleChange(){
 
     switch(this.title){
@@ -282,6 +234,8 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
+
+  //gets name whoever owns event
   updatename(event){
     this.authService.getUserById(event).subscribe(user => {
       this.eventUsername = user.username;
