@@ -3,7 +3,7 @@
         <h4>Hae käyttäjiä</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
-            <option class="form-control" *ngFor="let user of users" (click)="onSelect(user); users=null">{{ user.name }}</option>
+            <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null">{{ user.name }}</option>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="inputAdmin" class="col-lg-2 control-label">Admin:</label>
                     <div class="col-lg-10">
-                        <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}" class="form-control" />
+                        <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}}" class="checkbox" />
                     </div>
                 </div>
             </div>
