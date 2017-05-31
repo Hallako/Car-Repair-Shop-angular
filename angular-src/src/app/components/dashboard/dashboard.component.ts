@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
             } else {
               this.eventUsername = null;
             }
-            
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -81,13 +81,12 @@ export class DashboardComponent implements OnInit {
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
-        
-          //limit events 
-          this.checkOverlap(start, end).then((data) => {
-            console.log(data);
-          })
-     
-       
+
+          //limit events
+
+
+
+
 
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
@@ -162,6 +161,10 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
+            selectAllow: function(start, end) {
+              console.log('terve')
+              return true;
+            },
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -259,14 +262,11 @@ export class DashboardComponent implements OnInit {
 
 
   checkOverlap(start,end){
-    return new Promise((resolve, reject) => {
 
       var user =  null;
       var startt = null;
       var endd = null;
       var admin = true;
-      var midoverlapscounter
-      var midoverlapstore : any[][];
       var overlaps = 0, overlapsbegin = 0 , overlapsmid = 0, overlapsend = 0;
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
@@ -280,15 +280,6 @@ export class DashboardComponent implements OnInit {
           }
 
           if(moment(end).isBetween(event.start, event.end)){
-
-            midoverlapstore[0][midoverlapscounter] = event.start;
-            midoverlapstore[1][midoverlapscounter] = event.end;
-            midoverlapscounter++;
-
-            midoverlapstore.forEach(eventti => {
-              moment(eventti[0][midoverlapscounter]).isBetween(eventti[0][midoverlapscounter],eventti[1][midoverlapscounter]); 
-            });
-
             overlapsend++;
           }
 
@@ -300,8 +291,8 @@ export class DashboardComponent implements OnInit {
         overlapsbegin += overlapsmid;
         overlapsend += overlapsmid;
 
-      resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
+      return Math.max(overlapsbegin,overlapsend,overlapsmid);
       });
-    }); 
+
   }
 }
