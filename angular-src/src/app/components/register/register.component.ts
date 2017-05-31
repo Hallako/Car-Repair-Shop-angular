@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
       if(res.exists == false){
 
-        //check form
+        //Validate given information
         if(!this.validateService.validateRegister(user)){
             this.flashmessage.show('Täytä kaikki kentät', {cssClass: 'alert-danger', timeout:3000});
             return false;
