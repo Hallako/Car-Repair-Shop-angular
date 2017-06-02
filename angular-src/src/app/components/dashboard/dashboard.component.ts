@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CalendarEvent } from 'angular-calendar';
 import { ValidateService } from '../../services/validate.service';
@@ -22,6 +22,7 @@ declare var jQuery: any;
 export class DashboardComponent implements OnInit {
 
     //Variables
+    duration: number;
     id: String;
     title: String;
     start: String;
@@ -33,13 +34,6 @@ export class DashboardComponent implements OnInit {
 
     admin: Boolean = false;
     calElement = null;
-
-    //declaring emitters
-    @Output('event-click')
-    eventClick = new EventEmitter();
-
-    @Output('select-changed')
-    selectionChanged = new EventEmitter();
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
@@ -55,9 +49,6 @@ export class DashboardComponent implements OnInit {
 
         //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
-            this.eventClick.emit(calEvent);
-
-            this.calElement.fullCalendar('unselect')
 
             var tempcolor = calEvent.backgroundColor;
             calEvent.backgroundColor = "#133313";
@@ -89,7 +80,6 @@ export class DashboardComponent implements OnInit {
 
 
 
-            this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
@@ -199,38 +189,32 @@ export class DashboardComponent implements OnInit {
   //changes color according to selection
   onTitleChange(){
 
-    let duration = null;
-
     switch(this.title){
 
       case 'öljynvaihto':{
         this.color = '#3a87ad';
-        duration = 2;
+        this.duration = 2;
         break;
       }
       case 'renkaidenvaihto':{
         this.color = '#009933';
-        duration = 1;
+        this.duration = 1;
         break;
       }
       case 'huolto':{
         this.color = '#cc0000';
-        duration = 6;
+        this.duration = 6;
         break;
       }
       case 'korjaus':{
         this.color = '#999922';
-        duration = 8;
-        break;
-      }
-      case 'muu':{
-      this.color = '#333333';
+        this.duration = 8;
         break;
       }
   }
 
   if (this.start != null) {
-    this.end = moment(this.start).add(duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+    this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
     console.log(this.start, this.end);
   }
