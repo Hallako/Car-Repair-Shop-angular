@@ -78,15 +78,12 @@ export class DashboardComponent implements OnInit {
             console.log(data);
           })
 
-
-
-            this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
               this.calElement.fullCalendar('gotoDate',  start);
             } else {
-              this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
               this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+              this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
             }
             this.id = null;
             this.description = null;
@@ -213,7 +210,7 @@ export class DashboardComponent implements OnInit {
       }
   }
 
-  if (this.start != null) {
+  if (this.start != null || this.id != null) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
     console.log(this.start, this.end);
