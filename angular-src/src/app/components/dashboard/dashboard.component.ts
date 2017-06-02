@@ -272,6 +272,7 @@ export class DashboardComponent implements OnInit {
       var overlapsbegin = 0
       var overlapsmid = 0 
       var overlapsend = 0;
+      var overlaped;
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
@@ -300,14 +301,10 @@ export class DashboardComponent implements OnInit {
             var curend = midoverlapstoreend[midoverlapscounter]; 
 
             let i = 0;
-            if(overlapsmid == 0) overlapsmid = 1;
+            overlaped = true;
             
             //jokaiselle eventille jotka ovat valinnan välissä.
             midoverlapstorestart.forEach(eventti => {
-
-              if(i == midoverlapscounter){
-                i++;
-              };
 
               if(moment(curstart).isBetween(eventti,midoverlapstoreend[i],null,'[]')
                 || moment(curend).isBetween(eventti,midoverlapstoreend[i],null,'[]')){
@@ -321,6 +318,7 @@ export class DashboardComponent implements OnInit {
             midoverlapscounter++;
           }
         });
+        if(overlapsmid == 0 && overlaped) overlapsmid = 1;
         overlapsend += overlapsmid;
         overlapsbegin += overlapsmid;
       resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
