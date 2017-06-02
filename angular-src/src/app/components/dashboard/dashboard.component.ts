@@ -86,6 +86,8 @@ export class DashboardComponent implements OnInit {
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
+          this.checkOverlap(start, end).then(data => console.log(data))
+
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -315,11 +317,11 @@ export class DashboardComponent implements OnInit {
       this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
 
         events.forEach(event => {
-          if(moment(start).isBetween(event.start, event.end,null,'[]')){
+          if(moment(start).isBetween(event.start, event.end)){
             overlapsbegin++;
           }
 
-          if(moment(end).isBetween(event.start, event.end,null,'[]')){
+          if(moment(end).isBetween(event.start, event.end)){
             overlapsend++;
           }
 
@@ -336,8 +338,8 @@ export class DashboardComponent implements OnInit {
             var curend = midoverlapstoreend[midoverlapscounter];
 
             let i = 0;
-            if(overlapsmid == 0) overlapsmid = 1;
 
+            if(overlapsmid == 0) overlapsmid = 1;
             //jokaiselle eventille jotka ovat valinnan välissä.
             midoverlapstorestart.forEach(eventti => {
 
@@ -345,8 +347,11 @@ export class DashboardComponent implements OnInit {
                 i++;
               };
 
-              if(moment(curstart).isBetween(eventti,midoverlapstoreend[i],null,'[]')
-                || moment(curend).isBetween(eventti,midoverlapstoreend[i],null,'[]')){
+
+
+              if(moment(curstart).isBetween(eventti,midoverlapstoreend[i],null,'[)')
+                || moment(curend).isBetween(eventti,midoverlapstoreend[i])){
+
                     overlapsmid++;
 
                     console.log("start: " + curstart + "\nend: " + curend+ "\nstart: "+ eventti + "\nend: "+ midoverlapstoreend[i])
@@ -355,6 +360,7 @@ export class DashboardComponent implements OnInit {
               }
             });
             midoverlapscounter++;
+
           }
         });
         overlapsend += overlapsmid;
