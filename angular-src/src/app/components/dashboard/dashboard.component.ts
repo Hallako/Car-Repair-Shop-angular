@@ -11,6 +11,7 @@ import 'fullcalendar';
 import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
+import { Event } from '../admin/event'
 
 declare var jQuery: any;
 
@@ -33,6 +34,8 @@ export class DashboardComponent implements OnInit {
 
     admin: Boolean = false;
     calElement = null;
+    events: Event[];
+
 
     //declaring emitters
     @Output('event-click')
@@ -81,13 +84,6 @@ export class DashboardComponent implements OnInit {
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
-
-          //limit events
-
-
-
-
-
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -101,12 +97,37 @@ export class DashboardComponent implements OnInit {
             this.description = null;
             this.color = null;
             this.title = null;
+
         };
+
+
+        //limit events
+        let allowFunc = function(selectionInfo) {
+          var user =  null;
+          var startt = null;
+          var endd = null;
+          var admin = true;
+          var overlapsend = 0;
+
+          var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
+          var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
+
+          this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
+
+            events.forEach(event => {
+              if(moment(end).isBetween(event.start, event.end)){
+                overlapsend++;
+              }
+            });
+            console.log(overlapsend)
+          });
+        }
+
 
         //binds
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
-
+        let boundAllow = allowFunc.bind(this);
         //options
         let options: any = {
             header: {
@@ -161,10 +182,7 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
-            selectAllow: function(start, end) {
-              console.log('terve')
-              return true;
-            },
+            selectAllow: boundAllow,
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -258,41 +276,5 @@ export class DashboardComponent implements OnInit {
     this.authService.getUserById(event).subscribe(user => {
       this.eventUsername = user.username;
     });
-  }
-
-
-  checkOverlap(start,end){
-
-      var user =  null;
-      var startt = null;
-      var endd = null;
-      var admin = true;
-      var overlaps = 0, overlapsbegin = 0 , overlapsmid = 0, overlapsend = 0;
-
-      start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-      end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-
-      this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
-
-        events.forEach(event => {
-          if(moment(start).isBetween(event.start, event.end)){
-            overlapsbegin++;
-          }
-
-          if(moment(end).isBetween(event.start, event.end)){
-            overlapsend++;
-          }
-
-          if(moment(event.end).isBetween(start, end) &&
-            moment(event.start).isBetween(start, end)){
-              overlapsmid++;
-          }
-        });
-        overlapsbegin += overlapsmid;
-        overlapsend += overlapsmid;
-
-      return Math.max(overlapsbegin,overlapsend,overlapsmid);
-      });
-
   }
 }
