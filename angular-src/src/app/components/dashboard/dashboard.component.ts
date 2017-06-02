@@ -97,18 +97,18 @@ export class DashboardComponent implements OnInit {
             this.description = null;
             this.color = null;
             this.title = null;
-
         };
 
 
         //limit events
-        let allowFunc = function(selectionInfo) {
+        let allowFunc =  function(selectionInfo) {
           var user =  null;
           var startt = null;
           var endd = null;
           var admin = true;
           var overlapsend = 0;
-
+          var overlapsbegin = 0;
+          var bool;
           var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
           var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
 
@@ -118,9 +118,22 @@ export class DashboardComponent implements OnInit {
               if(moment(end).isBetween(event.start, event.end)){
                 overlapsend++;
               }
+              if(moment(start).isBetween(event.start, event.end)) {
+                overlapsbegin++
+              }
+
+              if(overlapsend >= 2 || overlapsbegin >= 2) {
+                this.calElement.fullCalendar('unselect')
+                bool = false
+              }
+              if(bool == false) {
+                this.calElement.fullCalendar('unselect')
+                return bool;
+              }
             });
-            console.log(overlapsend)
+            return true
           });
+
         }
 
 
@@ -128,6 +141,7 @@ export class DashboardComponent implements OnInit {
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
         let boundAllow = allowFunc.bind(this);
+
         //options
         let options: any = {
             header: {
@@ -164,6 +178,7 @@ export class DashboardComponent implements OnInit {
                     end: nowDate.clone().add(60, 'days')
                 };
             },
+            selectConstraint: 'businessHours',
             hiddenDays:[0,6],
             locale: 'fi',
             minTime: "07:00:00",
@@ -183,6 +198,7 @@ export class DashboardComponent implements OnInit {
             eventClick: boundClick,
             select: boundSelect,
             selectAllow: boundAllow,
+            eventAllow: boundAllow,
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
