@@ -24,8 +24,8 @@ export class DashboardComponent implements OnInit {
     //Variables
     id: String;
     title: String;
-    start: Date;
-    end: Date;
+    start: String;
+    end: String;
     color: String;
     description: String;
     eventUsername: String;
@@ -102,11 +102,18 @@ export class DashboardComponent implements OnInit {
             this.description = null;
             this.color = null;
             this.title = null;
-        };
+          };
+
+      let unselectCall = function( view, jsEvent ) {
+          this.start = null;
+          this.end = null;
+          this.description = null;
+        }
 
         //binds
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
+        let boundUnselect = unselectCall.bind(this);
 
         //options
         let options: any = {
@@ -146,8 +153,8 @@ export class DashboardComponent implements OnInit {
             },
             hiddenDays:[0,6],
             locale: 'fi',
-            minTime: "07:00:00",
-            maxTime: "18:00:00",
+            minTime: "06:00:00",
+            maxTime: "19:00:00",
             allDaySlot: false,
             height: 560,
             selectable: true,
@@ -160,11 +167,11 @@ export class DashboardComponent implements OnInit {
             unselectAuto: true,
             unselectCancel: ".eventinfo",
             nowIndicator: true,
+            selectConstraint: 'businessHours',
+            eventConstraint: 'businessHours',
             eventClick: boundClick,
             select: boundSelect,
-            dayClick: function(date, view) {
-                console.log(date);
-            }
+            unselect: boundUnselect,
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -192,28 +199,40 @@ export class DashboardComponent implements OnInit {
   //changes color according to selection
   onTitleChange(){
 
+    let duration = null;
+
     switch(this.title){
 
       case 'öljynvaihto':{
         this.color = '#3a87ad';
+        duration = 2;
         break;
       }
       case 'renkaidenvaihto':{
         this.color = '#009933';
+        duration = 1;
         break;
       }
       case 'huolto':{
         this.color = '#cc0000';
+        duration = 6;
         break;
       }
       case 'korjaus':{
         this.color = '#999922';
+        duration = 8;
         break;
       }
       case 'muu':{
       this.color = '#333333';
         break;
       }
+  }
+
+  if (this.start != null) {
+    this.end = moment(this.start).add(duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+    this.calElement.fullCalendar('select', this.start, this.end);
+    console.log(this.start, this.end);
   }
 }
 
@@ -282,7 +301,7 @@ export class DashboardComponent implements OnInit {
       this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
 
         events.forEach(event => {
-          
+
           if(moment(start).isBetween(event.start, event.end,null,'[]')){
             overlapsbegin++;
           }
@@ -294,7 +313,7 @@ export class DashboardComponent implements OnInit {
           //jokaiselle eventille jos joku eventti valinnan sisällä.
           if(moment(event.end).isBetween(start, end,null,'[]') &&
             moment(event.start).isBetween(start, end,null,'[]')){
-            console.log("overlaps mid")
+            //console.log("overlaps mid")
             //tallennetaan ajat.
             midoverlapstorestart[midoverlapscounter] = event.start;
             midoverlapstoreend[midoverlapscounter] = event.end;
@@ -317,7 +336,7 @@ export class DashboardComponent implements OnInit {
                 || moment(curend).isBetween(eventti,midoverlapstoreend[i],null,'[]')){
                     overlapsmid++;
 
-                    console.log("start: " + curstart + "\nend: " + curend+ "\nstart: "+ eventti + "\nend: "+ midoverlapstoreend[i])
+                    //console.log("start: " + curstart + "\nend: " + curend+ "\nstart: "+ eventti + "\nend: "+ midoverlapstoreend[i])
                     i++;
 
               }
@@ -325,8 +344,14 @@ export class DashboardComponent implements OnInit {
             midoverlapscounter++;
           }
         });
-        overlapsend += overlapsmid;
-        overlapsbegin += overlapsmid;
+
+        if (overlapsend != 0 && overlapsmid != 0)
+          overlapsend += overlapsmid;
+
+        if (overlapsbegin != 0 && overlapsmid != 0)
+          overlapsbegin += overlapsmid;
+
+      console.log('s: ' + overlapsbegin + ', e: ' + overlapsend + ', m: ' + overlapsmid);
       resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
       });
     });
