@@ -78,7 +78,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
-//User get
+//Returns user object bt passed id 
 router.post('/getuserbyid', (req, res) => {
     User.getUserById(req.body.user, (err, response) => {
         res.json(response);
@@ -94,7 +94,7 @@ router.post('/password', passport.authenticate('jwt', { session: false }), (req,
     res.json('Salasana vaihdettu.');
 });
 
-//admin route
+//admin route(returns all users)
 router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     User.find({}, (err, user) => {
         if (err) throw err;

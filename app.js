@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
-var fs = require('fs');
 var http = require('http');
 
 //DB conf

@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlashMessagesModule } from 'angular2-flash-messages';
-import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -16,15 +15,16 @@ import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
-
-import { ValidateService } from './services/validate.service';
-import { AuthService } from './services/auth.service';
-import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { User } from './components/admin/user';
+
+import { ValidateService } from './services/validate.service';
+import { AuthService } from './services/auth.service';
 import { SearchService } from './services/search.service';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard'
+
 
 
 const appRoutes : Routes = [
@@ -58,9 +58,6 @@ const appRoutes : Routes = [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     BrowserAnimationsModule,
-    NgbDatepickerModule,
-    NgbTimepickerModule,
-
   ],
   providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService],
   bootstrap: [AppComponent]
