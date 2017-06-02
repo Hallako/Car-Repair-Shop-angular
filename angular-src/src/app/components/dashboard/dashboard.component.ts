@@ -5,24 +5,12 @@ import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
+import {Observable} from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'fullcalendar';
 import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
-
-export interface IEvent {
-    title: string;
-    description: string;
-    start: Date;
-    end: Date;
-    type: string;
-    backgroundColor: string;
-    textColor: string;
-    className: string;
-    borderColor: string;
-
-}
 
 declare var jQuery: any;
 
@@ -33,54 +21,30 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
 
-    //Temporary event store
+    //Variables
     id: String;
     title: String;
     start: Date;
     end: Date;
     color: String;
     description: String;
+    eventUsername: String;
     TempEvent:any;
 
     admin: Boolean = false;
-    eventUsername: String;
+    calElement = null;
 
     //declaring emitters
-    @Input('height')
-    public height: number;
-
     @Output('event-click')
     eventClick = new EventEmitter();
 
-    @Output('month-changed')
-    monthChanged = new EventEmitter();
-
-    @Output('date-change')
-    dateChange = new EventEmitter();
-
     @Output('select-changed')
     selectionChanged = new EventEmitter();
-
-    calElement = null;
-
-    addEvents(events: IEvent[]) {
-        this.calElement = $('#myCalendar');
-        if (!_.isNil(events)) {
-            $('#myCalendar').fullCalendar('addEventSource', events);
-        }
-    }
-
-    getCurrentMonth() {
-        const currentdate = <any>$("#myCalendar").fullCalendar('getDate');
-        return currentdate.month();
-    }
-
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
        private flashMessage: FlashMessagesService,
        private router: Router) { }
-
 
   ngOnInit() {
         var curuser = this.authService.getUser();
@@ -89,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
         this.calElement = $('#myCalendar');
 
-        //Events
+        //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
@@ -100,7 +64,12 @@ export class DashboardComponent implements OnInit {
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
 
-            this.updatename(calEvent);
+            if(calEvent.user){
+              this.updatename(calEvent);
+            } else {
+              this.eventUsername = null;
+            }
+
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -109,16 +78,17 @@ export class DashboardComponent implements OnInit {
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
 
-        let eventRender = function (event, element) {
-            const args = {event: event, view: element};
-            this.dateChange.emit(args);
-        };
-
-         let viewRender = function (view, element) {
-            this.monthChanged.emit(view.intervalStart.month());
-        };
-
+        //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
+
+
+          //limit events
+          this.checkOverlap(start, end).then((data) => {
+            console.log(data);
+          })
+
+
+
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -135,9 +105,7 @@ export class DashboardComponent implements OnInit {
         };
 
         //binds
-        let boundRender = eventRender.bind(this);
         let boundClick = clickFunc.bind(this);
-        let boundView = viewRender.bind(this);
         let boundSelect = selectCall.bind(this);
 
         //options
@@ -192,15 +160,13 @@ export class DashboardComponent implements OnInit {
             unselectAuto: true,
             unselectCancel: ".eventinfo",
             nowIndicator: true,
-            eventRender: boundRender,
             eventClick: boundClick,
-            viewRender: boundView,
             select: boundSelect,
             dayClick: function(date, view) {
                 console.log(date);
             }
         };
-        //options end
+        //options end and create calendar
         this.calElement.fullCalendar(options);
   }
 
@@ -223,6 +189,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  //changes color according to selection
   onTitleChange(){
 
     switch(this.title){
@@ -285,9 +252,59 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
+
+  //gets name whoever owns event
   updatename(event){
     this.authService.getUserById(event).subscribe(user => {
       this.eventUsername = user.username;
+    });
+  }
+
+
+  checkOverlap(start,end){
+    return new Promise((resolve, reject) => {
+
+      var user =  null;
+      var startt = null;
+      var endd = null;
+      var admin = true;
+      var midoverlapscounter
+      var midoverlapstore : any[][];
+      var overlaps = 0, overlapsbegin = 0 , overlapsmid = 0, overlapsend = 0;
+
+      start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+      end = moment(end).format('YYYY-MM-DD[T]HH:mm');
+
+      this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
+
+        events.forEach(event => {
+          if(moment(start).isBetween(event.start, event.end)){
+            overlapsbegin++;
+          }
+
+          if(moment(end).isBetween(event.start, event.end)){
+
+            midoverlapstore[0][midoverlapscounter] = event.start;
+            midoverlapstore[1][midoverlapscounter] = event.end;
+            midoverlapscounter++;
+
+            midoverlapstore.forEach(eventti => {
+              moment(eventti[0][midoverlapscounter]).isBetween(eventti[0][midoverlapscounter],eventti[1][midoverlapscounter]);
+            });
+
+            overlapsend++;
+          }
+
+          if(moment(event.end).isBetween(start, end) &&
+            moment(event.start).isBetween(start, end)){
+              overlapsmid++;
+          }
+        });
+        overlapsbegin += overlapsmid;
+        overlapsend += overlapsmid;
+
+      resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
+      });
     });
   }
 }
