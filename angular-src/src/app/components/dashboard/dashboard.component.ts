@@ -25,8 +25,8 @@ export class DashboardComponent implements OnInit {
     //Variables
     id: String;
     title: String;
-    start: Date;
-    end: Date;
+    start: String;
+    end: String;
     color: String;
     description: String;
     eventUsername: String;
@@ -79,6 +79,8 @@ export class DashboardComponent implements OnInit {
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+
+
         };
 
         //Selection change function
@@ -108,7 +110,6 @@ export class DashboardComponent implements OnInit {
           var admin = true;
           var overlapsend = 0;
           var overlapsbegin = 0;
-          var bool;
           var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
           var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
 
@@ -123,12 +124,8 @@ export class DashboardComponent implements OnInit {
               }
 
               if(overlapsend >= 2 || overlapsbegin >= 2) {
-                this.calElement.fullCalendar('unselect')
-                bool = false
-              }
-              if(bool == false) {
-                this.calElement.fullCalendar('unselect')
-                return bool;
+                this.calElement.fullCalendar('rerender')
+                return false
               }
             });
             return true
@@ -228,8 +225,11 @@ export class DashboardComponent implements OnInit {
 
     switch(this.title){
 
+
+
       case 'öljynvaihto':{
         this.color = '#3a87ad';
+        this.end = moment(this.start).add(1, 'hours').format('YYYY-MM-DD[T]HH:mm')
         break;
       }
       case 'renkaidenvaihto':{
