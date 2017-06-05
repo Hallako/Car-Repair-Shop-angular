@@ -85,17 +85,6 @@ export class DashboardComponent implements OnInit {
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
-<<<<<<< HEAD
-
-          //limit events
-          this.checkOverlap(start, end).then((data) => {
-            console.log(data);
-          })
-
-
-
-=======
->>>>>>> refs/remotes/Hallako/master
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -204,13 +193,7 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
-<<<<<<< HEAD
-            dayClick: function(date, view) {
-                console.log(date);
-            }
-=======
             selectAllow: boundAllow
->>>>>>> refs/remotes/Hallako/master
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -342,15 +325,6 @@ export class DashboardComponent implements OnInit {
             midoverlapstoreend[midoverlapscounter] = event.end;
             overlaped = true;
             midoverlapscounter++;
-<<<<<<< HEAD
-
-            midoverlapstore.forEach(eventti => {
-              moment(eventti[0][midoverlapscounter]).isBetween(eventti[0][midoverlapscounter],eventti[1][midoverlapscounter]);
-            });
-
-            overlapsend++;
-=======
->>>>>>> refs/remotes/Hallako/master
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -364,18 +338,18 @@ export class DashboardComponent implements OnInit {
               midoverlapscounter++;
             }
           });
-          
+
           let i = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
           midoverlapstorestart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
-            var curstart = midoverlapstorestart[i]; 
-            var curend = midoverlapstoreend[i]; 
+            var curstart = midoverlapstorestart[i];
+            var curend = midoverlapstoreend[i];
 
             midoverlapstorestart.forEach(event => {
-              
+
               let t = 0;
 
               if(t == i){
