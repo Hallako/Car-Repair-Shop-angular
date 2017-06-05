@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
             if(calEvent.user){
               this.updatename(calEvent);
             } else {
-              this.eventUsername = null;
+              this.eventUsername = 'Hallinnon luoma';
             }
 
             this.id = calEvent._id,
@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit {
 
             this.checkOverlap(start,end).then(res => {
                 if(res >= 2){
-                  this.flashMessage.show('Et voi valita päällekkäisiä tapahtumia', {cssClass: 'alert-danger', timeout:3000});
+                  this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
                 }
             });
@@ -359,7 +359,6 @@ export class DashboardComponent implements OnInit {
               if(moment(curstart).isBetween(event,midoverlapstoreend[t],null,'[)')
                 || moment(curend).isBetween(event,midoverlapstoreend[t])){
                     midlaps[i]++;
-                    console.log("start: " + curstart + "\nend: " + curend+ "\nstart: "+ eventti + "\nend: "+ midoverlapstoreend[i])
               }
                 t++;
               });
