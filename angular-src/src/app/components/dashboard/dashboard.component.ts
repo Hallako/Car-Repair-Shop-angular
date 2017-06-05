@@ -11,6 +11,7 @@ import 'fullcalendar';
 import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
+import { Event } from '../admin/event'
 
 declare var jQuery: any;
 
@@ -19,6 +20,7 @@ declare var jQuery: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
 
     //Variables
@@ -33,6 +35,8 @@ export class DashboardComponent implements OnInit {
 
     admin: Boolean = false;
     calElement = null;
+    events: Event[];
+
 
     //declaring emitters
     @Output('event-click')
@@ -67,7 +71,7 @@ export class DashboardComponent implements OnInit {
             if(calEvent.user){
               this.updatename(calEvent);
             } else {
-              this.eventUsername = null;
+              this.eventUsername = 'Hallinnon luoma';
             }
 
             this.id = calEvent._id,
@@ -81,6 +85,7 @@ export class DashboardComponent implements OnInit {
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
+<<<<<<< HEAD
 
           //limit events
           this.checkOverlap(start, end).then((data) => {
@@ -89,6 +94,8 @@ export class DashboardComponent implements OnInit {
 
 
 
+=======
+>>>>>>> refs/remotes/Hallako/master
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
             if(view.type == 'month'){
@@ -102,12 +109,47 @@ export class DashboardComponent implements OnInit {
             this.description = null;
             this.color = null;
             this.title = null;
+
+            this.checkOverlap(start,end).then(res => {
+                if(res >= 2){
+                  this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
+                  this.calElement.fullCalendar('unselect');
+                }
+            });
         };
+
+        //limit events
+        let allowFunc = function(selectionInfo) {
+          var user =  null;
+          var startt = null;
+          var endd = null;
+          var admin = true;
+          var overlapsend = 0;
+
+          var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
+          var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
+
+          this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
+
+            events.forEach(event => {
+              if(moment(end).isBetween(event.start, event.end)){
+                overlapsend++;
+              }
+            });
+            if(overlapsend >= 2){
+              //console.log(overlapsend)
+              return false;
+            }
+            //console.log(overlapsend)
+            return true
+          });
+        }
+
 
         //binds
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
-
+        let boundAllow = allowFunc.bind(this);
         //options
         let options: any = {
             header: {
@@ -162,9 +204,13 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
+<<<<<<< HEAD
             dayClick: function(date, view) {
                 console.log(date);
             }
+=======
+            selectAllow: boundAllow
+>>>>>>> refs/remotes/Hallako/master
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -260,7 +306,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
   checkOverlap(start,end){
     return new Promise((resolve, reject) => {
 
@@ -268,9 +313,14 @@ export class DashboardComponent implements OnInit {
       var startt = null;
       var endd = null;
       var admin = true;
-      var midoverlapscounter
-      var midoverlapstore : any[][];
-      var overlaps = 0, overlapsbegin = 0 , overlapsmid = 0, overlapsend = 0;
+
+      var midoverlapscounter = 0;
+      var midoverlapstorestart : any[] = [[]];
+      var midoverlapstoreend : any[] = [[]];
+      var midlaps : number[];
+      var overlaped;
+
+      midlaps = new Array(10).fill(0);
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
@@ -279,31 +329,70 @@ export class DashboardComponent implements OnInit {
 
         events.forEach(event => {
           if(moment(start).isBetween(event.start, event.end)){
-            overlapsbegin++;
+                        //tallennetaan ajat.
+            midoverlapstorestart[midoverlapscounter] = event.start;
+            midoverlapstoreend[midoverlapscounter] = event.end;
+            overlaped = true;
+            midoverlapscounter++;
           }
 
-          if(moment(end).isBetween(event.start, event.end)){
-
-            midoverlapstore[0][midoverlapscounter] = event.start;
-            midoverlapstore[1][midoverlapscounter] = event.end;
+          else if(moment(end).isBetween(event.start, event.end)){
+                        //tallennetaan ajat.
+            midoverlapstorestart[midoverlapscounter] = event.start;
+            midoverlapstoreend[midoverlapscounter] = event.end;
+            overlaped = true;
             midoverlapscounter++;
+<<<<<<< HEAD
 
             midoverlapstore.forEach(eventti => {
               moment(eventti[0][midoverlapscounter]).isBetween(eventti[0][midoverlapscounter],eventti[1][midoverlapscounter]);
             });
 
             overlapsend++;
+=======
+>>>>>>> refs/remotes/Hallako/master
           }
 
-          if(moment(event.end).isBetween(start, end) &&
-            moment(event.start).isBetween(start, end)){
-              overlapsmid++;
-          }
-        });
-        overlapsbegin += overlapsmid;
-        overlapsend += overlapsmid;
+          //jokaiselle eventille jos joku eventti valinnan sisällä.
+          else if(moment(event.end).isBetween(start, end,null,'[]') &&
+              moment(event.start).isBetween(start, end,null,'[)')){
 
-      resolve(Math.max(overlapsbegin,overlapsend,overlapsmid));
+              //tallennetaan ajat.
+              midoverlapstorestart[midoverlapscounter] = event.start;
+              midoverlapstoreend[midoverlapscounter] = event.end;
+              overlaped = true;
+              midoverlapscounter++;
+            }
+          });
+          
+          let i = 0;
+
+          //jokaiselle eventille jotka ovat valinnan välissä.
+          midoverlapstorestart.forEach(eventti => {
+
+            //otetaan ajat talteen silmukkaa varten.
+            var curstart = midoverlapstorestart[i]; 
+            var curend = midoverlapstoreend[i]; 
+
+            midoverlapstorestart.forEach(event => {
+              
+              let t = 0;
+
+              if(t == i){
+                t++;
+              }
+
+              if(moment(curstart).isBetween(event,midoverlapstoreend[t],null,'[)')
+                || moment(curend).isBetween(event,midoverlapstoreend[t])){
+                    midlaps[i]++;
+              }
+                t++;
+              });
+              i++;
+            });
+        if(overlaped && midlaps[0] == 0) midlaps[0] = 1;
+
+      resolve(Math.max.apply(null, midlaps));
       });
     });
   }
