@@ -259,6 +259,7 @@ export class DashboardComponent implements OnInit {
         end: this.end,
         backgroundColor: this.color,
         description: this.description,
+        confirm: false,
         user: curuser['id']
       }
 
