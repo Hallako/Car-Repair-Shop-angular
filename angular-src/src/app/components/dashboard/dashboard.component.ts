@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
-
+/*
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
 
@@ -85,22 +85,22 @@ export class DashboardComponent implements OnInit {
               this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
               this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
             }
-            this.id = null;
-            this.description = null;
-            this.color = null;
-            this.title = null;
+            this.id = undefined;
+            this.description = undefined;
+            this.color = undefined;
+            this.title = undefined;
           };
 
       let unselectCall = function( view, jsEvent ) {
-          this.start = null;
-          this.end = null;
-          this.description = null;
+          this.start = undefined;
+          this.end = undefined;
+          this.description = undefined;
         }
-
+*/
         //binds
         let boundClick = clickFunc.bind(this);
-        let boundSelect = selectCall.bind(this);
-        let boundUnselect = unselectCall.bind(this);
+        //let boundSelect = selectCall.bind(this);
+        //let boundUnselect = unselectCall.bind(this);
 
         //options
         let options: any = {
@@ -140,25 +140,43 @@ export class DashboardComponent implements OnInit {
             },
             hiddenDays:[0,6],
             locale: 'fi',
-            minTime: "06:00:00",
-            maxTime: "19:00:00",
+            minTime: "07:00:00",
+            maxTime: "18:00:00",
             allDaySlot: false,
             height: 560,
-            selectable: true,
+            selectable: false,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
-            unselectAuto: true,
-            unselectCancel: ".eventinfo",
+            unselectAuto: false,
             nowIndicator: true,
             selectConstraint: 'businessHours',
             eventConstraint: 'businessHours',
             eventClick: boundClick,
-            select: boundSelect,
-            unselect: boundUnselect,
+            //select: boundSelect,
+            //unselect: boundUnselect,
+            dayClick: (date, jsEvent, view) => { //Event selection based on selected type of event.
+              if ( view.type == 'month' )
+              {
+                this.calElement.fullCalendar('changeView', 'agendaWeek');
+                this.calElement.fullCalendar('gotoDate', date);
+              }
+              else
+              {
+                if ( this.title != undefined ) {
+                  //console.log(moment(date).format('YYYY-MM-DD[T]HH:mm'));
+                  this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
+                  this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+                  this.calElement.fullCalendar('select', this.start, this.end);
+                }
+                else {
+                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
+                }
+              }
+            }
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -210,10 +228,10 @@ export class DashboardComponent implements OnInit {
       }
   }
 
-  if (this.start != null || this.id != null) {
+  if (this.start != undefined || this.id != undefined) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
-    console.log(this.start, this.end);
+    //console.log(this.start, this.end);
   }
 }
 
