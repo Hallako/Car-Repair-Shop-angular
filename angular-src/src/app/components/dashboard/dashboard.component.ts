@@ -26,8 +26,8 @@ export class DashboardComponent implements OnInit {
     //Variables
     id: String;
     title: String;
-    start: String;
-    end: String;
+    start: Date;
+    end: Date;
     color: String;
     description: String;
     eventUsername: String;
@@ -80,13 +80,10 @@ export class DashboardComponent implements OnInit {
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
-
-
         };
 
         //Selection change function
         let selectCall = function (start, end, jsEvent, view) {
-
 
             this.selectionChanged.emit(start, end, jsEvent, view);
             this.calElement.fullCalendar('rerenderEvents');
@@ -108,15 +105,40 @@ export class DashboardComponent implements OnInit {
                   this.calElement.fullCalendar('unselect');
                 }
             });
-
         };
 
-        /
+        //limit events
+        let allowFunc = function(selectionInfo) {
+          var user =  null;
+          var startt = null;
+          var endd = null;
+          var admin = true;
+          var overlapsend = 0;
+
+          var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
+          var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
+
+          this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
+
+            events.forEach(event => {
+              if(moment(end).isBetween(event.start, event.end)){
+                overlapsend++;
+              }
+            });
+            if(overlapsend >= 2){
+              //console.log(overlapsend)
+              return false;
+            }
+            //console.log(overlapsend)
+            return true
+          });
+        }
+
 
         //binds
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
-
+        let boundAllow = allowFunc.bind(this);
         //options
         let options: any = {
             header: {
@@ -153,7 +175,6 @@ export class DashboardComponent implements OnInit {
                     end: nowDate.clone().add(60, 'days')
                 };
             },
-            selectConstraint: 'businessHours',
             hiddenDays:[0,6],
             locale: 'fi',
             minTime: "07:00:00",
@@ -172,6 +193,7 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
+            selectAllow: boundAllow
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -201,11 +223,8 @@ export class DashboardComponent implements OnInit {
 
     switch(this.title){
 
-
-
       case 'öljynvaihto':{
         this.color = '#3a87ad';
-        this.end = moment(this.start).add(1, 'hours').format('YYYY-MM-DD[T]HH:mm')
         break;
       }
       case 'renkaidenvaihto':{
@@ -281,12 +300,10 @@ export class DashboardComponent implements OnInit {
       var midoverlapscounter = 0;
       var midoverlapstorestart : any[] = [[]];
       var midoverlapstoreend : any[] = [[]];
-
       var midlaps : number[];
       var overlaped;
 
       midlaps = new Array(10).fill(0);
-
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
@@ -295,7 +312,6 @@ export class DashboardComponent implements OnInit {
 
         events.forEach(event => {
           if(moment(start).isBetween(event.start, event.end)){
-
                         //tallennetaan ajat.
             midoverlapstorestart[midoverlapscounter] = event.start;
             midoverlapstoreend[midoverlapscounter] = event.end;
@@ -349,7 +365,6 @@ export class DashboardComponent implements OnInit {
               });
               i++;
             });
-
         if(overlaped && midlaps[0] == 0) midlaps[0] = 1;
 
       resolve(Math.max.apply(null, midlaps));
