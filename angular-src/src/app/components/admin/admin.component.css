@@ -11,7 +11,9 @@
   background-color: #f8f5f0
 }
 
-
+.desc {
+  width: 21%;
+}
 .form-control {
     width: 50%;
 }
@@ -58,6 +60,8 @@
 .btn-sm {
     margin-bottom: 5px;
     border-radius: 3px;
+    float:right;
+    margin-right: 0.5em;
 }
 
 .btn-xs {
@@ -95,5 +99,5 @@
 
 .table-hover {
     position: relative;
-    margin-top: 5em;
+    margin-top: 10em;
 }

@@ -19,9 +19,12 @@ import { Subject }           from 'rxjs/Subject';
 export class AdminComponent implements OnInit {
 
   users: User[]
+  confirms: Event[]
+  confirm: Event
   events: Event[]
   selectedUser: User
   editUser: User
+  check: Boolean
 
   private searchTerm$ = new Subject<string>();
 
@@ -34,8 +37,9 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    this.authService.getAllUser().subscribe(users =>
-      this.users = users)
+    //this.authService.getAllUser().subscribe(users =>
+    //  this.users = users)
+    this.getConfirms()
   }
 
   onSelect(user: User) {
@@ -64,7 +68,6 @@ export class AdminComponent implements OnInit {
     })
   }
 
-
   deleteEvent(eventId) {
     this.authService.delEvent(eventId).subscribe(data => {
       if (data.success) {
@@ -76,5 +79,16 @@ export class AdminComponent implements OnInit {
     })
 
   }
+
+  getConfirms() {
+    this.authService.getConfirmationEvents().subscribe(confirms => {
+    this.confirms = confirms
+    })
+  }
+
+  confirmEvent(event) {
+    this.authService.confirmEvent(event._id).subscribe();
+    location.reload()
+    }
 
 }

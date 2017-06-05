@@ -17,6 +17,7 @@ router.post('/addevent', (req, res, next) => {
         end: req.body.end,
         backgroundColor: req.body.backgroundColor,
         description: req.body.description,
+        confirm: false,
         user: req.body.user
     });
 
@@ -60,9 +61,28 @@ router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
 
 router.get('/getuserevents/:user/', (req, res, next) => {
     event.find({ user: req.params.user }, (err, event) => {
-        if (err) throw (err)
+        if (err) throw err
         return res.json(event)
     })
 })
+
+router.get('/getconfirmevents/', (req, res, next) => {
+    event.find({confirm: false}, (err, event) => {
+        if (err) throw err
+        return res.json(event)
+    })
+})
+
+router.post('/confirm/:id', (req, res) => {
+    event.findByIdAndUpdate(req.params.id, req.body.confirm, (err, event) => {
+      event.confirm = true;
+      event.save();
+        if (err) {
+            res.json({ success: false, msg: err });
+        } else {
+            res.json({ success: true, msg: 'Removed succesfully' });
+        }
+    });
+});
 
 module.exports = router;
