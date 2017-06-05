@@ -359,7 +359,6 @@ export class DashboardComponent implements OnInit {
               if(moment(curstart).isBetween(event,midoverlapstoreend[t],null,'[)')
                 || moment(curend).isBetween(event,midoverlapstoreend[t])){
                     midlaps[i]++;
-                    console.log("start: " + curstart + "\nend: " + curend+ "\nstart: "+ eventti + "\nend: "+ midoverlapstoreend[i])
               }
                 t++;
               });
