@@ -107,38 +107,11 @@ export class DashboardComponent implements OnInit {
             });
         };
 
-        //limit events
-        let allowFunc = function(selectionInfo) {
-          var user =  null;
-          var startt = null;
-          var endd = null;
-          var admin = true;
-          var overlapsend = 0;
-
-          var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
-          var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
-
-          this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
-
-            events.forEach(event => {
-              if(moment(end).isBetween(event.start, event.end)){
-                overlapsend++;
-              }
-            });
-            if(overlapsend >= 2){
-              //console.log(overlapsend)
-              return false;
-            }
-            //console.log(overlapsend)
-            return true
-          });
-        }
 
 
         //binds
         let boundClick = clickFunc.bind(this);
         let boundSelect = selectCall.bind(this);
-        let boundAllow = allowFunc.bind(this);
         //options
         let options: any = {
             header: {
@@ -193,7 +166,6 @@ export class DashboardComponent implements OnInit {
             nowIndicator: true,
             eventClick: boundClick,
             select: boundSelect,
-            selectAllow: boundAllow
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
