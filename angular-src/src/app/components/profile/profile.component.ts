@@ -11,12 +11,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent implements OnInit {
 
   user: Object;
-
-  newPassword: String;
-  newPassword2: String;
 
   events: Event[];
   changePwForm : FormGroup;
@@ -25,11 +23,13 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private flashmessage: FlashMessagesService,
     private router: Router,
-    fb: FormBuilder)
-    {this.changePwForm = fb.group({
+    private fb: FormBuilder)
+    {
+      this.changePwForm = fb.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      passwordConfirm: ['', ]
-    }) }
+      passwordConfirm: ['', Validators.required]
+    }, {validator: this.areEqual})
+    }
 
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
@@ -51,8 +51,13 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  onPasswordChange( password ) {
-    console.log(password);
+  areEqual(group: FormGroup) {
+    return group.get('password').value === group.get('passwordConfirm').value
+      ? null : {'mismatch': true}
+  }
+
+  onPasswordChange() {
+    console.log(this.changePwForm.value);
     /*let user = {
       id: this.authService.getUser().id,
       password: this.newPassword
