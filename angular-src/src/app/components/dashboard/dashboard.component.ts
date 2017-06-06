@@ -153,7 +153,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
+                    url: 'events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+curuser.admin,
                     dataType: 'json',
                     success: function(response) {
@@ -293,38 +293,41 @@ export class DashboardComponent implements OnInit {
     return new Promise((resolve, reject) => {
 
       var user =  null;
-      var startt = null;
-      var endd = null;
+      var queryStart = moment(start).subtract(12, 'h');
+      var queryEnd = moment(end).add(12, 'h');
       var admin = true;
 
-      var midoverlapscounter = 0;
-      var midoverlapstorestart : any[] = [[]];
-      var midoverlapstoreend : any[] = [[]];
-      var midlaps : number[];
+      var overlapsCounter = 0;
+      var overlapsStart : any[] = [];
+      var overlapsEnd : any[] = [];
+      var overlaps : number[];
       var overlaped;
 
-      midlaps = new Array(10).fill(0);
+      overlaps = new Array(10).fill(0);
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
 
-      this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
-
+      this.authService.getEvents(moment(queryStart).format('YYYY-MM-DD[T]HH:mm'),
+                                 moment(queryEnd).format('YYYY-MM-DD[T]HH:mm'),
+                                 user, admin).subscribe(events => {
         events.forEach(event => {
           if(moment(start).isBetween(event.start, event.end)){
-                        //tallennetaan ajat.
-            midoverlapstorestart[midoverlapscounter] = event.start;
-            midoverlapstoreend[midoverlapscounter] = event.end;
+            
+            //tallennetaan ajat.
+            overlapsStart[overlapsCounter] = event.start;
+            overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
-            midoverlapscounter++;
+            overlapsCounter++;
           }
 
           else if(moment(end).isBetween(event.start, event.end)){
-                        //tallennetaan ajat.
-            midoverlapstorestart[midoverlapscounter] = event.start;
-            midoverlapstoreend[midoverlapscounter] = event.end;
+            
+            //tallennetaan ajat.
+            overlapsStart[overlapsCounter] = event.start;
+            overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
-            midoverlapscounter++;
+            overlapsCounter++;
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -332,41 +335,42 @@ export class DashboardComponent implements OnInit {
               moment(event.start).isBetween(start, end,null,'[)')){
 
               //tallennetaan ajat.
-              midoverlapstorestart[midoverlapscounter] = event.start;
-              midoverlapstoreend[midoverlapscounter] = event.end;
+              overlapsStart[overlapsCounter] = event.start;
+              overlapsEnd[overlapsCounter] = event.end;
               overlaped = true;
-              midoverlapscounter++;
+              overlapsCounter++;
             }
           });
           
-          let i = 0;
+          let counter1 = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
-          midoverlapstorestart.forEach(eventti => {
+          overlapsStart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
-            var curstart = midoverlapstorestart[i]; 
-            var curend = midoverlapstoreend[i]; 
+            var currentStart = overlapsStart[counter1]; 
+            var currentEnd = overlapsEnd[counter1]; 
 
-            midoverlapstorestart.forEach(event => {
+            overlapsStart.forEach(event => {
               
-              let t = 0;
+              let counter2 = 0;
 
-              if(t == i){
-                t++;
+              if(counter2 == counter1){
+                counter2++;
               }
 
-              if(moment(curstart).isBetween(event,midoverlapstoreend[t],null,'[)')
-                || moment(curend).isBetween(event,midoverlapstoreend[t])){
-                    midlaps[i]++;
+              if(moment(currentStart).isBetween(event,overlapsEnd[counter2],null,'[)')
+                || moment(currentEnd).isBetween(event,overlapsEnd[counter2])){
+                    overlaps[counter1]++;
               }
-                t++;
-              });
-              i++;
+
+                counter2++;
             });
-        if(overlaped && midlaps[0] == 0) midlaps[0] = 1;
+            counter1++;
+          });
+        if(overlaped && overlaps[0] == 0) overlaps[0] = 1;
 
-      resolve(Math.max.apply(null, midlaps));
+      resolve(Math.max.apply(null, overlaps));
       });
     }); 
   }
