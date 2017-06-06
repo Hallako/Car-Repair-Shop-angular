@@ -17,6 +17,6 @@ Installation:
   3. Run nodemon or node app on root to start nodejs and ng serve in angular-src to start angular.
    
    
-FAQ:
-  Q: Nodemon is not a command.
-  A: Run "npm install nodemon -g"
+FAQ:  
+  Q: Nodemon is not a command.  
+	A: Run "npm install nodemon -g"
