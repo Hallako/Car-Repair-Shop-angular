@@ -44,7 +44,7 @@ router.delete('/deleteevent/:id', (req, res) => {
 //get posts
 router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
     if (req.params.admin == "true") {
-        event.find({}, function(req, event) {
+        event.find({ start: { $gte: req.params.start, $lt: req.params.end } }, function(req, event) {
             res.json(event);
         });
     } else {
