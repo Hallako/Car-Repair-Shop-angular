@@ -1,5 +1,5 @@
 <div class="col-md-4">
-    <div id="search-component" class="search-box">
+    <div class="search-box" id="search-component">
         <h4>Hae käyttäjiä</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
@@ -51,12 +51,12 @@
 <div *ngIf="confirms?.length && !selectedUser" class="form-horizontal">
 
 
-    <table class="table table-hover" >
+    <table class="table table-hover">
 
         <thead>
-          <legend>
-            Hyväksymättömät varaukset
-          </legend>
+            <legend>
+                Hyväksymättömät varaukset
+            </legend>
             <tr>
                 <th>Toimenpide</th>
                 <th>Aloitusaika</th>
@@ -73,14 +73,14 @@
                 <td class="desc">{{confirm.end}}</td>
                 <td class="desc">{{confirm.description}}</td>
                 <td><button (click)="deleteEvent(confirm._id)" class="btn btn-danger btn-sm">Poista</button>
-                <button (click)="confirmEvent(confirm)" class="btn btn-success btn-sm" *ngIf="!confirm.confirm">Hyväksy</button></td>
+                    <button (click)="confirmEvent(confirm)" class="btn btn-success btn-sm" *ngIf="!confirm.confirm">Hyväksy</button></td>
 
             </tr>
         </tbody>
     </table>
 </div>
 
-<div *ngIf="selectedUser">
+<div class="table-container" *ngIf="selectedUser">
 
     <table class="table table-hover ">
         <thead>
@@ -99,7 +99,7 @@
                 <td>{{event.start}}</td>
                 <td>{{event.end}}</td>
                 <td>{{event.description}}</td>
-                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm" >Poista</button></td>
+                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
             </tr>
         </tbody>
     </table>

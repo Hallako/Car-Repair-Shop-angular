@@ -1,29 +1,34 @@
 .checkbox {
-  width: 1.5em;
-  height: auto;
+    width: 1.5em;
+    height: auto;
 }
 
 .hover {
-  border-radius: 0px;
-  border-top: 0px;
+    border-radius: 0px;
+    border-top: 0px;
 }
+
 .hover:hover {
-  background-color: #f8f5f0
+    background-color: #f8f5f0
 }
 
 .desc {
-  width: 21%;
+    width: 21%;
 }
+
 .form-control {
     width: 50%;
 }
 
 .search-box {
-  width: 100%;
-  position: absolute;
-  z-index: 9999999;
+    position: absolute;
+    width: 100%;
+    z-index: 99999;
 }
+
 .col-md-4 {
+    display: inline-block;
+    position: relative;
     width: 50%;
     margin-top: 2em;
 }
@@ -50,6 +55,7 @@
 
 .btn {
     border-radius: 0px;
+    float: right;
 }
 
 .btn-primary {
@@ -60,7 +66,7 @@
 .btn-sm {
     margin-bottom: 5px;
     border-radius: 3px;
-    float:right;
+    float: right;
     margin-right: 0.5em;
 }
 
@@ -95,6 +101,13 @@
     padding-top: 0em;
     width: 100%;
     float: left;
+}
+
+.table-container {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    margin-top: 2em;
 }
 
 .table-hover {
