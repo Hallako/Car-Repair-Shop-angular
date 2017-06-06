@@ -94,8 +94,15 @@ export class DashboardComponent implements OnInit {
                     dataType: 'json',
                     success: function(response) {
 
+                        if(curuser.admin){
+                          response.forEach(event => {
+                            if(event.user != curuser.id){
+                              event.backgroundColor = '#71893f'
+                              event.rendering = 'background';
+                            }
+                          });
+                        }
                         callback(response)
-
                     }
                 });
             },
@@ -149,11 +156,22 @@ export class DashboardComponent implements OnInit {
                 else if (this.title == undefined) {
                   this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
                 }
+                
+                else if( res < 2){
+                         
+                  if(moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
+                     moment(date).add(this.duration, 'hours').get('minute') == 30 ||
+                     moment(date).add(this.duration, 'hours').get('hour') > 18){
+                        this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
+                    } 
+                  /*(else if(moment(date).add(this.duration, 'hours').get('hour') > 18){
+                      this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
 
-                else if( res < 2 ){
-                  this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
-                  this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
-                  this.calElement.fullCalendar('select', this.start, this.end);
+                  }*/ else {
+                      this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
+                      this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+                      this.calElement.fullCalendar('select', this.start, this.end);
+                  } 
                 }
               }
             });
