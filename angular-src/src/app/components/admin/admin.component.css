@@ -1,7 +1,28 @@
+.checkbox {
+  width: 1.5em;
+  height: auto;
+}
+
+.hover {
+  border-radius: 0px;
+  border-top: 0px;
+}
+.hover:hover {
+  background-color: #f8f5f0
+}
+
+.desc {
+  width: 21%;
+}
 .form-control {
     width: 50%;
 }
 
+.search-box {
+  width: 100%;
+  position: absolute;
+  z-index: 9999999;
+}
 .col-md-4 {
     width: 50%;
     margin-top: 2em;
@@ -39,6 +60,8 @@
 .btn-sm {
     margin-bottom: 5px;
     border-radius: 3px;
+    float:right;
+    margin-right: 0.5em;
 }
 
 .btn-xs {
@@ -76,5 +99,5 @@
 
 .table-hover {
     position: relative;
-    margin-top: 5em;
+    margin-top: 10em;
 }

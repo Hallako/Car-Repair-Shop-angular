@@ -259,6 +259,7 @@ export class DashboardComponent implements OnInit {
         end: this.end,
         backgroundColor: this.color,
         description: this.description,
+        confirm: false,
         user: curuser['id']
       }
 
@@ -338,18 +339,18 @@ export class DashboardComponent implements OnInit {
               midoverlapscounter++;
             }
           });
-          
+
           let i = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
           midoverlapstorestart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
-            var curstart = midoverlapstorestart[i]; 
-            var curend = midoverlapstoreend[i]; 
+            var curstart = midoverlapstorestart[i];
+            var curend = midoverlapstoreend[i];
 
             midoverlapstorestart.forEach(event => {
-              
+
               let t = 0;
 
               if(t == i){
@@ -368,6 +369,6 @@ export class DashboardComponent implements OnInit {
 
       resolve(Math.max.apply(null, midlaps));
       });
-    }); 
+    });
   }
 }
