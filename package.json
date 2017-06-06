@@ -33,6 +33,6 @@
     "author": "Toni",
     "license": "ISC",
     "devDependencies": {
-        "@angular/cli": "^1.0.2"
+        "@angular/cli": "1.0.2"
     }
 }
