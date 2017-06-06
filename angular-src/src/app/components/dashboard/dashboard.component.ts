@@ -164,10 +164,7 @@ export class DashboardComponent implements OnInit {
                      moment(date).add(this.duration, 'hours').get('hour') > 18){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
                     } 
-                  /*(else if(moment(date).add(this.duration, 'hours').get('hour') > 18){
-                      this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
-
-                  }*/ else {
+                  else {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
