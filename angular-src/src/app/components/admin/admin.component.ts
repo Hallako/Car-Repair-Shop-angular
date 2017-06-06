@@ -82,6 +82,10 @@ export class AdminComponent implements OnInit {
   getConfirms() {
     this.authService.getConfirmationEvents().subscribe(confirms => {
       this.confirms = confirms
+      this.confirms.forEach(confirm => {
+        confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
+        confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
+      });
     })
     return this.confirms
   }
