@@ -19,9 +19,13 @@ import { Subject }           from 'rxjs/Subject';
 export class AdminComponent implements OnInit {
 
   users: User[]
+  user: User
+  confirms: Event[]
+  confirm: Event
   events: Event[]
   selectedUser: User
   editUser: User
+
 
   private searchTerm$ = new Subject<string>();
 
@@ -34,8 +38,7 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    this.authService.getAllUser().subscribe(users =>
-      this.users = users)
+    this.getConfirms()
   }
 
   onSelect(user: User) {
@@ -56,7 +59,7 @@ export class AdminComponent implements OnInit {
 
   onEvents() {
     this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {
-    this.events = events
+      this.events = events
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
@@ -64,17 +67,29 @@ export class AdminComponent implements OnInit {
     })
   }
 
-
   deleteEvent(eventId) {
     this.authService.delEvent(eventId).subscribe(data => {
       if (data.success) {
-        this.flashMessage.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessage.show('Tapahtuma poistettu onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
       } else {
-        this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
+        this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
       location.reload()
     })
 
   }
+
+  getConfirms() {
+    this.authService.getConfirmationEvents().subscribe(confirms => {
+      this.confirms = confirms
+    })
+    return this.confirms
+  }
+
+  confirmEvent(event) {
+    this.authService.confirmEvent(event._id).subscribe();
+    location.reload()
+  }
+
 
 }

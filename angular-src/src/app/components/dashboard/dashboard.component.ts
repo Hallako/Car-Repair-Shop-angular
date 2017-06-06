@@ -259,6 +259,7 @@ export class DashboardComponent implements OnInit {
         end: this.end,
         backgroundColor: this.color,
         description: this.description,
+        confirm: false,
         user: curuser['id']
       }
 
@@ -341,9 +342,8 @@ export class DashboardComponent implements OnInit {
               overlapsCounter++;
             }
           });
-          
-          let counter1 = 0;
 
+          let counter1 = 0;
           //jokaiselle eventille jotka ovat valinnan välissä.
           overlapsStart.forEach(eventti => {
 
@@ -372,6 +372,6 @@ export class DashboardComponent implements OnInit {
 
       resolve(Math.max.apply(null, overlaps));
       });
-    }); 
+    });
   }
 }

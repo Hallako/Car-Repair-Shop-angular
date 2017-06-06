@@ -35,7 +35,7 @@ module.exports.getUserById = function(id, callback) {
 }
 
 module.exports.getUserByUsername = function(username, callback) {
-    const query = { username: username }
+    const query = { username: new RegExp(username, "i") }
     User.findOne(query, callback);
 }
 
@@ -57,7 +57,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     });
 }
 module.exports.checkUsername = function(user, callback) {
-    User.count({ 'username': user }).count(callback);
+    User.count({ 'username': new RegExp(user, "i") }).count(callback);
 }
 
 module.exports.changePassword = function(id, newPassword, callback) {
