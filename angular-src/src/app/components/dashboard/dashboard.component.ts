@@ -129,35 +129,35 @@ export class DashboardComponent implements OnInit {
             selectConstraint: 'businessHours',
             eventConstraint: 'businessHours',
             eventClick: boundClick,
-            dayClick: (date, jsEvent, view) => { //Event selection based on selected type of event.
+            //Event selection based on selected type of event.
+            dayClick: (date, jsEvent, view) => {
 
               this.checkOverlap(date, moment(date).clone().add(this.duration, 'hours')).then(res => {
-                console.log(res)
+ 
+                if ( view.type == 'month' ){
+                  this.calElement.fullCalendar('changeView', 'agendaWeek');
+                  this.calElement.fullCalendar('gotoDate', date);
+                } else {
+                  
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
-                  return
+                  this.start = null;
+                  this.end = null;
                 }
-              });
 
-              if ( view.type == 'month' )
-              {
-                this.calElement.fullCalendar('changeView', 'agendaWeek');
-                this.calElement.fullCalendar('gotoDate', date);
-              }
-              else
-              {
-                if ( this.title != undefined ) {
-                  //console.log(moment(date).format('YYYY-MM-DD[T]HH:mm'));
+                else if (this.title == undefined) {
+                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
+                }
+
+                else if( res < 2 ){
                   this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                   this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                   this.calElement.fullCalendar('select', this.start, this.end);
                 }
-                else {
-                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
-                }
               }
-            }
+            });
+          }
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
