@@ -9,7 +9,7 @@ https://meenkorjaamo.herokuapp.com/
 
 node 6 or higher required.
 Also angular cli is needed.
-Make sure you have Angular@cli version 1.0.2 installed in angular-src, check with ng -v. 
+Make sure you have @Angular/cli version 1.0.2 installed in angular-src folder, check with ng -v. 
 
 
 
