@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit {
             minTime: "07:00:00",
             maxTime: "18:00:00",
             allDaySlot: false,
-            height: 560,
+            height: 'auto',
             selectable: false,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
@@ -188,7 +188,7 @@ export class DashboardComponent implements OnInit {
 
       case 'öljynvaihto':{
         this.color = '#3a87ad';
-        this.duration = 2;
+        this.duration = 1;
         break;
       }
       case 'renkaidenvaihto':{
