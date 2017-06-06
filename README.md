@@ -1,10 +1,10 @@
 # MeanAppi
 
-This project aim is to create a web application where users can reserve times from calendar.
+This project aim is to create a web application where users can reserve times from calendar. 
+Project uses nodejs, express, angularjs 4 and mongodb hosted on mlab.
 
 Project is also hosted on heroku, altough version on heroku is not always latest.
 https://meenkorjaamo.herokuapp.com/
-
 
 node 6 or higher required.
 Also angular cli is needed.
