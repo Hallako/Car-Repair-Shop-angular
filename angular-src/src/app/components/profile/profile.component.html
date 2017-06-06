@@ -11,7 +11,7 @@
 
   <div class="profile-block changePw-block">
     <h2 class="page-header">Vaihda salasana</h2>
-    <form [formGroup]="changePwForm" (ngSubmit)="onPasswordChange()" class="login-form">
+    <form [formGroup]="changePwForm" (ngSubmit)="onPasswordChange() ; changePwForm.reset()" class="login-form">
         <div class="form-group" [ngClass]="{'has-error': changePwForm.get('password').invalid && !changePwForm.get('password').pristine}">
             <input type="password" class="form-control" formControlName="password" name="newPassword" placeholder="Uusi salasana" [ngClass]="{'form-control-danger': changePwForm.get('password').invalid && !changePwForm.get('password').pristine}">
         </div>

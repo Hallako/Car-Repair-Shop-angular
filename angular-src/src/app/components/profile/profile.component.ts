@@ -57,17 +57,16 @@ export class ProfileComponent implements OnInit {
   }
 
   onPasswordChange() {
-    console.log(this.changePwForm.value);
-    /*let user = {
+    let user = {
       id: this.authService.getUser().id,
-      password: this.newPassword
+      password: this.changePwForm.get('password').value
     };
 
     if (this.authService.loggedIn()) {
         this.authService.changePassword(user).subscribe(res => {
           this.flashmessage.show(res, { cssClass: 'alert-success', timeout: 3000 });;
-          location.reload();
+          //location.reload();
         });
-      }*/
+      }
     }
   }
