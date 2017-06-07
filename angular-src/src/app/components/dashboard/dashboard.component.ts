@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CalendarEvent } from 'angular-calendar';
 import { ValidateService } from '../../services/validate.service';
@@ -24,10 +24,11 @@ declare var jQuery: any;
 export class DashboardComponent implements OnInit {
 
     //Variables
+    duration: number;
     id: String;
     title: String;
-    start: Date;
-    end: Date;
+    start: String;
+    end: String;
     color: String;
     description: String;
     eventUsername: String;
@@ -37,13 +38,6 @@ export class DashboardComponent implements OnInit {
     calElement = null;
     events: Event[];
 
-
-    //declaring emitters
-    @Output('event-click')
-    eventClick = new EventEmitter();
-
-    @Output('select-changed')
-    selectionChanged = new EventEmitter();
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
@@ -59,9 +53,6 @@ export class DashboardComponent implements OnInit {
 
         //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
-            this.eventClick.emit(calEvent);
-
-            this.calElement.fullCalendar('unselect')
 
             var tempcolor = calEvent.backgroundColor;
             calEvent.backgroundColor = "#133313";
@@ -82,63 +73,8 @@ export class DashboardComponent implements OnInit {
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
 
-        //Selection change function
-        let selectCall = function (start, end, jsEvent, view) {
-
-            this.selectionChanged.emit(start, end, jsEvent, view);
-            this.calElement.fullCalendar('rerenderEvents');
-            if(view.type == 'month'){
-              this.calElement.fullCalendar('changeView', 'agendaWeek');
-              this.calElement.fullCalendar('gotoDate',  start);
-            } else {
-              this.end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              this.start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-            }
-            this.id = null;
-            this.description = null;
-            this.color = null;
-            this.title = null;
-
-            this.checkOverlap(start,end).then(res => {
-                if(res >= 2){
-                  this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
-                  this.calElement.fullCalendar('unselect');
-                }
-            });
-        };
-
-        //limit events
-        let allowFunc = function(selectionInfo) {
-          var user =  null;
-          var startt = null;
-          var endd = null;
-          var admin = true;
-          var overlapsend = 0;
-
-          var start = moment(selectionInfo.start).format('YYYY-MM-DD[T]HH:mm');
-          var end = moment(selectionInfo.end).format('YYYY-MM-DD[T]HH:mm');
-
-          this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
-
-            events.forEach(event => {
-              if(moment(end).isBetween(event.start, event.end)){
-                overlapsend++;
-              }
-            });
-            if(overlapsend >= 2){
-              //console.log(overlapsend)
-              return false;
-            }
-            //console.log(overlapsend)
-            return true
-          });
-        }
-
-
-        //binds
         let boundClick = clickFunc.bind(this);
-        let boundSelect = selectCall.bind(this);
-        let boundAllow = allowFunc.bind(this);
+
         //options
         let options: any = {
             header: {
@@ -181,19 +117,48 @@ export class DashboardComponent implements OnInit {
             maxTime: "18:00:00",
             allDaySlot: false,
             height: 560,
-            selectable: true,
+            selectable: false,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
-            unselectAuto: true,
-            unselectCancel: ".eventinfo",
+            unselectAuto: false,
             nowIndicator: true,
+            selectConstraint: 'businessHours',
+            eventConstraint: 'businessHours',
             eventClick: boundClick,
-            select: boundSelect,
-            selectAllow: boundAllow
+
+            //Event selection based on selected type of event.
+            dayClick: (date, jsEvent, view) => {
+
+              this.checkOverlap(date, moment(date).clone().add(this.duration, 'hours')).then(res => {
+
+                if ( view.type == 'month' ){
+                  this.calElement.fullCalendar('changeView', 'agendaWeek');
+                  this.calElement.fullCalendar('gotoDate', date);
+                } else {
+
+                if(res >= 2) {
+                  this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
+                  this.calElement.fullCalendar('unselect');
+                  this.start = null;
+                  this.end = null;
+                }
+
+                else if (this.title == undefined) {
+                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
+                }
+
+                else if( res < 2 ){
+                  this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
+                  this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+                  this.calElement.fullCalendar('select', this.start, this.end);
+                }
+              }
+            });
+          }
         };
         //options end and create calendar
         this.calElement.fullCalendar(options);
@@ -225,24 +190,30 @@ export class DashboardComponent implements OnInit {
 
       case 'öljynvaihto':{
         this.color = '#3a87ad';
+        this.duration = 2;
         break;
       }
       case 'renkaidenvaihto':{
         this.color = '#009933';
+        this.duration = 1;
         break;
       }
       case 'huolto':{
         this.color = '#cc0000';
+        this.duration = 6;
         break;
       }
       case 'korjaus':{
         this.color = '#999922';
+        this.duration = 8;
         break;
       }
-      case 'muu':{
-      this.color = '#333333';
-        break;
-      }
+  }
+
+  if (this.start != undefined || this.id != undefined) {
+    this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
+    this.calElement.fullCalendar('select', this.start, this.end);
+    //console.log(this.start, this.end);
   }
 }
 
@@ -259,6 +230,7 @@ export class DashboardComponent implements OnInit {
         end: this.end,
         backgroundColor: this.color,
         description: this.description,
+        confirm: false,
         user: curuser['id']
       }
 
@@ -293,38 +265,42 @@ export class DashboardComponent implements OnInit {
     return new Promise((resolve, reject) => {
 
       var user =  null;
-      var startt = null;
-      var endd = null;
+      var queryStart = moment(start).subtract(12, 'h');
+      var queryEnd = moment(end).add(12, 'h');
       var admin = true;
 
-      var midoverlapscounter = 0;
-      var midoverlapstorestart : any[] = [[]];
-      var midoverlapstoreend : any[] = [[]];
-      var midlaps : number[];
+      var overlapsCounter = 0;
+      var overlapsStart : any[] = [];
+      var overlapsEnd : any[] = [];
+      var overlaps : number[];
       var overlaped;
 
-      midlaps = new Array(10).fill(0);
+      overlaps = new Array(10).fill(0);
 
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
 
-      this.authService.getEvents(startt, endd, user, admin).subscribe(events => {
-
+      this.authService.getEvents(moment(queryStart).format('YYYY-MM-DD[T]HH:mm'),
+                                 moment(queryEnd).format('YYYY-MM-DD[T]HH:mm'),
+                                 user, admin).subscribe(events => {
         events.forEach(event => {
           if(moment(start).isBetween(event.start, event.end)){
-                        //tallennetaan ajat.
-            midoverlapstorestart[midoverlapscounter] = event.start;
-            midoverlapstoreend[midoverlapscounter] = event.end;
+
+            //tallennetaan ajat.
+            overlapsStart[overlapsCounter] = event.start;
+            overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
-            midoverlapscounter++;
+            overlapsCounter++;
           }
 
           else if(moment(end).isBetween(event.start, event.end)){
-                        //tallennetaan ajat.
-            midoverlapstorestart[midoverlapscounter] = event.start;
-            midoverlapstoreend[midoverlapscounter] = event.end;
+
+            //tallennetaan ajat.
+            overlapsStart[overlapsCounter] = event.start;
+            overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
-            midoverlapscounter++;
+
+            overlapsCounter++;
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -332,41 +308,42 @@ export class DashboardComponent implements OnInit {
               moment(event.start).isBetween(start, end,null,'[)')){
 
               //tallennetaan ajat.
-              midoverlapstorestart[midoverlapscounter] = event.start;
-              midoverlapstoreend[midoverlapscounter] = event.end;
+              overlapsStart[overlapsCounter] = event.start;
+              overlapsEnd[overlapsCounter] = event.end;
               overlaped = true;
-              midoverlapscounter++;
+              overlapsCounter++;
             }
           });
 
-          let i = 0;
-
+          let counter1 = 0;
           //jokaiselle eventille jotka ovat valinnan välissä.
-          midoverlapstorestart.forEach(eventti => {
+          overlapsStart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
-            var curstart = midoverlapstorestart[i];
-            var curend = midoverlapstoreend[i];
 
-            midoverlapstorestart.forEach(event => {
+            var currentStart = overlapsStart[counter1];
+            var currentEnd = overlapsEnd[counter1];
 
-              let t = 0;
+            overlapsStart.forEach(event => {
 
-              if(t == i){
-                t++;
+              let counter2 = 0;
+
+              if(counter2 == counter1){
+                counter2++;
               }
 
-              if(moment(curstart).isBetween(event,midoverlapstoreend[t],null,'[)')
-                || moment(curend).isBetween(event,midoverlapstoreend[t])){
-                    midlaps[i]++;
+              if(moment(currentStart).isBetween(event,overlapsEnd[counter2],null,'[)')
+                || moment(currentEnd).isBetween(event,overlapsEnd[counter2])){
+                    overlaps[counter1]++;
               }
-                t++;
-              });
-              i++;
+
+                counter2++;
             });
-        if(overlaped && midlaps[0] == 0) midlaps[0] = 1;
+            counter1++;
+          });
+        if(overlaped && overlaps[0] == 0) overlaps[0] = 1;
 
-      resolve(Math.max.apply(null, midlaps));
+      resolve(Math.max.apply(null, overlaps));
       });
     });
   }

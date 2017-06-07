@@ -5,4 +5,5 @@ export class Event {
   end: String
   start: String
   title: String
+  confirm: Boolean
 }
