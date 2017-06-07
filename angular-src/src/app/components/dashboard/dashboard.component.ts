@@ -89,14 +89,15 @@ export class DashboardComponent implements OnInit {
 
                 $.ajax({
                     url: 'http://localhost:8081/events/getevents/'
-                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
+                    +start+"/"+end+"/"+userId+"/"+ true,
                     dataType: 'json',
                     success: function(response) {
 
-                        if(curuser.admin){
+                        if(!curuser.admin){
                           response.forEach(event => {
-                            if(event.user != curuser.id){
-                              event.backgroundColor = '#71893f'
+                            console.log(event.user)
+                            if((event.user != curuser.id || event.user == null)){
+                              event.backgroundColor = '#71893f';
                               event.rendering = 'background';
                             }
                           });
@@ -145,6 +146,9 @@ export class DashboardComponent implements OnInit {
                   this.calElement.fullCalendar('gotoDate', date);
                 } else {
 
+                  this.calElement.fullCalendar('rerenderEvents');
+
+
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
@@ -155,19 +159,20 @@ export class DashboardComponent implements OnInit {
                 else if (this.title == undefined) {
                   this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
                 }
-                
+
                 else if( res < 2){
-                         
+
                   if(moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
                      moment(date).add(this.duration, 'hours').get('minute') == 30 ||
-                     moment(date).add(this.duration, 'hours').get('hour') > 18){
+                     moment(date).add(this.duration, 'hours').get('hour') > 18 ||
+                     moment(date).add(this.duration, 'hours').get('hour') < 7 ){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
-                    } 
+                    }
                   else {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
-                  } 
+                  }
                 }
               }
             });
@@ -313,6 +318,7 @@ export class DashboardComponent implements OnInit {
             overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
             overlapsCounter++;
+
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -335,9 +341,11 @@ export class DashboardComponent implements OnInit {
             var currentStart = overlapsStart[counter1];
             var currentEnd = overlapsEnd[counter1];
 
+
             overlapsStart.forEach(event => {
 
               let counter2 = 0;
+
 
               if(counter2 == counter1){
                 counter2++;
