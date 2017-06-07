@@ -4,25 +4,32 @@ import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
 import { Event } from '../admin/event'
 import * as moment from 'moment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent implements OnInit {
 
   user: Object;
 
-  newPassword: String;
-  newPassword2: String;
-
   events: Event[];
+  changePwForm : FormGroup;
 
   constructor(
     private authService: AuthService,
     private flashmessage: FlashMessagesService,
-    private router: Router) { }
+    private router: Router,
+    private fb: FormBuilder)
+    {
+      this.changePwForm = fb.group({
+      password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+      passwordConfirm: ['', Validators.required]
+    }, {validator: this.areEqual})
+    }
 
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
@@ -44,27 +51,22 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  onPasswordChange() {
-    this.newPassword;
-    this.newPassword2;
+  areEqual(group: FormGroup) {
+    return group.get('password').value === group.get('passwordConfirm').value
+      ? null : {'mismatch': true}
+  }
 
+  onPasswordChange() {
     let user = {
       id: this.authService.getUser().id,
-      password: this.newPassword
+      password: this.changePwForm.get('password').value
     };
 
     if (this.authService.loggedIn()) {
-      if (this.newPassword == this.newPassword2) {
         this.authService.changePassword(user).subscribe(res => {
           this.flashmessage.show(res, { cssClass: 'alert-success', timeout: 3000 });;
-          location.reload();
-        });
-      } else {
-        this.flashmessage.show('Vahvista salasana', {
-          cssClass: 'alert-danger',
-          timeout: 3000
+          //location.reload();
         });
       }
     }
   }
-}
