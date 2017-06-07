@@ -53,14 +53,13 @@ export class DashboardComponent implements OnInit {
 
         //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
+         
+          if(calEvent.title){
 
             var tempcolor = calEvent.backgroundColor;
-
             calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
-            this.calElement.fullCalendar('unselect');
-            this.calElement.fullCalendar('rerender');
 
             if(calEvent.user){
               this.updatename(calEvent);
@@ -71,10 +70,12 @@ export class DashboardComponent implements OnInit {
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.title = calEvent.title;
-
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
             this.onTitleChange();
+            this.calElement.fullCalendar('unselect');
+            this.calElement.fullCalendar('rerender');
+            }
         };
 
         let boundClick = clickFunc.bind(this);
@@ -99,7 +100,6 @@ export class DashboardComponent implements OnInit {
 
                         if(!curuser.admin){
                           response.forEach(event => {
-                            console.log(event.user)
                             if((event.user != curuser.id || event.user == null)){
                               event.backgroundColor = '#71893f';
                               event.rendering = 'background';
@@ -204,7 +204,6 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
-          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
@@ -310,6 +309,7 @@ export class DashboardComponent implements OnInit {
       start = moment(start).format('YYYY-MM-DD[T]HH:mm');
       end = moment(end).format('YYYY-MM-DD[T]HH:mm');
 
+
       this.authService.getEvents(moment(queryStart).format('YYYY-MM-DD[T]HH:mm'),
                                  moment(queryEnd).format('YYYY-MM-DD[T]HH:mm'),
                                  user, admin).subscribe(events => {
@@ -330,7 +330,6 @@ export class DashboardComponent implements OnInit {
             overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
             overlapsCounter++;
-
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -346,6 +345,7 @@ export class DashboardComponent implements OnInit {
           });
 
           let counter1 = 0;
+
           //jokaiselle eventille jotka ovat valinnan välissä.
           overlapsStart.forEach(eventti => {
 
@@ -353,11 +353,9 @@ export class DashboardComponent implements OnInit {
             var currentStart = overlapsStart[counter1];
             var currentEnd = overlapsEnd[counter1];
 
-
             overlapsStart.forEach(event => {
 
               let counter2 = 0;
-
 
               if(counter2 == counter1){
                 counter2++;
@@ -370,6 +368,7 @@ export class DashboardComponent implements OnInit {
 
                 counter2++;
             });
+
             counter1++;
           });
         if(overlaped && overlaps[0] == 0) overlaps[0] = 1;
