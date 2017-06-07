@@ -37,13 +37,14 @@ export class AdminComponent implements OnInit {
     private flashMessage: FlashMessagesService,
     private searchService: SearchService,
 
-  ) { this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
-      }
+  ) {
+    this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+  }
 
 
   ngOnInit() {
     this.getConfirms()
-    this.start =moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
+    this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
 
@@ -112,7 +113,11 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
       });
+<<<<<<< HEAD
     });
+=======
+    })
+>>>>>>> refs/heads/pr/21
     this.search = true;
   }
 }
