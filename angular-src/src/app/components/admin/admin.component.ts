@@ -106,13 +106,13 @@ export class AdminComponent implements OnInit {
     start = moment(this.start).format('YYYY-MM-DD[T]HH:mm');
     var userId = null
     var admin = true
-    this.authService.getEvents(start,
-                               end,
-                               userId, admin).subscribe(events => {
-                                 this.events = events
-                               })
-                               this.search = true;
+    this.authService.getEvents(start, end, userId, admin).subscribe(events => {
+      this.events = events
+      this.events.forEach(event => {
+        event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
+        event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+      });
+    });
+    this.search = true;
   }
-
-
 }
