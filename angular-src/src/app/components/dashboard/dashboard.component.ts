@@ -55,9 +55,16 @@ export class DashboardComponent implements OnInit {
         let clickFunc = function (calEvent, jsEvent, view) {
           if(calEvent.title) {
             var tempcolor = calEvent.backgroundColor;
+
             calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
+<<<<<<< HEAD
+=======
+            this.calElement.fullCalendar('unselect');
+            this.calElement.fullCalendar('rerender');
+
+>>>>>>> refs/remotes/Hallako/master
             if(calEvent.user){
               this.updatename(calEvent);
             } else {
@@ -65,14 +72,18 @@ export class DashboardComponent implements OnInit {
             }
             this.id = calEvent._id,
             this.description = calEvent.description;
-            this.url = calEvent.url;
             this.title = calEvent.title;
+
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+<<<<<<< HEAD
             this.onTitleChange()
             this.calElement.fullCalendar('unselect')
             this.calElement.fullCalendar('renrender')
           }
+=======
+            this.onTitleChange();
+>>>>>>> refs/remotes/Hallako/master
         };
 
         let boundClick = clickFunc.bind(this);
@@ -147,12 +158,14 @@ export class DashboardComponent implements OnInit {
                   this.calElement.fullCalendar('gotoDate', date);
                 } else {
 
-                  this.calElement.fullCalendar('rerenderEvents');
+                this.calElement.fullCalendar('rerenderEvents');
 
-
+                
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
+                  this.id = null;
+                  this.description = null;
                   this.start = null;
                   this.end = null;
                 }
@@ -168,8 +181,14 @@ export class DashboardComponent implements OnInit {
                      moment(date).add(this.duration, 'hours').get('hour') > 18 ||
                      moment(date).add(this.duration, 'hours').get('hour') < 7 ){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
+                        this.id = null;
+                        this.description = null;
+                        this.start = null;
+                        this.end = null;
                     }
                   else {
+                      this.id = null;
+                      this.description = null;
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
