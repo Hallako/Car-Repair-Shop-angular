@@ -74,7 +74,6 @@ export class DashboardComponent implements OnInit {
         };
 
         let boundClick = clickFunc.bind(this);
-
         //options
         let options: any = {
             header: {
@@ -124,7 +123,7 @@ export class DashboardComponent implements OnInit {
             minTime: "07:00:00",
             maxTime: "18:00:00",
             allDaySlot: false,
-            height: 560,
+            height: 'auto',
             selectable: false,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
@@ -141,13 +140,15 @@ export class DashboardComponent implements OnInit {
             dayClick: (date, jsEvent, view) => {
 
               this.checkOverlap(date, moment(date).clone().add(this.duration, 'hours')).then(res => {
- 
+
                 if ( view.type == 'month' ){
                   this.calElement.fullCalendar('changeView', 'agendaWeek');
                   this.calElement.fullCalendar('gotoDate', date);
                 } else {
+
                   this.calElement.fullCalendar('rerenderEvents');
-                  
+
+
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
@@ -158,20 +159,20 @@ export class DashboardComponent implements OnInit {
                 else if (this.title == undefined) {
                   this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
                 }
-                
+
                 else if( res < 2){
-                         
+
                   if(moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
                      moment(date).add(this.duration, 'hours').get('minute') == 30 ||
                      moment(date).add(this.duration, 'hours').get('hour') > 18 ||
                      moment(date).add(this.duration, 'hours').get('hour') < 7 ){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
-                    } 
+                    }
                   else {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
-                  } 
+                  }
                 }
               }
             });
@@ -207,7 +208,7 @@ export class DashboardComponent implements OnInit {
 
       case 'öljynvaihto':{
         this.color = '#3a87ad';
-        this.duration = 2;
+        this.duration = 1;
         break;
       }
       case 'renkaidenvaihto':{
@@ -302,7 +303,7 @@ export class DashboardComponent implements OnInit {
                                  user, admin).subscribe(events => {
         events.forEach(event => {
           if(moment(start).isBetween(event.start, event.end)){
-            
+
             //tallennetaan ajat.
             overlapsStart[overlapsCounter] = event.start;
             overlapsEnd[overlapsCounter] = event.end;
@@ -311,7 +312,7 @@ export class DashboardComponent implements OnInit {
           }
 
           else if(moment(end).isBetween(event.start, event.end)){
-            
+
             //tallennetaan ajat.
             overlapsStart[overlapsCounter] = event.start;
             overlapsEnd[overlapsCounter] = event.end;
@@ -337,12 +338,12 @@ export class DashboardComponent implements OnInit {
           overlapsStart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
+            var currentStart = overlapsStart[counter1];
+            var currentEnd = overlapsEnd[counter1];
 
-            var currentStart = overlapsStart[counter1]; 
-            var currentEnd = overlapsEnd[counter1]; 
 
             overlapsStart.forEach(event => {
-              
+
               let counter2 = 0;
 
 

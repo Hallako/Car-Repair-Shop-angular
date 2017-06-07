@@ -4,21 +4,19 @@ import { AuthService } from '../services/auth.service';
 import { Location } from '@angular/common'
 
 @Injectable()
-export class AdminGuard implements CanActivate{
-  constructor(private authService:AuthService,
-              private router: Router,
-              private location: Location) {
+export class AdminGuard implements CanActivate {
+  constructor(private authService: AuthService,
+    private router: Router,
+    private location: Location) {
   }
 
   canActivate() {
-    if(this.authService.getUser().admin === true){
-      return true;
+    if (this.authService.getAdmin() != null) {
+      if (this.authService.getAdmin() === true) {
+        return true;
+      }
     }
-    else {
       this.location.back()
       return false
-    }
   }
-
-
 }
