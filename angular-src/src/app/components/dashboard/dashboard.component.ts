@@ -53,24 +53,26 @@ export class DashboardComponent implements OnInit {
 
         //Event click function
         let clickFunc = function (calEvent, jsEvent, view) {
-
+          if(calEvent.title) {
             var tempcolor = calEvent.backgroundColor;
             calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
-
             if(calEvent.user){
               this.updatename(calEvent);
             } else {
               this.eventUsername = 'Hallinnon luoma';
             }
-
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
+            this.onTitleChange()
+            this.calElement.fullCalendar('unselect')
+            this.calElement.fullCalendar('renrender')
+          }
         };
 
         let boundClick = clickFunc.bind(this);
@@ -138,8 +140,7 @@ export class DashboardComponent implements OnInit {
             eventClick: boundClick,
             //Event selection based on selected type of event.
             dayClick: (date, jsEvent, view) => {
-
-              this.checkOverlap(date, moment(date).clone().add(this.duration, 'hours')).then(res => {
+              this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
                 if ( view.type == 'month' ){
                   this.calElement.fullCalendar('changeView', 'agendaWeek');
@@ -176,6 +177,7 @@ export class DashboardComponent implements OnInit {
                 }
               }
             });
+            //this.calElement.fullCalendar('updateEvent', event)
           }
         };
         //options end and create calendar
