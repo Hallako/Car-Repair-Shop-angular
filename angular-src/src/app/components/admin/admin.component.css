@@ -61,6 +61,7 @@
 .btn-primary {
     border-radius: 6px;
     margin-bottom: 10px;
+    float: left;
 }
 
 .btn-sm {
