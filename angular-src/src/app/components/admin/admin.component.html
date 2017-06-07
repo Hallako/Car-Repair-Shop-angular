@@ -1,11 +1,28 @@
+
 <div class="col-md-4">
     <div class="search-box" id="search-component">
         <h4>Hae käyttäjiä</h4>
         <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
         <div *ngIf="users">
-            <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null">{{ user.name }}</option>
+            <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false">{{ user.name }}</option>
         </div>
     </div>
+</div>
+<div class="col-md-4" *ngIf="!selectedUser">
+<form method="post">
+
+
+<div class="form-group">
+    <label>Aloitusaika</label>
+    <input type="datetime-local" step="1800" class="form-control" [(ngModel)]="start" name="start">
+</div>
+
+<div class="form-group">
+    <label>Päättymisaika</label>
+    <input type="datetime-local" id="endDate" step="1800" class="form-control" [(ngModel)]="end" name="end">
+</div>
+<input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
+</form>
 </div>
 
 <div class="col-md-4" *ngIf="selectedUser">
@@ -81,6 +98,31 @@
 </div>
 
 <div class="table-container" *ngIf="selectedUser">
+
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th>Toimenpide</th>
+                <th>Aloitusaika</th>
+                <th>Päättymisaika</th>
+                <th>Lisätietoja</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of events">
+                <td>{{event.title}}</td>
+                <td>{{event.start}}</td>
+                <td>{{event.end}}</td>
+                <td>{{event.description}}</td>
+                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table-container" *ngIf="search">
 
     <table class="table table-hover ">
         <thead>
