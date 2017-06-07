@@ -67,7 +67,7 @@ router.get('/getuserevents/:user/', (req, res, next) => {
 })
 
 router.get('/getconfirmevents/', (req, res, next) => {
-    event.find({confirm: false}, (err, event) => {
+    event.find({ confirm: false }, (err, event) => {
         if (err) throw err
         return res.json(event)
     })
@@ -75,8 +75,8 @@ router.get('/getconfirmevents/', (req, res, next) => {
 
 router.post('/confirm/:id', (req, res) => {
     event.findByIdAndUpdate(req.params.id, req.body.confirm, (err, event) => {
-      event.confirm = true;
-      event.save();
+        event.confirm = true;
+        event.save();
         if (err) {
             res.json({ success: false, msg: err });
         } else {

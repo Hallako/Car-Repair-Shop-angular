@@ -90,14 +90,15 @@ export class DashboardComponent implements OnInit {
 
                 $.ajax({
                     url: 'http://localhost:8081/events/getevents/'
-                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
+                    +start+"/"+end+"/"+userId+"/"+ true,
                     dataType: 'json',
                     success: function(response) {
 
-                        if(curuser.admin){
+                        if(!curuser.admin){
                           response.forEach(event => {
-                            if(event.user != curuser.id){
-                              event.backgroundColor = '#71893f'
+                            console.log(event.user)
+                            if((event.user != curuser.id || event.user == null)){
+                              event.backgroundColor = '#71893f';
                               event.rendering = 'background';
                             }
                           });
@@ -145,6 +146,7 @@ export class DashboardComponent implements OnInit {
                   this.calElement.fullCalendar('changeView', 'agendaWeek');
                   this.calElement.fullCalendar('gotoDate', date);
                 } else {
+                  this.calElement.fullCalendar('rerenderEvents');
                   
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
@@ -161,7 +163,8 @@ export class DashboardComponent implements OnInit {
                          
                   if(moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
                      moment(date).add(this.duration, 'hours').get('minute') == 30 ||
-                     moment(date).add(this.duration, 'hours').get('hour') > 18){
+                     moment(date).add(this.duration, 'hours').get('hour') > 18 ||
+                     moment(date).add(this.duration, 'hours').get('hour') < 7 ){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
                     } 
                   else {
