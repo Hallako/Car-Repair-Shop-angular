@@ -24,13 +24,15 @@ import { AuthService } from './services/auth.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard'
+import { LoginGuard } from './guards/login.guard'
+
 
 
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
-    {path:'register', component: RegisterComponent},
-    {path:'login', component: LoginComponent},
+    {path:'register', component: RegisterComponent, canActivate:[LoginGuard]},
+    {path:'login', component: LoginComponent, canActivate:[LoginGuard]},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
     {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
@@ -59,7 +61,7 @@ const appRoutes : Routes = [
     FlashMessagesModule,
     BrowserAnimationsModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService],
+  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
