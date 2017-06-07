@@ -11,14 +11,13 @@ export class AdminGuard implements CanActivate{
   }
 
   canActivate() {
-    if(this.authService.getUser().admin === true){
-      return true;
+    if ( this.authService.getUser() != null) {
+      if(this.authService.getUser().admin === true){
+        return true;
+      }
     }
-    else {
-      this.location.back()
-      return false
-    }
-  }
-
+    this.location.back()
+    return false
+}
 
 }

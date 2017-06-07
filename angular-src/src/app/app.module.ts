@@ -17,13 +17,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { HelpComponent } from './components/help/help.component';
 import { User } from './components/admin/user';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard'
+import { AdminGuard } from './guards/admin.guard';
+import { AccordionComponent } from './components/home/accordion/accordion.component';
 
 
 
@@ -31,6 +33,7 @@ const appRoutes : Routes = [
     {path:'', component: HomeComponent},
     {path:'register', component: RegisterComponent},
     {path:'login', component: LoginComponent},
+    {path: 'help', component: HelpComponent},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
     {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
@@ -48,6 +51,8 @@ const appRoutes : Routes = [
     CalendarComponent,
     FooterComponent,
     AdminComponent,
+    HelpComponent,
+    AccordionComponent,
   ],
 
   imports: [
