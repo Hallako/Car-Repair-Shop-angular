@@ -317,6 +317,7 @@ export class DashboardComponent implements OnInit {
             overlapsEnd[overlapsCounter] = event.end;
             overlaped = true;
             overlapsCounter++;
+
           }
 
           //jokaiselle eventille jos joku eventti valinnan sisällä.
@@ -336,12 +337,14 @@ export class DashboardComponent implements OnInit {
           overlapsStart.forEach(eventti => {
 
             //otetaan ajat talteen silmukkaa varten.
+
             var currentStart = overlapsStart[counter1]; 
             var currentEnd = overlapsEnd[counter1]; 
 
             overlapsStart.forEach(event => {
               
               let counter2 = 0;
+
 
               if(counter2 == counter1){
                 counter2++;
