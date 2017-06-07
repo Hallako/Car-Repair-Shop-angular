@@ -113,9 +113,8 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
       });
-    })
+    });
+
     this.search = true;
   }
-
-
 }
