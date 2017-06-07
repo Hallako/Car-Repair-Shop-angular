@@ -31,6 +31,10 @@ const EventSchema = mongoose.Schema({
         type: String
     },
 
+    confirm: {
+      type: Boolean
+    },
+
     user: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'User'

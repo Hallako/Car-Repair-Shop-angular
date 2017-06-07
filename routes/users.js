@@ -78,7 +78,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     res.json({ user: req.user });
 });
 
-//Returns user object bt passed id 
+//Returns user object bt passed id
 router.post('/getuserbyid', (req, res) => {
     User.getUserById(req.body.user, (err, response) => {
         res.json(response);
@@ -113,7 +113,7 @@ router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (
 //user update (admin)
 router.put('/update', (req, res) => {
     User.findByIdAndUpdate(req.body._id, req.body, callback => {
-        res.send('Toimiiko?');
+        res.json('Käyttäjä päivitetty');
     });
 });
 
