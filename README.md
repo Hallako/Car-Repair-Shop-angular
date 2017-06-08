@@ -1,16 +1,16 @@
 # MeanAppi
 
-This project aim is to create a web application where users can reserve times from calendar. 
-Project uses nodejs, express, angularjs 4 and mongodb hosted on mlab.
+This project aim is to create a web application where users can reserve times from calendar.</br>
+Project uses nodejs, express, angularjs 4 and mongodb hosted on mlab.</br>
 
-Project is also hosted on heroku, altough version on heroku is not always latest.
+Project is also hosted on heroku, altough version on heroku is not always latest.</br>
 https://meenkorjaamo.herokuapp.com/
 
-  
+</br>
 node 6 or higher required.
 Also angular cli is needed.
 Make sure you have @Angular/cli version 1.0.2 installed in angular-src folder, check with ng -v. 
-Install with "npm install @angular/cli@1.0.2" optionally with -g to install globally (note that 1.0.2 is not latest version,but rather what is useed in this project)
+Install with "npm install @angular/cli@1.0.2" optionally with -g to install globally (note that 1.0.2 is not latest version, but rather what is useed in this project)
 
 
 Installation:
@@ -24,4 +24,7 @@ Installation:
   
 FAQ:  
   Q: Nodemon is not a command.  
-  A: Run "npm install nodemon -g"
+  A: Run "npm install nodemon -g"</br>
+  </br>
+  Q: ng is not a command.
+  A: Make sure you have installe angular cli in project folder or globally.
