@@ -25,9 +25,6 @@ import { AuthService } from './services/auth.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
-import { AccordionComponent } from './components/home/accordion/accordion.component';
-
-
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
@@ -52,7 +49,6 @@ const appRoutes : Routes = [
     FooterComponent,
     AdminComponent,
     HelpComponent,
-    AccordionComponent,
   ],
 
   imports: [
