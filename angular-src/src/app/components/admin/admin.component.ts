@@ -99,7 +99,8 @@ export class AdminComponent implements OnInit {
 
   confirmEvent(event) {
     this.authService.confirmEvent(event._id).subscribe();
-    location.reload()
+    this.confirms.splice(this.confirms.indexOf(event),1);
+    this.flashMessage.show('Varaus hyväksytty', { cssClass: 'alert-success', timeout: 3000 });
   }
 
   eventSearch(start, end) {
