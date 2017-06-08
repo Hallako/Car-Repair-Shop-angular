@@ -113,12 +113,13 @@
         </thead>
         <tbody>
             <tr *ngFor="let event of events">
+
                 <td class="table-name">{{event.user}}</td>
                 <td class="desc">{{event.title}}</td>
                 <td class="desc">{{event.start}}</td>
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
-                <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
+                <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button></td>
             </tr>
         </tbody>
     </table>
@@ -139,13 +140,13 @@
         </thead>
         <tbody>
             <tr *ngFor="let event of events">
-              <td class="table-name">{{event.user}}</td>
-              <td class="desc">{{event.title}}</td>
-              <td class="desc">{{event.start}}</td>
-              <td class="desc">{{event.end}}</td>
-              <td class="table-text">{{event.description}}</td>
-              <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
-              <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
+                <td class="table-name">{{event.user}}</td>
+                <td class="desc">{{event.title}}</td>
+                <td class="desc">{{event.start}}</td>
+                <td class="desc">{{event.end}}</td>
+                <td class="table-text">{{event.description}}</td>
+                <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
+                    <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
 
             </tr>
         </tbody>
