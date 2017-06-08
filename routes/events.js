@@ -74,13 +74,15 @@ router.get('/getconfirmevents/', (req, res, next) => {
 })
 
 router.post('/confirm/:id', (req, res) => {
-    event.findByIdAndUpdate(req.params.id, req.body.confirm, (err, event) => {
-        event.confirm = true;
-        event.save();
+    console.log(req.params)
+    event.findById(req.params.id, (err, event) => {
         if (err) {
             res.json({ success: false, msg: err });
-        } else {
-            res.json({ success: true, msg: 'Removed succesfully' });
+        }
+        if (event) {
+            event.confirm = true;
+            event.save();
+            res.json({ success: true, msg: 'Confirmed' });
         }
     });
 });

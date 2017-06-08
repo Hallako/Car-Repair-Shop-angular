@@ -97,16 +97,22 @@ export class DashboardComponent implements OnInit {
                     success: function(response) {
                         if(!curuser.admin){
                           response.forEach(event => {
+
                             if((event.user != curuser.id || event.user == null)){
                               event.backgroundColor = '#71893f';
                               event.rendering = 'background';
                             }
-                      
+                            else if(event.confirm == false){
+                              event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                              event.textColor = '#111'
+                            }
+                            else if(event.confirm == true){
+                              event.backgroundColor = 'rgba(0, 170, 0, 0.7)';
+                            }
                           });
                         } else {
                           response.forEach(event => {
                             if(event.confirm == false){
-                              console.log(event.confirm);
                               event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
                               event.textColor = '#111'
                             }
@@ -218,14 +224,10 @@ export class DashboardComponent implements OnInit {
   }
 
   onConfirmClick(){
-
-      let event = {
-        _id: this.id,
-        confirm: true
-      }
-
-    this.authService.confirmEvent(event).subscribe();
-
+    this.authService.confirmEvent(this.id).subscribe(res =>{
+      this.calElement.fullCalendar( 'refetchEvents' )
+      this.flashMessage.show('Varaus Hyväksytty', {cssClass: 'alert-success', timeout:3000})
+    });
   } 
 
   //changes color according to selection
@@ -258,7 +260,6 @@ export class DashboardComponent implements OnInit {
   if (this.start != undefined || this.id != undefined) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
-    //console.log(this.start, this.end);
   }
 }
 
