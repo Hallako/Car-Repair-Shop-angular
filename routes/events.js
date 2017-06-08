@@ -74,7 +74,6 @@ router.get('/getconfirmevents/', (req, res, next) => {
 })
 
 router.post('/confirm/:id', (req, res) => {
-    console.log(req.params)
     event.findById(req.params.id, (err, event) => {
         if (err) {
             res.json({ success: false, msg: err });
