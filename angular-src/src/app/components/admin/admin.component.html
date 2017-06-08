@@ -74,7 +74,6 @@
                 Hyväksymättömät varaukset
             </legend>
             <tr>
-                <th>Käyttäjänimi</th>
                 <th>Toimenpide</th>
                 <th>Aloitusaika</th>
                 <th>Päättymisaika</th>
@@ -85,7 +84,6 @@
         </thead>
         <tbody>
             <tr *ngFor="let confirm of confirms">
-                <td class="desc">{{confirm.username}}</td>
                 <td class="desc">{{confirm.title}}</td>
                 <td class="desc">{{confirm.start}}</td>
                 <td class="desc">{{confirm.end}}</td>
