@@ -3,6 +3,32 @@
     height: auto;
 }
 
+.form {
+  float: right;
+  margin-right: 16px;
+}
+
+#input {
+  padding-right: 16px;
+}
+#searchDiv {
+  float: right;
+  padding: 0px;
+}
+#formSearch {
+  width: 70%;
+  float: right;
+}
+
+.form-group {
+  width:auto;
+}
+
+.search-box {
+
+  position: relative;
+}
+
 .hover {
     border-radius: 0px;
     border-top: 0px;
@@ -38,7 +64,6 @@
 }
 
 .col-md-4 {
-    display: inline-block;
     position: relative;
     width: 50%;
     margin-top: 2em;
@@ -70,9 +95,11 @@
 }
 
 .btn-primary {
+    display: inline-block;
     border-radius: 6px;
     margin-bottom: 10px;
-    float: left;
+    float: right;
+
 }
 
 .btn-sm {

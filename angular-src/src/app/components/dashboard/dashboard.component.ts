@@ -101,12 +101,11 @@ export class DashboardComponent implements OnInit {
                               event.backgroundColor = '#71893f';
                               event.rendering = 'background';
                             }
-                      
+
                           });
                         } else {
                           response.forEach(event => {
                             if(event.confirm == false){
-                              console.log(event.confirm);
                               event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
                               event.textColor = '#111'
                             }
@@ -226,7 +225,7 @@ export class DashboardComponent implements OnInit {
 
     this.authService.confirmEvent(event).subscribe();
 
-  } 
+  }
 
   //changes color according to selection
   onTitleChange(){
@@ -258,7 +257,6 @@ export class DashboardComponent implements OnInit {
   if (this.start != undefined || this.id != undefined) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
-    //console.log(this.start, this.end);
   }
 }
 
