@@ -82,26 +82,24 @@ export class AdminComponent implements OnInit {
     this.authService.delEvent(eventId).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Tapahtuma poistettu onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
+        this.confirms.splice(this.confirms.indexOf(eventId),1);
       } else {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
-      location.reload()
+
     })
 
   }
 
   getConfirms() {
     this.authService.getConfirmationEvents().subscribe(confirms => {
-      this.confirms = confirms
+      this.confirms = confirms;
       this.confirms.forEach(confirm => {
         confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
         confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(confirm).subscribe(user => {this.user = user
-        confirm.user = this.user.username
-      })
-
-
-
+          confirm.user = this.user.username
+        })
       });
     })
     return this.confirms
@@ -109,7 +107,8 @@ export class AdminComponent implements OnInit {
 
   confirmEvent(event) {
     this.authService.confirmEvent(event._id).subscribe();
-    location.reload();
+    this.confirms.splice(this.confirms.indexOf(event),1);
+    this.flashMessage.show('Varaus hyväksytty', { cssClass: 'alert-success', timeout: 3000 });
   }
 
   eventSearch(start, end) {

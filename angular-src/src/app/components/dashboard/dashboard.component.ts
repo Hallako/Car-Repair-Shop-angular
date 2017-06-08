@@ -32,8 +32,7 @@ export class DashboardComponent implements OnInit {
     color: String;
     description: String;
     eventUsername: String;
-    TempEvent:any;
-
+    confirm: Boolean = true;
     admin: Boolean = false;
     calElement = null;
     events: Event[];
@@ -64,6 +63,7 @@ export class DashboardComponent implements OnInit {
             } else {
               this.eventUsername = 'Hallinnon luoma';
             }
+            this.confirm = calEvent.confirm;
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.title = calEvent.title;
@@ -95,16 +95,24 @@ export class DashboardComponent implements OnInit {
                     +start+"/"+end+"/"+userId+"/"+ true,
                     dataType: 'json',
                     success: function(response) {
-
                         if(!curuser.admin){
                           response.forEach(event => {
                             if((event.user != curuser.id || event.user == null)){
                               event.backgroundColor = '#71893f';
                               event.rendering = 'background';
                             }
+                      
+                          });
+                        } else {
+                          response.forEach(event => {
+                            if(event.confirm == false){
+                              console.log(event.confirm);
+                              event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                              event.textColor = '#111'
+                            }
                           });
                         }
-                        callback(response)
+                      callback(response)
                     }
                 });
             },
@@ -209,6 +217,17 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onConfirmClick(){
+
+      let event = {
+        _id: this.id,
+        confirm: true
+      }
+
+    this.authService.confirmEvent(event).subscribe();
+
+  } 
+
   //changes color according to selection
   onTitleChange(){
 
@@ -259,11 +278,6 @@ export class DashboardComponent implements OnInit {
         confirm: false,
         user: curuser['id']
       }
-
-      /*if(this.admin){
-        event.user = null;
-      }*/
-
       if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
