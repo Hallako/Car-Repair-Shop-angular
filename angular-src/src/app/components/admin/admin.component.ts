@@ -93,7 +93,7 @@ export class AdminComponent implements OnInit {
       this.confirms.forEach(confirm => {
         confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
         confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
- 
+
       });
     })
     return this.confirms
