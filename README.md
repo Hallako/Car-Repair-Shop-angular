@@ -17,7 +17,7 @@ Installation:
 
   1. Get repo locally.
   2. Run npm install on project's root and in angular-src folder
-  3. Run nodemon or node app on root to start nodejs and ng serve in angular-src to start angular.
+  3. Run "nodemon" or "node app" on root to start nodejs and "ng serve" in angular-src to start angular.
   4. Open localhost:4200 in browser.  
   
   
