@@ -74,6 +74,7 @@
                 Hyväksymättömät varaukset
             </legend>
             <tr>
+                <th>Käyttäjänimi</th>
                 <th>Toimenpide</th>
                 <th>Aloitusaika</th>
                 <th>Päättymisaika</th>
@@ -84,6 +85,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let confirm of confirms">
+                <td class="desc">{{confirm.username}}</td>
                 <td class="desc">{{confirm.title}}</td>
                 <td class="desc">{{confirm.start}}</td>
                 <td class="desc">{{confirm.end}}</td>
@@ -115,7 +117,7 @@
                 <td>{{event.start}}</td>
                 <td>{{event.end}}</td>
                 <td>{{event.description}}</td>
-                <td><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
+                <td><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button></td>
             </tr>
         </tbody>
     </table>
