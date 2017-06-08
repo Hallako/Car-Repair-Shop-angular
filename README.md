@@ -27,4 +27,4 @@ FAQ:
   A: Run "npm install nodemon -g"</br>
   </br>
   Q: ng is not a command.</br>
-  A: Make sure you have installe angular cli in project folder or globally.
+  A: Make sure you have installed angular cli in project folder or globally.
