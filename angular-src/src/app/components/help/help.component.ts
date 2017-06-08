@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router }            from '@angular/router'
 
+import { AccordionComponent, AccordionGroupComponent } from './accordion/accordion.component'
+
 @Component({
   selector: 'app-help',
   templateUrl: './help.component.html',
@@ -9,16 +11,11 @@ import { Router }            from '@angular/router'
 
 export class HelpComponent implements OnInit {
 
-  @Input() active: boolean = false
+  test: string = "title";
 
   constructor() { }
 
   ngOnInit() {
   }
-
-  onClick(event) {
-    this.active = !this.active
-    console.log(this);
-}
 
 }

@@ -19,6 +19,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
 import { User } from './components/admin/user';
+import { AccordionComponent, AccordionGroupComponent } from './components/help/accordion/accordion.component';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
@@ -49,6 +50,8 @@ const appRoutes : Routes = [
     FooterComponent,
     AdminComponent,
     HelpComponent,
+    AccordionComponent,
+    AccordionGroupComponent
   ],
 
   imports: [
