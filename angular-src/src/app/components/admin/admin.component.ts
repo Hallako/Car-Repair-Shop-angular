@@ -28,6 +28,7 @@ export class AdminComponent implements OnInit {
   start: String
   end: String
   search: Boolean
+  username: String
 
 
   private searchTerm$ = new Subject<string>();
@@ -70,6 +71,9 @@ export class AdminComponent implements OnInit {
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(event).subscribe(user => {this.user = user
+        event.user = this.user.username
+      })
       });
     })
   }
@@ -92,6 +96,12 @@ export class AdminComponent implements OnInit {
       this.confirms.forEach(confirm => {
         confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
         confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(confirm).subscribe(user => {this.user = user
+        confirm.user = this.user.username
+      })
+
+
+
       });
     })
     return this.confirms
@@ -99,7 +109,7 @@ export class AdminComponent implements OnInit {
 
   confirmEvent(event) {
     this.authService.confirmEvent(event._id).subscribe();
-    location.reload()
+    location.reload();
   }
 
   eventSearch(start, end) {
@@ -112,9 +122,18 @@ export class AdminComponent implements OnInit {
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(event).subscribe(user => {this.user = user
+        event.user = this.user.username
+      })
       });
     });
 
     this.search = true;
   }
+
+  getEventUser(event) {
+    this.authService.getUserById(event).subscribe(user => {this.user = user
+    })
+  }
+
 }

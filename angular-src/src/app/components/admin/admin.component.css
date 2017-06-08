@@ -13,9 +13,20 @@
 }
 
 .desc {
-    width: 21%;
+    width: auto;
 }
 
+.table-text {
+  width: 15em;
+}
+
+.table-name {
+  width: 6%;
+}
+
+.table-last {
+  width: 160px;
+}
 .form-control {
     width: 50%;
 }

@@ -260,9 +260,9 @@ export class DashboardComponent implements OnInit {
         user: curuser['id']
       }
 
-      if(this.admin){
+      /*if(this.admin){
         event.user = null;
-      }
+      }*/
 
       if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
