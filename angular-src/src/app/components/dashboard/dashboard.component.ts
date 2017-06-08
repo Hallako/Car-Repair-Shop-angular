@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit {
                             else if(event.confirm == true){
                               event.backgroundColor = 'rgba(0, 170, 0, 0.7)';
                             }
+
                           });
                         } else {
                           response.forEach(event => {
@@ -229,6 +230,7 @@ export class DashboardComponent implements OnInit {
       this.flashMessage.show('Varaus Hyväksytty', {cssClass: 'alert-success', timeout:3000})
     });
   } 
+
 
   //changes color according to selection
   onTitleChange(){
