@@ -1,0 +1,8 @@
+<div class="panel panel-default">
+  <div class="panel-heading accordion-head" (click)="onClick($event)">{{ title }}</div>
+  <div class="panel-body accordion-body" [class.active]="active">
+  <p>
+    <ng-content></ng-content>
+  </p>
+  </div>
+</div>
