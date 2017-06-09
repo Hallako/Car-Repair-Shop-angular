@@ -1,0 +1,9 @@
+<div class="helpcontainer">
+  <section class="ac-container">
+    <accordion-group [exclusive]=true>
+      <accordion *ngFor="let test of tests" [title]="test.category">
+        <accordion *ngFor="let faq of test.faq" [title]="faq.header">{{faq.content}}</accordion>
+      </accordion>
+    </accordion-group>
+  </section>
+</div>
