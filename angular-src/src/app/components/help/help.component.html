@@ -1,9 +1,5 @@
 <div class="helpcontainer">
   <section class="ac-container">
-      <accordion-group [exclusive]="true">
-        <accordion [title]="this.test">Toimii</accordion>
-        <accordion [title]="this.test">Toimii</accordion>
-      </accordion-group>
-      <accordion [title]="this.test">Toimii</accordion>
+    <accordion *ngFor="let test of tests" [title]="test.header">{{test.content}}</accordion>
   </section>
 </div>
