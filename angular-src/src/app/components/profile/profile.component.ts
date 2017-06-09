@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
 
+import { Event } from '../admin/event'
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -14,6 +16,8 @@ export class ProfileComponent implements OnInit {
 
   newPassword:String;
   newPassword2:String;
+
+  events:Event[];
 
   constructor(
     private authService: AuthService,
@@ -29,8 +33,11 @@ export class ProfileComponent implements OnInit {
       return false;
     });
 
-
-  }
+    this.authService.getAllEvents(this.authService.getUser().id).subscribe(events => {
+      this.events = events;
+      //console.log(this.events);
+  })
+}
 
   onPasswordChange(){
     this.newPassword;

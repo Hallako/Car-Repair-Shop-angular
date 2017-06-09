@@ -17,8 +17,8 @@ users: User[]
 events: Event[]
 selectedUser: User
 editUser: User
-start: String
-end: String
+userEvents: User
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -28,8 +28,8 @@ end: String
 
   onSelect(user: User) {
     this.selectedUser = user
-    this.onEvents()
     this.editUser = null
+    this.onEvents();
   }
 
   editSelected() {
@@ -39,8 +39,9 @@ end: String
     this.authService.update(this.selectedUser).subscribe();
     location.reload()
   }
-onEvents() {
-  this.authService.getAllEvents(this.selectedUser._id).subscribe(events => this.events = events)
-}
+
+  onEvents() {
+    this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {this.events = events})
+  }
 
 }

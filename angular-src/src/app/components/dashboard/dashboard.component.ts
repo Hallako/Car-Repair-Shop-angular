@@ -21,6 +21,7 @@ export interface IEvent {
     textColor: string;
     className: string;
     borderColor: string;
+
 }
 
 declare var jQuery: any;
@@ -35,7 +36,6 @@ export class DashboardComponent implements OnInit {
     //Temporary event store
     id: String;
     title: String;
-    rekno: String;
     start: Date;
     end: Date;
     color: String;
@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit {
     TempEvent:any;
 
     admin: Boolean = false;
+    eventUsername: String;
 
     //declaring emitters
     @Input('height')
@@ -87,17 +88,19 @@ export class DashboardComponent implements OnInit {
         this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
-        
+
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
             this.eventClick.emit(calEvent);
 
             this.calElement.fullCalendar('unselect')
 
-            calEvent.backgroundColor = "#235323";
+            var tempcolor = calEvent.backgroundColor;
+            calEvent.backgroundColor = "#133313";
             this.calElement.fullCalendar( 'updateEvent', calEvent )
-            calEvent.backgroundColor = "#3a87ad";
+            calEvent.backgroundColor = tempcolor;
 
+            this.updatename(calEvent);
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
@@ -151,12 +154,12 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
-                    +start+"/"+end+"/"+userId+"/"+curuser.admin,
+                    url: 'http://localhost:8081/events/getevents/',
                     dataType: 'json',
                     success: function(response) {
+
                         callback(response)
-                        console.log(response);
+
                     }
                 });
             },
@@ -168,7 +171,7 @@ export class DashboardComponent implements OnInit {
 
             validRange: function(nowDate) {
                 return {
-                    start: moment(nowDate).subtract(1,'days'),
+                    start: moment(),
                     end: nowDate.clone().add(60, 'days')
                 };
             },
@@ -181,22 +184,23 @@ export class DashboardComponent implements OnInit {
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
-            longPressDelay: 275,
             slotLabelFormat: 'H:mm',
             aspectRatio: 1,
             fixedWeekCount : false,
             selectHelper: true,
             unselectAuto: true,
             unselectCancel: ".eventinfo",
+            nowIndicator: true,
             eventRender: boundRender,
             eventClick: boundClick,
             viewRender: boundView,
             select: boundSelect,
         };
+        //options end
         this.calElement.fullCalendar(options);
   }
 
-  //event delete
+  //Event delete
   onDeleteClick(){
     var Id = this.id;
 
@@ -206,15 +210,44 @@ export class DashboardComponent implements OnInit {
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar('removeEvents', Id);
         } else {
+          console.log(data);
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
     } else {
-        this.flashMessage.show('Select an event', {cssClass: 'alert-danger', timeout:3000});
+        this.flashMessage.show('Valitse tapahtuma', {cssClass: 'alert-danger', timeout:3000});
     }
   }
 
-  //event add form
+  onTitleChange(){
+
+    switch(this.title){
+
+      case 'öljynvaihto':{
+        this.color = '#3a87ad';
+        break;
+      }
+      case 'renkaidenvaihto':{
+        this.color = '#009933';
+        break;
+      }
+      case 'huolto':{
+        this.color = '#cc0000';
+        break;
+      }
+      case 'korjaus':{
+        this.color = '#999922';
+        break;
+      }
+      case 'muu':{
+      this.color = '#333333';
+        break;
+      }
+  }
+}
+
+
+  //Event adding func
   onEventSubmit(){
    var curuser = this.authService.getUser();
    var user: String;
@@ -229,12 +262,16 @@ export class DashboardComponent implements OnInit {
         user: curuser['id']
       }
 
-      if(event.title && event.start && event.user){
+      if(this.admin){
+        event.user = null;
+      }
+
+      if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
             this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout:3000});
             this.calElement.fullCalendar( 'refetchEvents' );
-            this.calElement.fullcalendar( 'unselect' );
+            this.calElement.fullCalendar( 'unselect' );
         } else {
 
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
@@ -244,5 +281,4 @@ export class DashboardComponent implements OnInit {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
      }
   }
-
-}
+  }
