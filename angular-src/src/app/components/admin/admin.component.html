@@ -1,15 +1,13 @@
 <div class="col-md-4">
   <div class="search-box" id="search-component">
     <h4>Hae käyttäjiä</h4>
-    <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" />
+    <input #searchBox id="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off"/>
     <div *ngIf="users">
       <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false">{{ user.name }}</option>
     </div>
   </div>
-</div>
 
-<div class="col-md-4" *ngIf="!selectedUser" id="serchDiv">
-  <form class="form-horizontal" id="formSearch" method="post">
+  <div class="form-horizontal right" id="formSearch" *ngIf="!selectedUser">
     <h4>Hae tapahtumia ajalla</h4>
     <div class="form-group">
       <label class="col-lg-2 control-label">Alkamisaika</label>
@@ -20,7 +18,7 @@
       <input type="datetime-local" step="1800" class="form-control form" id="input" [(ngModel)]="end" name="end">
     </div>
     <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
-  </form>
+  </div>
 </div>
 
 
