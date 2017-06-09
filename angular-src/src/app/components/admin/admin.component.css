@@ -3,6 +3,12 @@
     height: auto;
 }
 
+.right {
+  width:250%;
+  position: relative;
+  float: right;
+}
+
 .form {
   float: right;
   margin-right: 16px;
@@ -16,17 +22,12 @@
   padding: 0px;
 }
 #formSearch {
-  width: 70%;
+  width: 40%;
   float: right;
 }
 
 .form-group {
   width:auto;
-}
-
-.search-box {
-
-  position: relative;
 }
 
 .hover {
@@ -59,13 +60,13 @@
 
 .search-box {
     position: absolute;
-    width: 100%;
+    width: 50%;
     z-index: 99999;
 }
 
 .col-md-4 {
     position: relative;
-    width: 50%;
+    width: 100%;
     margin-top: 2em;
 }
 
