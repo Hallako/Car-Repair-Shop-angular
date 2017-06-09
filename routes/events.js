@@ -6,10 +6,8 @@ const config = require('../config/database');
 const event = require('../models/event');
 const mongoose = require('mongoose');
 
-
 //Add Post
 router.post('/addevent', (req, res, next) => {
-
     let newEvent = new event({
         _id: req.body._id,
         title: req.body.title,
@@ -42,18 +40,12 @@ router.delete('/deleteevent/:id', (req, res) => {
 
 
 //get posts
-router.get('/getevents/', (req, res, next) => {
-        event.find({}, function(req, event) {
-            console.log(event);
-            res.json(event);
-        });
+router.get('/getevents/:start/:end?', (req, res, next) => {
+    event.find({
+        start: { $gte: req.params.start, $lt: req.params.end }
+    }, function(req, event) {
+        res.json(event);
+    });
 });
-
-router.get('/getuserevents/:user/', (req, res, next) => {
-    event.find({ user: req.params.user }, (err, event) => {
-        if (err) throw (err)
-        return res.json(event)
-    })
-})
 
 module.exports = router;

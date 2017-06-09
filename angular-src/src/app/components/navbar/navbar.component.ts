@@ -20,5 +20,16 @@ export class NavbarComponent implements OnInit {
             ) {}
 
   ngOnInit() {
+    
+  }
+
+    onLogoutClick(){
+    this.authService.logout();
+    this.flashMessage.show('Olet nyt kirjautunut ulos.',{
+      cssClass:'alert-success',
+      timeout: 3000
+    });
+    this.router.navigate(['/login']);
+    return false;
   }
 }

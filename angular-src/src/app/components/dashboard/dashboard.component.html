@@ -12,12 +12,11 @@
 
             <div class="form-group">
                 <label>Toimenpide</label>
-                <select type="text" class="form-control" [(ngModel)]="title" name="title" required>
-                    <option value="öljynvaihto">Öljynvaihto</option>
-                    <option value="renkaidenvaihto">Renkaidenvaihto</option>
-                    <option value="huolto">Huolto</option>
-                    <option value="korjaus">Korjaus</option>
-                    <option value="muu">Muu</option>
+                <select type="text" class="form-control" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
+                    <option value="öljynvaihto" style="background-color: #3a87ad; color:#ffffff">Öljynvaihto</option>
+                    <option value="renkaidenvaihto" style="background-color: #009933; color:#ffffff">Renkaidenvaihto</option>
+                    <option value="huolto" style="background-color: #cc0000; color:#ffffff">Huolto</option>
+                    <option value="korjaus" style="background-color: #999922; color:#ffffff">Korjaus</option>
                 </select>
             </div>
 
@@ -29,23 +28,6 @@
             <div class="form-group">
                 <label>Päättymisaika</label>
                 <input type="datetime-local" disabled class="form-control" [(ngModel)]="end" name="end">
-            </div>
-
-            <div class="form-group">
-
-                <label style="width:100%">Väri</label>
-
-                <div>
-                    <select type="text" class="form-control" style="width:75%" [(ngModel)]="color" name="color">
-                    <option value="#3a87ad">Oletus</option>
-                    <option value="#cc0000">Punainen</option>
-                    <option value="#009933">Vihreä</option>
-                    <option value="#005ce6">Sininen</option>
-                    <option value="#8600b3">Violetti</option>
-                    <option value="#33cccc">Syaani</option>
-                </select>
-                    <div id="colorHelper" [style.backgroundColor]="color"></div>
-                </div>
             </div>
 
             <div class="form-group">

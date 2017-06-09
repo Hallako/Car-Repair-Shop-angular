@@ -4,9 +4,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 import {tokenNotExpired} from 'angular2-jwt';
 import { Subject } from 'rxjs/Subject'
-import { User } from '../components/admin/user'
 import {Observable} from 'rxjs/Rx';
-import { Event } from '../components/admin/event'
 
 @Injectable()
 export class AuthService {
@@ -24,43 +22,19 @@ export class AuthService {
     this.loadToken();
   }
 
-  //###### User functions ##########
-  registerUser(user) {
-    let headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    return this.http.post(this.nodeUrl + 'users/register/', user, { headers: headers })
-      .map(res => res.json());
+  
+  private handleError(error: any): Promise<any> {
+    console.error('An error occured', error);
+    return Promise.reject(error.message || error);
   }
+
+  //###### User functions ##########
 
   authenticateUser(user) {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
     return this.http.post(this.nodeUrl + 'users/authenticate/', user, { headers: headers })
       .map(res => res.json());
-  }
-
-  getProfile() {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-type', 'application/json');
-    return this.http.get(this.nodeUrl + 'users/profile/', { headers: headers })
-      .map(res => res.json());
-  }
-
-  changePassword(user) {
-    let headers = new Headers();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-type', 'application/json');
-    //console.log(user);
-    return this.http.post(this.nodeUrl + 'users/password/', user, { headers: headers })
-      .map(res => res.json());
-  }
-
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occured', error);
-    return Promise.reject(error.message || error);
   }
 
   //###### Storage functions ##########
@@ -94,28 +68,6 @@ export class AuthService {
     localStorage.clear();
   }
 
-  getAdmin() {
-    if (this.loggedIn())
-      return this.getUser().admin
-  }
-
-  getAllUser(): Observable<User[]> {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-type', 'application/json');
-    return this.http.get(this.nodeUrl + 'users/admin', { headers: headers })
-      .map((res: Response) => res.json()).catch(this.handleError);
-  }
-
-  update(user: User): Observable<User> {
-    let headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    return this.http.put(this.nodeUrl + 'users/update', user, { headers: headers })
-      .map((res: Response) => res.json()).catch(this.handleError);
-  }
-
-
   //###### Event functions ##########
   addEvent(event) {
     let headers = new Headers();
@@ -131,23 +83,11 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  getEvents(): Observable<Event[]> {
+  getEvents(){
     let headers = new Headers();
-    //this.loadToken();
-    //headers.append('Authorization', this.authToken);
     headers.append('Content-type', 'application/json');
-    return this.http.get(this.nodeUrl + 'events/getevents/'
+    return this.http.get(this.nodeUrl + 'events/getevents/'//start + end
     , { headers: headers })
       .map((res: Response) => res.json());
   }
-
-  getAllEvents(user): Observable<Event[]> {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-type', 'application/json');
-    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: headers })
-    .map((res: Response) => res.json()).catch(this.handleError);
-  }
-
 }

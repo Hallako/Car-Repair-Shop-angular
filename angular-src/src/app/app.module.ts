@@ -6,22 +6,23 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlashMessagesModule } from 'angular2-flash-messages';
-import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard'
 import { FooterComponent } from './components/footer/footer.component';
-import { User } from './components/admin/user'
 
 const appRoutes : Routes = [
-    {path:'', component: DashboardComponent},
+    { path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+    { path:'login', component: LoginComponent },
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: '**', redirectTo: '/dashboard', pathMatch: 'full' }
 ]
 
 @NgModule({
@@ -31,6 +32,7 @@ const appRoutes : Routes = [
     DashboardComponent,
     CalendarComponent,
     FooterComponent,
+    LoginComponent
   ],
 
   imports: [
@@ -41,10 +43,8 @@ const appRoutes : Routes = [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     BrowserAnimationsModule,
-    NgbDatepickerModule,
-    NgbTimepickerModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard],
+  providers: [ValidateService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

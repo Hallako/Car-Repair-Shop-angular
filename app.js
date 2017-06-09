@@ -7,8 +7,7 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
-var fs = require('fs');
-var http = require('http');
+const http = require('http');
 
 //DB conf
 mongoose.connect(config.database);
@@ -52,7 +51,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/index.html'));
+    res.redirect('/dashboard')
 });
 
 var httpServer = http.createServer(app);

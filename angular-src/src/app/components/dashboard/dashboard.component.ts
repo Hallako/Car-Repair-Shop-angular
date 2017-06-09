@@ -11,19 +11,6 @@ import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
 
-export interface IEvent {
-    title: string;
-    description: string;
-    start: Date;
-    end: Date;
-    type: string;
-    backgroundColor: string;
-    textColor: string;
-    className: string;
-    borderColor: string;
-
-}
-
 declare var jQuery: any;
 
 @Component({
@@ -40,41 +27,12 @@ export class DashboardComponent implements OnInit {
     end: Date;
     color: String;
     description: String;
-    TempEvent:any;
-
-    admin: Boolean = false;
-    eventUsername: String;
-
-    //declaring emitters
-    @Input('height')
-    public height: number;
-
-    @Output('event-click')
-    eventClick = new EventEmitter();
-
-    @Output('month-changed')
-    monthChanged = new EventEmitter();
-
-    @Output('date-change')
-    dateChange = new EventEmitter();
-
-    @Output('select-changed')
-    selectionChanged = new EventEmitter();
 
     calElement = null;
 
-    addEvents(events: IEvent[]) {
-        this.calElement = $('#myCalendar');
-        if (!_.isNil(events)) {
-            $('#myCalendar').fullCalendar('addEventSource', events);
-        }
-    }
 
-    getCurrentMonth() {
-        const currentdate = <any>$("#myCalendar").fullCalendar('getDate');
-        return currentdate.month();
-    }
-
+    @Output('select-changed')
+    selectionChanged = new EventEmitter();
 
   constructor(private validateService: ValidateService,
        private authService: AuthService,
@@ -83,9 +41,9 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
+
         var curuser = this.authService.getUser();
         var userId = curuser.id;
-        this.admin = curuser.admin;
 
         this.calElement = $('#myCalendar');
 
@@ -109,18 +67,10 @@ export class DashboardComponent implements OnInit {
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
 
-        let eventRender = function (event, element) {
-            const args = {event: event, view: element};
-            this.dateChange.emit(args);
-        };
-
-         let viewRender = function (view, element) {
-            this.monthChanged.emit(view.intervalStart.month());
-        };
-
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
-            this.calElement.fullCalendar('rerenderEvents');
+
+            
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
               this.calElement.fullCalendar('gotoDate',  start);
@@ -135,9 +85,7 @@ export class DashboardComponent implements OnInit {
         };
 
         //binds
-        let boundRender = eventRender.bind(this);
         let boundClick = clickFunc.bind(this);
-        let boundView = viewRender.bind(this);
         let boundSelect = selectCall.bind(this);
 
         //options
@@ -154,16 +102,16 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:8081/events/getevents/',
+                    url: 'http://localhost:8081/events/getevents/'
+                    +start+"/"+end,
                     dataType: 'json',
                     success: function(response) {
-
                         callback(response)
-
                     }
                 });
             },
-              businessHours: {
+
+            businessHours: {
               dow: [1, 2, 3, 4, 5],
               start: '7:00',
               end: '18:00',
@@ -175,12 +123,13 @@ export class DashboardComponent implements OnInit {
                     end: nowDate.clone().add(60, 'days')
                 };
             },
-            hiddenDays:[0,6],
+
+            hiddenDays: [0,6],
             locale: 'fi',
             minTime: "07:00:00",
             maxTime: "18:00:00",
             allDaySlot: false,
-            height: 560,
+            height: 'auto',
             selectable: true,
             defaultView: 'agendaWeek',
             timeFormat: 'H:mm',
@@ -191,11 +140,10 @@ export class DashboardComponent implements OnInit {
             unselectAuto: true,
             unselectCancel: ".eventinfo",
             nowIndicator: true,
-            eventRender: boundRender,
             eventClick: boundClick,
-            viewRender: boundView,
             select: boundSelect,
         };
+
         //options end
         this.calElement.fullCalendar(options);
   }
@@ -203,7 +151,6 @@ export class DashboardComponent implements OnInit {
   //Event delete
   onDeleteClick(){
     var Id = this.id;
-
     if(Id){
       this.authService.delEvent(Id).subscribe(data => {
       if( data.success ){
@@ -220,7 +167,6 @@ export class DashboardComponent implements OnInit {
   }
 
   onTitleChange(){
-
     switch(this.title){
 
       case 'öljynvaihto':{
@@ -262,10 +208,6 @@ export class DashboardComponent implements OnInit {
         user: curuser['id']
       }
 
-      if(this.admin){
-        event.user = null;
-      }
-
       if(event.title && event.start){
       this.authService.addEvent(event).subscribe(data => {
         if( data.success ){
@@ -273,12 +215,11 @@ export class DashboardComponent implements OnInit {
             this.calElement.fullCalendar( 'refetchEvents' );
             this.calElement.fullCalendar( 'unselect' );
         } else {
-
             this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout:3000});
         }
       });
     } else {
        this.flashMessage.show('Anna toimenpide ja ajat', {cssClass: 'alert-danger', timeout:3000});
-     }
+    }
   }
-  }
+}
