@@ -71,8 +71,11 @@ export class AdminComponent implements OnInit {
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
-        this.authService.getUserById(event).subscribe(user => {this.user = user
-        event.user = this.user.username
+        this.authService.getUserById(event).subscribe(user => {
+          if(user != null) {
+                    this.user = user
+                    event.user = this.user.username
+                  }else event.user = 'Hallinnon luoma'
       })
       });
     })
@@ -98,7 +101,9 @@ export class AdminComponent implements OnInit {
         confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
         confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(confirm).subscribe(user => {this.user = user
+          if(user != null) {
           confirm.user = this.user.username
+        } else confirm.user = 'Hallinnon luoma'
         })
       });
     })
@@ -121,8 +126,11 @@ export class AdminComponent implements OnInit {
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
-        this.authService.getUserById(event).subscribe(user => {this.user = user
-        event.user = this.user.username
+        this.authService.getUserById(event).subscribe(user => {
+          if(user != null) {
+            this.user = user
+            event.user = this.user.username
+          }else event.user = 'Hallinnon luoma'
       })
       });
     });
