@@ -2,7 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router }                                         from '@angular/router';
 
 import { AccordionComponent, AccordionGroupComponent }    from './accordion/accordion.component';
-import { Help }                                           from './help';
+import { Help, HelpCategory }                             from './help';
+
+
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-help',
@@ -12,23 +15,13 @@ import { Help }                                           from './help';
 
 export class HelpComponent implements OnInit {
 
-  tests: Help[]
+  tests: HelpCategory[]
 
-  constructor() {
-
-    var header: string
-
-    header = "terve";
-    const test2 = [] = [{
-      header: header,
-      content: "terve"
-    }, {
-      header: "pää",
-      content: "pöö"
-    }]
-    this.tests = test2;
-
-    console.log(this.tests)
+  constructor(private http: Http) {
+    this.http.get('assets/help.json').subscribe(res => {
+      this.tests = res.json();
+    }
+  )
   }
 
   ngOnInit() {
