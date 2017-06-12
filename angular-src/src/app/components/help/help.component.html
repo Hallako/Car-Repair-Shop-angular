@@ -1,4 +1,26 @@
 <div class="helpcontainer">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Miten varaat ajan</h3>
+    </div>
+    <div class="panel-body">
+      <ol>
+        <li class="helptext">Valitse haluamasi toimenpide "Toimenpide"-laatikosta</li>
+        <li class="helptext">Valitse kalenterista toimenpiteen alkamisaika
+            <ul>
+              <li class="helptext">Kalenterissa näkyvät vaaleat laatikot ovat varattuja aikoja. Voit kuitenkin varata ajan niiden päälle.</li>
+              <li class="helptext">Kalenterissa näkyvät tummat laatikot ovat ruuhka-aikoja. <strong>Et voi varata näitä aikoja itsellesi.</strong></li>
+            </ul>
+        </li>
+        <li class="helptext">Näet valitsemasi tapahtuman alkamis- ja päättymisajat niille osoitetuista kentistä.</li>
+        <li class="helptext">Lisätietoja-kenttään voit antaa lisätietoja tarvitsemastasi palvelusta</li>
+        <li class="helptext">Vahvista valitsemasi tapahtuma Tee varaus-painikkeella.</li>
+        <li class="helptext">Kun korjaamo vahvistaa ajanvarauksesi, saat sähköpostin ilmoituksena.</li>
+        <a class="helptext"[routerLink]="['/dashboard']">Ajanvaraukseen</a>
+      </ol>
+    </div>
+  </div>
+  <h3>Usein kysyttyjä kysymyksiä:</h3>
   <section class="ac-container">
     <accordion-group [exclusive]=true>
       <accordion *ngFor="let test of tests" [title]="test.category">
