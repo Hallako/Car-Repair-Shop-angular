@@ -40,12 +40,14 @@
                 <textarea class="form-control" rows="2" [(ngModel)]="description" name="description"> </textarea>
             </div>
 
-            <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Päivitä">
+            <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Tee Varaus">
             <input type="submit" (click)="onConfirmClick()" *ngIf="!confirm && admin" class="btn btn-primary" value="Hyväksy">
             <input type="submit" (click)="onDeleteClick()" *ngIf="admin" class="btn btn-primary" value="Poista">
 
         </form>
 
     </div>
-
+    <p>
+      <a [routerLink]="['/help']">Ohje ajavarauksen tekemiseen</a>
+    </p>
 </div>
