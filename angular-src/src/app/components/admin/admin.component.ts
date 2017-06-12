@@ -25,6 +25,10 @@ export class AdminComponent implements OnInit {
   events: Event[]
   selectedUser: User
   editUser: User
+  start: String
+  end: String
+  search: Boolean
+  username: String
 
 
   private searchTerm$ = new Subject<string>();
@@ -34,11 +38,15 @@ export class AdminComponent implements OnInit {
     private flashMessage: FlashMessagesService,
     private searchService: SearchService,
 
-  ) { this.searchService.search(this.searchTerm$).subscribe(users => this.users = users) }
+  ) {
+    this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+  }
 
 
   ngOnInit() {
     this.getConfirms()
+    this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
+    this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
 
   onSelect(user: User) {
@@ -63,6 +71,12 @@ export class AdminComponent implements OnInit {
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(event).subscribe(user => {
+          if(user != null) {
+                    this.user = user
+                    event.user = this.user.username
+                  }else event.user = 'Hallinnon luoma'
+      })
       });
     })
   }
@@ -71,25 +85,62 @@ export class AdminComponent implements OnInit {
     this.authService.delEvent(eventId).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Tapahtuma poistettu onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
+        this.confirms.splice(this.confirms.indexOf(eventId),1);
       } else {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
-      location.reload()
+
     })
 
   }
 
   getConfirms() {
     this.authService.getConfirmationEvents().subscribe(confirms => {
-      this.confirms = confirms
+      this.confirms = confirms;
+      this.confirms.forEach(confirm => {
+        confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
+        confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(confirm).subscribe(user => {this.user = user
+          if(user != null) {
+          confirm.user = this.user.username
+        } else confirm.user = 'Hallinnon luoma'
+        })
+      });
     })
     return this.confirms
   }
 
   confirmEvent(event) {
     this.authService.confirmEvent(event._id).subscribe();
-    location.reload()
+    this.confirms.splice(this.confirms.indexOf(event),1);
+    this.flashMessage.show('Varaus hyväksytty', { cssClass: 'alert-success', timeout: 3000 });
   }
 
+  eventSearch(start, end) {
+    end = moment(this.end).format('YYYY-MM-DD[T]HH:mm');
+    start = moment(this.start).format('YYYY-MM-DD[T]HH:mm');
+    var userId = null
+    var admin = true
+    this.authService.getEvents(start, end, userId, admin).subscribe(events => {
+      this.events = events
+      this.events.forEach(event => {
+        event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
+        event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(event).subscribe(user => {
+          if(user != null) {
+            this.user = user
+            event.user = this.user.username
+          }else event.user = 'Hallinnon luoma'
+      })
+      });
+    });
+
+    this.search = true;
+  }
+
+  getEventUser(event) {
+    this.authService.getUserById(event).subscribe(user => {this.user = user
+    })
+  }
 
 }
