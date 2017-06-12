@@ -164,18 +164,17 @@ export class DashboardComponent implements OnInit {
 
                 this.calElement.fullCalendar('rerenderEvents');
 
+                if (this.title == undefined) {
+                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
+                }
 
-                if(res >= 2) {
+                else if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
                   this.id = null;
                   this.description = null;
                   this.start = null;
                   this.end = null;
-                }
-
-                else if (this.title == undefined) {
-                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
                 }
 
                 else if( res < 2){
@@ -229,7 +228,7 @@ export class DashboardComponent implements OnInit {
       this.calElement.fullCalendar( 'refetchEvents' )
       this.flashMessage.show('Varaus Hyväksytty', {cssClass: 'alert-success', timeout:3000})
     });
-  } 
+  }
 
 
   //changes color according to selection
