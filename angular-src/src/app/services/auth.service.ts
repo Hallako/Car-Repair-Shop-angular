@@ -188,8 +188,7 @@ export class AuthService {
     .map((res: Response) => res.json()).catch(this.handleError);
   }
 
-  confirmEvent(event: Event): Observable<Event> {
-    console.log(event)
+  confirmEvent(event): Observable<Event> {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
     return this.http.post(this.nodeUrl + 'events/confirm/'+ event, { headers: headers })

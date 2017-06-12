@@ -3,6 +3,33 @@
     height: auto;
 }
 
+.right {
+  width:250%;
+  position: relative;
+  float: right;
+}
+
+.form {
+  float: right;
+  margin-right: 16px;
+}
+
+#input {
+  padding-right: 16px;
+}
+#searchDiv {
+  float: right;
+  padding: 0px;
+}
+#formSearch {
+  width: 40%;
+  float: right;
+}
+
+.form-group {
+  width:auto;
+}
+
 .hover {
     border-radius: 0px;
     border-top: 0px;
@@ -13,23 +40,33 @@
 }
 
 .desc {
-    width: 21%;
+    width: auto;
 }
 
+.table-text {
+  width: 15em;
+}
+
+.table-name {
+  width: 6%;
+}
+
+.table-last {
+  width: 160px;
+}
 .form-control {
     width: 50%;
 }
 
 .search-box {
     position: absolute;
-    width: 100%;
+    width: 50%;
     z-index: 99999;
 }
 
 .col-md-4 {
-    display: inline-block;
     position: relative;
-    width: 50%;
+    width: 100%;
     margin-top: 2em;
 }
 
@@ -59,8 +96,11 @@
 }
 
 .btn-primary {
+    display: inline-block;
     border-radius: 6px;
     margin-bottom: 10px;
+    float: right;
+
 }
 
 .btn-sm {

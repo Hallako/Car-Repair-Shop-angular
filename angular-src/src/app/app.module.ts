@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
@@ -20,6 +20,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
 import { User } from './components/admin/user';
 import { AccordionComponent, AccordionGroupComponent } from './components/help/accordion/accordion.component';
+import { LoginGuard } from './guards/login.guard'
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
@@ -29,8 +30,8 @@ import { AdminGuard } from './guards/admin.guard';
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
-    {path:'register', component: RegisterComponent},
-    {path:'login', component: LoginComponent},
+    {path:'register', component: RegisterComponent, canActivate:[LoginGuard]},
+    {path:'login', component: LoginComponent, canActivate:[LoginGuard]},
     {path: 'help', component: HelpComponent},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
@@ -58,12 +59,13 @@ const appRoutes : Routes = [
     CommonModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     BrowserAnimationsModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService],
+  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
