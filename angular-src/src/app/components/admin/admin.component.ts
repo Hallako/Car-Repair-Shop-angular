@@ -9,8 +9,6 @@ import { SearchService } from '../../services/search.service';
 import 'rxjs/Rx'
 import { Subject }           from 'rxjs/Subject';
 
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
