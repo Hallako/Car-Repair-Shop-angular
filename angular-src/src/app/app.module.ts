@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { CalendarComponent } from 'ap-angular2-fullcalendar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -14,7 +15,6 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
@@ -32,10 +32,10 @@ const appRoutes : Routes = [
     {path:'', component: HomeComponent},
     {path:'register', component: RegisterComponent, canActivate:[LoginGuard]},
     {path:'login', component: LoginComponent, canActivate:[LoginGuard]},
-    {path: 'help', component: HelpComponent},
+    {path:'help', component: HelpComponent},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-    {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
+    {path:'admin', component: AdminComponent, canActivate:[AdminGuard]}
 ]
 
 @NgModule({
