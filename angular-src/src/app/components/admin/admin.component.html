@@ -19,11 +19,8 @@
     </div>
     <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
   </div>
-</div>
 
-
-<div class="col-md-4" *ngIf="selectedUser">
-  <form class="form-horizontal">
+  <form class="form-horizontal right" id="formSearch" *ngIf="selectedUser">
     <div class="panel panel-success">
       <div class="panel-heading">
         <legend class="panel-title">{{selectedUser.name}}</legend>
