@@ -17,6 +17,7 @@ router.post('/addevent', (req, res, next) => {
         end: req.body.end,
         backgroundColor: req.body.backgroundColor,
         description: req.body.description,
+        confirm: false,
         user: req.body.user
     });
 
@@ -44,7 +45,7 @@ router.delete('/deleteevent/:id', (req, res) => {
 //get posts
 router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
     if (req.params.admin == "true") {
-        event.find({}, function(req, event) {
+        event.find({ start: { $gte: req.params.start, $lt: req.params.end } }, function(req, event) {
             res.json(event);
         });
     } else {
@@ -60,9 +61,29 @@ router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
 
 router.get('/getuserevents/:user/', (req, res, next) => {
     event.find({ user: req.params.user }, (err, event) => {
-        if (err) throw (err)
+        if (err) throw err
         return res.json(event)
     })
 })
+
+router.get('/getconfirmevents/', (req, res, next) => {
+    event.find({ confirm: false }, (err, event) => {
+        if (err) throw err
+        return res.json(event)
+    })
+})
+
+router.post('/confirm/:id', (req, res) => {
+    event.findById(req.params.id, (err, event) => {
+        if (err) {
+            res.json({ success: false, msg: err });
+        }
+        if (event) {
+            event.confirm = true;
+            event.save();
+            res.json({ success: true, msg: 'Confirmed' });
+        }
+    });
+});
 
 module.exports = router;

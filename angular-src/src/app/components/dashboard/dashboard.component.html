@@ -11,17 +11,17 @@
 
             <div *ngIf="admin" class="form-group">
                 <label>Asiakas</label>
+
                 <p>{{eventUsername}}</p>
             </div>
 
             <div class="form-group">
                 <label>Toimenpide</label>
-                <select type="text" class="form-control" [disabled]="!admin" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
+                <select type="text" class="form-control" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
                     <option value="öljynvaihto" style="background-color: #3a87ad; color:#ffffff">Öljynvaihto</option>
                     <option value="renkaidenvaihto" style="background-color: #009933; color:#ffffff">Renkaidenvaihto</option>
                     <option value="huolto" style="background-color: #cc0000; color:#ffffff">Huolto</option>
                     <option value="korjaus" style="background-color: #999922; color:#ffffff">Korjaus</option>
-                    <option value="muu" style="background-color: #333333; color:#ffffff">Muu</option>
                 </select>
             </div>
 
@@ -41,7 +41,7 @@
             </div>
 
             <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Päivitä">
-
+            <input type="submit" (click)="onConfirmClick()" *ngIf="!confirm && admin" class="btn btn-primary" value="Hyväksy">
             <input type="submit" (click)="onDeleteClick()" *ngIf="admin" class="btn btn-primary" value="Poista">
 
         </form>
