@@ -1,19 +1,19 @@
 [
 {
-  "category": "Kalenteri",
+  "category": "Ajanvaraus",
   "faq": [
     {
-      "header": "Ajanvaraus",
-      "content": "terve"
+      "header": "Kuinka perun varaamani ajan?",
+      "content": "Voit perua varaamasi ajan soittamalla numeroon [PUHNRO] tai lähettämällä sähköpostia osoitteeseen [SÄHKÖPOSTI]. Voit perua ajan viimeistään edeltävänä päivänä."
     },
     {
-      "header": "pää",
+      "header": "",
       "content": "pöö"
     }
   ]
 },
 {
-  "category": "yläotsikko2",
+  "category": "Korjaukset",
   "faq": [
     {
       "header": "header",
