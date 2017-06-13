@@ -19,11 +19,8 @@
     </div>
     <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
   </div>
-</div>
 
-
-<div class="col-md-4" *ngIf="selectedUser">
-  <form class="form-horizontal">
+  <form class="form-horizontal right" id="formSearch" *ngIf="selectedUser">
     <div class="panel panel-success">
       <div class="panel-heading">
         <legend class="panel-title">{{selectedUser.name}}</legend>
@@ -60,7 +57,7 @@
   </form>
 </div>
 
-<div *ngIf="confirms?.length && !selectedUser && !search" class="form-horizontal">
+<div *ngIf="events?.length && !selectedUser && !search" class="form-horizontal">
   <table class="table table-hover">
     <thead>
       <legend>
@@ -76,14 +73,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let confirm of confirms;">
-        <td class="table-name">{{confirm.user}}</td>
-        <td class="desc">{{confirm.title}}</td>
-        <td class="desc">{{confirm.start}}</td>
-        <td class="desc">{{confirm.end}}</td>
-        <td class="table-text">{{confirm.description}}</td>
-        <td class="table-last"><button (click)="deleteEvent(confirm._id)" class="btn btn-danger btn-sm">Poista</button>
-          <button (click)="confirmEvent(confirm)" class="btn btn-success btn-sm" *ngIf="!confirm.confirm">Hyväksy</button></td>
+      <tr *ngFor="let event of events">
+        <td class="table-name">{{event.user}}</td>
+        <td class="desc">{{event.title}}</td>
+        <td class="desc">{{event.start}}</td>
+        <td class="desc">{{event.end}}</td>
+        <td class="table-text">{{event.description}}</td>
+        <td class="table-last"><button (click)="deleteEvent(event._id)" class="btn btn-danger btn-sm">Poista</button>
+          <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
       </tr>
     </tbody>
   </table>
@@ -108,7 +105,8 @@
         <td class="desc">{{event.start}}</td>
         <td class="desc">{{event.end}}</td>
         <td class="table-text">{{event.description}}</td>
-        <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button></td>
+        <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
+        <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
       </tr>
     </tbody>
   </table>
@@ -133,7 +131,7 @@
         <td class="desc">{{event.end}}</td>
         <td class="table-text">{{event.description}}</td>
         <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
-          <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
+        <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
       </tr>
     </tbody>
   </table>
