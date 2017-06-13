@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
+                    url: 'events/getevents/'
                     +start+"/"+end+"/"+userId+"/"+ true,
                     dataType: 'json',
                     success: function(response) {
