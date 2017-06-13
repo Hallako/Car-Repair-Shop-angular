@@ -20,9 +20,8 @@ export class AdminComponent implements OnInit {
 
   users: User[]
   user: User
-  confirms: Event[]
-  confirm: Event
   events: Event[]
+  event: Event
   selectedUser: User
   editUser: User
   start: String
@@ -72,11 +71,11 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
-          if(user != null) {
-                    this.user = user
-                    event.user = this.user.username
-                  }else event.user = 'Hallinnon luoma'
-      })
+          if (user != null) {
+            this.user = user
+            event.user = this.user.username
+          } else event.user = 'Hallinnon luoma'
+        })
       });
     })
   }
@@ -85,7 +84,7 @@ export class AdminComponent implements OnInit {
     this.authService.delEvent(eventId).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Tapahtuma poistettu onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
-        this.confirms.splice(this.confirms.indexOf(eventId),1);
+        this.events.splice(this.events.indexOf(eventId), 1);
       } else {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
@@ -95,24 +94,26 @@ export class AdminComponent implements OnInit {
   }
 
   getConfirms() {
-    this.authService.getConfirmationEvents().subscribe(confirms => {
-      this.confirms = confirms;
-      this.confirms.forEach(confirm => {
-        confirm.start = moment(confirm.start).format('DD.MM.YYYY [klo] HH:mm');
-        confirm.end = moment(confirm.end).format('DD.MM.YYYY [klo] HH:mm');
-        this.authService.getUserById(confirm).subscribe(user => {this.user = user
-          if(user != null) {
-          confirm.user = this.user.username
-        } else confirm.user = 'Hallinnon luoma'
+    this.authService.getConfirmationEvents().subscribe(events => {
+      this.events = events;
+      this.events.forEach(event => {
+        event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
+        event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        this.authService.getUserById(event).subscribe(user => {
+        this.user = user
+          if (user != null) {
+            event.user = this.user.username
+          } else event.user = 'Hallinnon luoma'
         })
       });
+      return this.events
     })
-    return this.confirms
+
   }
 
   confirmEvent(event) {
     this.authService.confirmEvent(event._id).subscribe();
-    this.confirms.splice(this.confirms.indexOf(event),1);
+    this.events.splice(this.events.indexOf(event), 1);
     this.flashMessage.show('Varaus hyväksytty', { cssClass: 'alert-success', timeout: 3000 });
   }
 
@@ -127,11 +128,11 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
-          if(user != null) {
+          if (user != null) {
             this.user = user
             event.user = this.user.username
-          }else event.user = 'Hallinnon luoma'
-      })
+          } else event.user = 'Hallinnon luoma'
+        })
       });
     });
 
@@ -139,7 +140,8 @@ export class AdminComponent implements OnInit {
   }
 
   getEventUser(event) {
-    this.authService.getUserById(event).subscribe(user => {this.user = user
+    this.authService.getUserById(event).subscribe(user => {
+    this.user = user
     })
   }
 
