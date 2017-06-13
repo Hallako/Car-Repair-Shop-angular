@@ -169,7 +169,6 @@ export class DashboardComponent implements OnInit {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
                   this.id = null;
-                  this.description = null;
                   this.start = null;
                   this.end = null;
                 }
@@ -186,13 +185,11 @@ export class DashboardComponent implements OnInit {
                      moment(date).add(this.duration, 'hours').get('hour') < 7 ){
                         this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
                         this.id = null;
-                        this.description = null;
                         this.start = null;
                         this.end = null;
                     }
                   else {
                       this.id = null;
-                      this.description = null;
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
@@ -229,7 +226,7 @@ export class DashboardComponent implements OnInit {
       this.calElement.fullCalendar( 'refetchEvents' )
       this.flashMessage.show('Varaus Hyväksytty', {cssClass: 'alert-success', timeout:3000})
     });
-  } 
+  }
 
 
   //changes color according to selection
@@ -258,11 +255,20 @@ export class DashboardComponent implements OnInit {
         break;
       }
   }
-
-  if (this.start != undefined || this.id != undefined) {
+this.checkOverlap(this.start,  moment(this.start).add(this.duration, 'hours')).then(res => {
+  if(res >= 2) {
+      this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
+      this.calElement.fullCalendar('unselect');
+      this.id = null;
+      this.start = null;
+      this.end = null;
+  }
+  if ((this.start != undefined || this.id != undefined)) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
   }
+})
+
 }
 
 

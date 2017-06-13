@@ -8,19 +8,14 @@ https://meenkorjaamo.herokuapp.com/
 </br>
 </br>
 node 6 or higher required.</br>
-Also angular cli is needed.</br>
-Make sure you have @Angular/cli version 1.0.2 installed in angular-src folder, check with ng -v.</br>
-Install with "npm install @angular/cli@1.0.2" optionally with -g to install globally (note that 1.0.2 is not latest version, but rather what is useed in this project)
-</br>
+Angular cli is needed.</br>
 </br>
 Installation:
 
   1. Get repo locally.
   2. Run npm install on project's root and in angular-src folder
   3. Run "nodemon" or "node app" on root to start nodejs and "ng serve" in angular-src to start angular.
-  4. Open localhost:4200 in browser.  
-  
-  
+  4. Open localhost:4200 in browser.
   
 FAQ:  
   Q: Nodemon is not a command.  
