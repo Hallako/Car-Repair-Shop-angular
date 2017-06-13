@@ -14,7 +14,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
+import { CalendarComponent } from 'ap-angular2-fullcalendar';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
