@@ -15,8 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
-
+import { CalendarComponent } from 'ap-angular2-fullcalendar';
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
