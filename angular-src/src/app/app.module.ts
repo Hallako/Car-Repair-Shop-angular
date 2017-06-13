@@ -14,6 +14,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+
 import { CalendarComponent } from 'ap-angular2-fullcalendar';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -21,7 +22,6 @@ import { HelpComponent } from './components/help/help.component';
 import { User } from './components/admin/user';
 import { AccordionComponent, AccordionGroupComponent } from './components/help/accordion/accordion.component';
 import { LoginGuard } from './guards/login.guard'
-
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { SearchService } from './services/search.service';
