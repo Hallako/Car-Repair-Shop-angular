@@ -1,0 +1,53 @@
+<div class="calendar-container">
+
+    <div class="calendar-div">
+        <angular2-fullcalendar [options]="options" id="myCalendar"></angular2-fullcalendar>
+    </div>
+
+    <div class="eventinfo">
+        <h1>Varaus</h1>
+
+        <form class="login-form">
+
+            <div *ngIf="admin" class="form-group">
+                <label>Asiakas</label>
+
+                <p>{{eventUsername}}</p>
+            </div>
+
+            <div class="form-group">
+                <label>Toimenpide</label>
+                <select type="text" class="form-control" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required>
+                    <option value="öljynvaihto" style="background-color: #3a87ad; color:#ffffff">Öljynvaihto</option>
+                    <option value="renkaidenvaihto" style="background-color: #009933; color:#ffffff">Renkaidenvaihto</option>
+                    <option value="huolto" style="background-color: #cc0000; color:#ffffff">Huolto</option>
+                    <option value="korjaus" style="background-color: #999922; color:#ffffff">Korjaus</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Aloitusaika</label>
+                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="start" name="start">
+            </div>
+
+            <div class="form-group">
+                <label>Päättymisaika</label>
+                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="end" name="end">
+
+            </div>
+            <div class="form-group">
+                <label>Lisätietoja</label>
+                <textarea class="form-control" rows="2" [(ngModel)]="description" name="description"> </textarea>
+            </div>
+
+            <input type="submit" (click)="onEventSubmit()" class="btn btn-primary" value="Tee Varaus">
+            <input type="submit" (click)="onConfirmClick()" *ngIf="!confirm && admin" class="btn btn-primary" value="Hyväksy">
+            <input type="submit" (click)="onDeleteClick()" *ngIf="admin" class="btn btn-primary" value="Poista">
+
+        </form>
+
+    </div>
+    <p>
+        <a [routerLink]="['/help']">Ohje ajavarauksen tekemiseen</a>
+    </p>
+</div>
