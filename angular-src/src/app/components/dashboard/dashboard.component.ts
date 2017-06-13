@@ -69,7 +69,6 @@ export class DashboardComponent implements OnInit {
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
-            this.onTitleChange()
             this.calElement.fullCalendar('unselect')
             this.calElement.fullCalendar('renrender')
           }
@@ -193,6 +192,7 @@ export class DashboardComponent implements OnInit {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
+                      this.onTitleChange();
                   }
                 }
               }
@@ -255,20 +255,29 @@ export class DashboardComponent implements OnInit {
         break;
       }
   }
-this.checkOverlap(this.start,  moment(this.start).add(this.duration, 'hours')).then(res => {
-  if(res >= 2) {
-      this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
-      this.calElement.fullCalendar('unselect');
-      this.id = null;
-      this.start = null;
-      this.end = null;
-  }
   if ((this.start != undefined || this.id != undefined)) {
     this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
     this.calElement.fullCalendar('select', this.start, this.end);
+    this.checkOverlap(this.start,  moment(this.start).add(this.duration, 'hours')).then(res => {
+      if(res >= 2) {
+          this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
+          this.calElement.fullCalendar('unselect');
+          this.id = null;
+          this.start = null;
+          this.end = null;
+      }
+      if(moment(this.start).add(this.duration, 'hours').get('hour') >= 18 &&
+         moment(this.start).add(this.duration, 'hours').get('minute') == 30 ||
+         moment(this.start).add(this.duration, 'hours').get('hour') > 18 ||
+         moment(this.start).add(this.duration, 'hours').get('hour') < 7 ){
+            this.flashMessage.show('Aika menee aukiolo ajan yli', {cssClass: 'alert-danger', timeout: 3000 });
+            this.calElement.fullCalendar('unselect');
+            this.id = null;
+            this.start = null;
+            this.end = null;
+        }
+    })
   }
-})
-
 }
 
 
