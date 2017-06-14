@@ -154,6 +154,9 @@ export class DashboardComponent implements OnInit {
             eventClick: boundClick,
             //Event selection based on selected type of event.
             dayClick: (date, jsEvent, view) => {
+
+              this.eventUsername = null;
+
               this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
                 if ( view.type == 'month' ){
@@ -163,17 +166,16 @@ export class DashboardComponent implements OnInit {
 
                 this.calElement.fullCalendar('rerenderEvents');
 
+                if (this.title == undefined) {
+                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
+                }
 
-                if(res >= 2) {
+                else if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
                   this.id = null;
                   this.start = null;
                   this.end = null;
-                }
-
-                else if (this.title == undefined) {
-                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
                 }
 
                 else if( res < 2){
