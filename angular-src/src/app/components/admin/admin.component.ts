@@ -78,11 +78,11 @@ export class AdminComponent implements OnInit {
     })
   }
 
-  deleteEvent(eventId) {
-    this.authService.delEvent(eventId).subscribe(data => {
+  deleteEvent(event) {
+    this.authService.delEvent(event._id).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Tapahtuma poistettu onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
-        this.events.splice(this.events.indexOf(eventId), 1);
+        this.events.splice(this.events.indexOf(event), 1);
       } else {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
