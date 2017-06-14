@@ -9,10 +9,7 @@ node_modules/
 angular-src/node_modules/*
 !angular-src/node_modules/fullcalendar
 angular-src/node_modules/fullcalendar/*
-!angular-src/node_modules/fullcalendar/dist
-
-
-
+!angular-src/node_modules/fullcalendar/dist/
 
 *.tmp
 *.bak
