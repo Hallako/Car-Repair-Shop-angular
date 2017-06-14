@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { CalendarEvent } from 'angular-calendar';
 import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
