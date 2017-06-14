@@ -23,10 +23,10 @@
   -webkit-transition: all .2s padding 0s ease;
 }
 
-.p {
+ng-content {
   max-height: 0;
   overflow: hidden;
-  padding-left: 30px;
+  padding-left: 2em;
   transition: max-height .2s ease;
 }
 
