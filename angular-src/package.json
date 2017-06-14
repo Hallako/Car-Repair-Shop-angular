@@ -39,9 +39,6 @@
         "zone.js": "^0.8.4"
     },
     "devDependencies": {
-        "@angular/cli": "^1.1.0",
-        "@angular/compiler-cli": "^4.1.2",
-        "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.25",
         "@types/jasmine": "2.5.52",
         "@types/node": "^7.0.31",
         "jasmine-core": "2.6.3",
@@ -51,6 +48,5 @@
         "karma-chrome-launcher": "^2.0.0",
         "karma-cli": "^1.0.1",
         "karma-jasmine": "^1.0.2",
-        "zone.js": "^0.8.4"
     }
 }
