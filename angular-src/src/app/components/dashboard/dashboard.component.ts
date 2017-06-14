@@ -86,8 +86,8 @@ export class DashboardComponent implements OnInit {
 
             events: function(start, end, timezone, callback) {
 
-              end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+              end = moment(end).add(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
+              start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
                     url: 'http://localhost:8081/events/getevents/'
@@ -163,7 +163,6 @@ export class DashboardComponent implements OnInit {
 
                 this.calElement.fullCalendar('rerenderEvents');
 
-
                 if(res >= 2) {
                   this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', {cssClass: 'alert-danger', timeout:3000});
                   this.calElement.fullCalendar('unselect');
@@ -192,8 +191,8 @@ export class DashboardComponent implements OnInit {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
-                      this.onTitleChange();
                   }
+                  this.onTitleChange();
                 }
               }
             });
