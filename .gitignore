@@ -6,8 +6,9 @@
 .project
 .metadata
 node_modules/
-!node_modules/fullcalendar
+
 angular-src/node_modules/
+!angular-src/node_modules/fullcalendar/*/*
 *.tmp
 *.bak
 *.swp
