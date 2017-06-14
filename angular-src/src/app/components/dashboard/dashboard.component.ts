@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { CalendarEvent } from 'angular-calendar';
 import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
@@ -86,8 +85,8 @@ export class DashboardComponent implements OnInit {
 
             events: function(start, end, timezone, callback) {
 
-              end = moment(end).format('YYYY-MM-DD[T]HH:mm');
-              start = moment(start).format('YYYY-MM-DD[T]HH:mm');
+              end = moment(end).add(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
+              start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
                 $.ajax({
                     url: 'http://localhost:8081/events/getevents/'
@@ -194,8 +193,8 @@ export class DashboardComponent implements OnInit {
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
                       this.calElement.fullCalendar('select', this.start, this.end);
-                      this.onTitleChange();
                   }
+                  this.onTitleChange();
                 }
               }
             });

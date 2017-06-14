@@ -79,7 +79,7 @@
                 <td class="desc">{{event.start}}</td>
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
-                <td class="table-last"><button (click)="deleteEvent(event._id)" class="btn btn-danger btn-sm">Poista</button>
+                <td class="table-last"><button (click)="deleteEvent(event)" class="btn btn-danger btn-sm">Poista</button>
                     <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
             </tr>
         </tbody>
@@ -105,7 +105,7 @@
                 <td class="desc">{{event.start}}</td>
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
-                <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
+                <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button>
                     <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
             </tr>
         </tbody>
@@ -130,7 +130,7 @@
                 <td class="desc">{{event.start}}</td>
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
-                <td class="table-last"><button (click)="(deleteEvent(event._id))" class="btn btn-danger btn-sm">Poista</button>
+                <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button>
                     <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
             </tr>
         </tbody>
