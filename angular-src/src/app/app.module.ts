@@ -11,15 +11,17 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CalendarComponent } from 'angular2-fullcalendar/src/calendar/calendar';
+import { CalendarComponent } from 'ap-angular2-fullcalendar';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { FooterComponent } from './components/footer/footer.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 const appRoutes : Routes = [
     { path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+    { path:'admin', component: AdminComponent, canActivate:[AuthGuard] },
     { path:'login', component: LoginComponent },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     { path: '**', redirectTo: '/dashboard', pathMatch: 'full' }
@@ -32,7 +34,8 @@ const appRoutes : Routes = [
     DashboardComponent,
     CalendarComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent
   ],
 
   imports: [

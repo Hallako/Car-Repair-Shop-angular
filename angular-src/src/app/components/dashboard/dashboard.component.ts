@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
     end: Date;
     color: String;
     description: String;
+    rekisteriNro: String;
 
     calElement = null;
 
@@ -49,7 +50,7 @@ export class DashboardComponent implements OnInit {
 
         //Events
         let clickFunc = function (calEvent, jsEvent, view) {
-            this.eventClick.emit(calEvent);
+            //this.eventClick.emit(calEvent);
 
             this.calElement.fullCalendar('unselect')
 
@@ -58,11 +59,12 @@ export class DashboardComponent implements OnInit {
             this.calElement.fullCalendar( 'updateEvent', calEvent )
             calEvent.backgroundColor = tempcolor;
 
-            this.updatename(calEvent);
+            //this.updatename(calEvent);
             this.id = calEvent._id,
             this.description = calEvent.description;
             this.url = calEvent.url;
             this.title = calEvent.title;
+            this.rekisteriNro = calEvent.rekisterinro;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
             this.start = moment(calEvent.start).format('YYYY-MM-DD[T]HH:mm');
         };
@@ -70,7 +72,6 @@ export class DashboardComponent implements OnInit {
         let selectCall = function (start, end, jsEvent, view) {
             this.selectionChanged.emit(start, end, jsEvent, view);
 
-            
             if(view.type == 'month'){
               this.calElement.fullCalendar('changeView', 'agendaWeek');
               this.calElement.fullCalendar('gotoDate',  start);
@@ -82,6 +83,7 @@ export class DashboardComponent implements OnInit {
             this.description = null;
             this.color = null;
             this.title = null;
+            this.rekisteriNro = null;
         };
 
         //binds
@@ -100,13 +102,14 @@ export class DashboardComponent implements OnInit {
 
               end = moment(end).format('YYYY-MM-DD[T]HH:mm');
               start = moment(start).format('YYYY-MM-DD[T]HH:mm');
-
                 $.ajax({
                     url: 'http://localhost:8081/events/getevents/'
                     +start+"/"+end,
                     dataType: 'json',
                     success: function(response) {
+                    
                         callback(response)
+                        
                     }
                 });
             },
@@ -203,6 +206,7 @@ export class DashboardComponent implements OnInit {
         title: this.title,
         start: this.start,
         end: this.end,
+        rekisterinro: this.rekisteriNro,
         backgroundColor: this.color,
         description: this.description,
         user: curuser['id']

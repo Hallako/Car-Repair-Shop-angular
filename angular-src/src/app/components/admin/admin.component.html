@@ -1,0 +1,38 @@
+<div class="form-horizontal right" id="formSearch" *ngIf="!selectedUser">
+    <h4>Hae tapahtumia ajalla</h4>
+    <div class="form-group">
+        <label class="col-lg-2 control-label">Alkamisaika</label>
+        <input type="datetime-local" step="1800" class="form-control form" id="input" [(ngModel)]="start" name="start" required>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 control-label ">Päättymisaika</label>
+        <input type="datetime-local" step="1800" class="form-control form" id="input" [(ngModel)]="end" name="end" required>
+    </div>
+    <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Hae">
+</div>
+
+<div class="form-horizontal">
+    <table class="table table-hover">
+        <thead>
+            <legend>
+                Varaukset
+            </legend>
+            <tr>
+                <th>Toimenpide</th>
+                <th>Aloitusaika</th>
+                <th>Päättymisaika</th>
+                <th>Lisätietoja</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of events">
+                <td class="desc">{{event.title}}</td>
+                <td class="desc">{{event.start}}</td>
+                <td class="desc">{{event.end}}</td>
+                <td class="table-text">{{event.description}}</td>
+                <td class="table-last"><button (click)="deleteEvent(event)" class="btn btn-danger btn-sm">Poista</button>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -13,6 +13,7 @@ router.post('/addevent', (req, res, next) => {
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
+        rekisterinro: req.body.rekisterinro,
         backgroundColor: req.body.backgroundColor,
         description: req.body.description,
         user: req.body.user
@@ -41,6 +42,7 @@ router.delete('/deleteevent/:id', (req, res) => {
 
 //get posts
 router.get('/getevents/:start/:end?', (req, res, next) => {
+    console.log(req.params)
     event.find({
         start: { $gte: req.params.start, $lt: req.params.end }
     }, function(req, event) {

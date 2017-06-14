@@ -23,6 +23,10 @@ const EventSchema = mongoose.Schema({
         type: String
     },
 
+    rekisterinro: {
+        type: String
+    },
+
     end: {
         type: String
     },

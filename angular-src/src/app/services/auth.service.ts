@@ -83,11 +83,10 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  getEvents(){
+  getEvents(start,end){
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
-    return this.http.get(this.nodeUrl + 'events/getevents/'//start + end
-    , { headers: headers })
+    return this.http.get(this.nodeUrl + 'events/getevents/'+start+"/"+end , { headers: headers })
       .map((res: Response) => res.json());
   }
 }
