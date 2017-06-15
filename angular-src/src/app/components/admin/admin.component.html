@@ -20,39 +20,31 @@
         <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
     </div>
 
-    <form class="form-horizontal right" id="formSearch" *ngIf="selectedUser">
+    <form class="form-horizontal right" *ngIf="selectedUser" id="formSearch">
         <div class="panel panel-success">
             <div class="panel-heading">
                 <legend class="panel-title">{{selectedUser.name}}</legend>
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="inputName" class="col-lg-2 control-label">Nimi:</label>
-                    <div class="col-lg-10">
-                        <input type="text" [(ngModel)]="selectedUser.name" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" class="form-control" />
-                    </div>
+                    <label class="col-lg-2 control-label">Nimi:</label>
+                        <input type="text" [(ngModel)]="selectedUser.name" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" class="form-control form" />
                 </div>
                 <div class="form-group">
-                    <label for="inputUsername" class="col-lg-2 control-label">Käyttäjänimi:</label>
-                    <div class="col-lg-10">
-                        <input type="text" [(ngModel)]="selectedUser.username" name="username" id="inputUsername" placeholder="{{selectedUser.username}}" class="form-control" />
-                    </div>
+                    <label class="col-lg-2 control-label">Käyttäjänimi:</label>
+                        <input type="text" [(ngModel)]="selectedUser.username" name="username" id="inputUsername" placeholder="{{selectedUser.username}}" class="form-control form" />
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail" class="col-lg-2 control-label">Email:</label>
-                    <div class="col-lg-10">
-                        <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control" />
-                    </div>
+                    <label class="col-lg-2 control-label">Email:</label>
+                        <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control form" />
                 </div>
                 <div class="form-group">
-                    <label for="inputAdmin" class="col-lg-2 control-label">Admin:</label>
-                    <div class="col-lg-10">
+                    <label class="col-lg-2 control-label">Admin:</label>
                         <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}}" class="checkbox" />
-                    </div>
                 </div>
             </div>
         </div>
-        <button type="reset" (click)="selectedUser = null" class="btn btn-default btn-xs">Peruuta</button>
+        <button type="reset" (click)="selectedUser = null; getConfirms()" class="btn btn-default btn-xs">Peruuta</button>
         <button type="submit" class="btn btn-primary btn-xs" (click)="updateUser()">Tallenna</button>
     </form>
 </div>
@@ -80,14 +72,14 @@
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
                 <td class="table-last"><button (click)="deleteEvent(event)" class="btn btn-danger btn-sm">Poista</button>
-                    <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
+                <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="table-container" *ngIf="selectedUser">
-    <table class="table table-hover ">
+    <table class="table table-hover" *ngIf="selectedUser">
         <thead>
             <tr>
                 <th>Toimenpide</th>
@@ -106,7 +98,7 @@
                 <td class="desc">{{event.end}}</td>
                 <td class="table-text">{{event.description}}</td>
                 <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button>
-                    <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
+                <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
             </tr>
         </tbody>
     </table>

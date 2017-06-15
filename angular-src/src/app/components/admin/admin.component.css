@@ -4,7 +4,7 @@
 }
 
 .right {
-  width:50%;
+  width:40%;
   position: relative;
   float: right;
 }
@@ -148,6 +148,14 @@
     display: inline-block;
     position: relative;
     margin-top: 2em;
+}
+
+.form-control-left {
+margin: auto;
+}
+
+.control-label {
+text-align: left;
 }
 
 .table-hover {
