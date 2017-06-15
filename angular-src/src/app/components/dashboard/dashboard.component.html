@@ -10,9 +10,7 @@
         <form class="login-form">
 
             <div *ngIf="admin" class="form-group">
-                <label>Asiakas</label>
-
-                <p>{{eventUsername}}</p>
+                <label>Asiakas: </label> {{eventUsername}}
             </div>
 
             <div class="form-group">
@@ -32,13 +30,13 @@
 
             <div class="form-group">
                 <label>Päättymisaika</label>
-                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="end" name="end">
+                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="end" name="end" required>
 
             </div>
 
             <div class="form-group">
               <label>Rekisterinumero</label>
-              <input class="form-control" [(ngModel)]="rekisteriNro" name="rekisteriNro" />
+              <input class="form-control" [(ngModel)]="rekisteriNro" name="rekisteriNro" required/>
             </div>
 
             <div class="form-group">
@@ -55,7 +53,6 @@
     </div>
 
 
-    <p>
-        <a [routerLink]="['/help']">Ohje ajavarauksen tekemiseen</a>
-    </p>
+        <a class="helplink" [routerLink]="['/help']">Ohje ajavarauksen tekemiseen</a>
+
 </div>
