@@ -424,7 +424,7 @@ var ChatComponent = (function () {
         this.joinned = false;
         this.newUser = { nickname: '', room: '' };
         this.msgData = { room: '', nickname: '', message: '' };
-        this.socket = __WEBPACK_IMPORTED_MODULE_2_socket_io_client__('');
+        this.socket = __WEBPACK_IMPORTED_MODULE_2_socket_io_client__(' ');
     }
     ChatComponent.prototype.ngOnInit = function () {
         this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
@@ -2047,7 +2047,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ChatService = (function () {
     function ChatService(http) {
         this.http = http;
-        this.nodeUrl = '';
+        this.nodeUrl = ' ';
     }
     ChatService.prototype.getChatByRoom = function (room) {
         var _this = this;
