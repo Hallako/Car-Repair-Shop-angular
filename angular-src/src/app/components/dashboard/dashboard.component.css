@@ -60,3 +60,8 @@ footer {
     border-radius: 4px;
     margin-left: 2.5%;
 }
+
+.helplink {
+  color: blue;
+  text-decoration-color: blue;
+}
