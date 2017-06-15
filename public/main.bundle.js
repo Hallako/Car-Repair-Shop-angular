@@ -2064,7 +2064,7 @@ var ChatService = (function () {
     ChatService.prototype.saveChat = function (data) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.http.post(_this.nodeUrl + 'chat', data)
+            _this.http.post(_this.nodeUrl + 'chat/', data)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (res) {
                 resolve(res);
