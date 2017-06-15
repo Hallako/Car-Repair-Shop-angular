@@ -193,7 +193,6 @@ export class DashboardComponent implements OnInit {
                       this.id = null;
                       this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
                       this.end = moment(this.start).add(this.duration, 'hours').format('YYYY-MM-DD[T]HH:mm');
-                      this.calElement.fullCalendar('select', this.start, this.end);
                       this.onTitleChange();
                   }
                 }
