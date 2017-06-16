@@ -42,6 +42,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.chats.push(data.message);
         this.msgData = { room: user.room, nickname: user.nickname, message: '' }
         this.scrollToBottom();
+
       }
     }.bind(this));
   }
