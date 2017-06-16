@@ -16,7 +16,7 @@ export class AuthService {
   nodeUrl: String;
 
   constructor(private http: Http) {
-    this.nodeUrl = 'http://localhost:8081/';
+    this.nodeUrl = '';
 
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));
@@ -56,7 +56,7 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  //Gets user information 
+  //Gets user information
   getProfile() {
     let headers = new Headers();
     this.loadToken();
@@ -133,7 +133,7 @@ export class AuthService {
       .map(res => res.json().data as User[]).catch(this.handleError);
   }
 
-  //pushes user object to DB must contain existing user.id 
+  //pushes user object to DB must contain existing user.id
   update(user: User): Observable<User> {
     let headers = new Headers();
     headers.append('Content-type', 'application/json');
@@ -179,4 +179,19 @@ export class AuthService {
     .map((res: Response) => res.json()).catch(this.handleError);
   }
 
+  getConfirmationEvents(): Observable<Event[]> {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-type', 'application/json');
+    return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: headers })
+    .map((res: Response) => res.json()).catch(this.handleError);
+  }
+
+  confirmEvent(event): Observable<Event> {
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    return this.http.post(this.nodeUrl + 'events/confirm/'+ event, { headers: headers })
+      .map((res: Response) => res.json()).catch(this.handleError);
+  }
 }
