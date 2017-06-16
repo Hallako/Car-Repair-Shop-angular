@@ -19,26 +19,26 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io('');
+  socket = io('http://localhost:8081/');
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
 
-    this.newUser.nickname = 'Asiakaspalvelu '+JSON.parse(localStorage.getItem("user")).name;
+    this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
 
     var user = JSON.parse(localStorage.getItem("userr"));
 
-    if(user!==null) {
-      if(user.room){
-      this.getChatByRoom(user.room);
-      this.msgData = { room: user.room, nickname: user.nickname, message: '' }
-      this.joinned = true;
-      this.scrollToBottom();
+    if (user !== null) {
+      if (user.room) {
+        this.getChatByRoom(user.room);
+        this.msgData = { room: user.room, nickname: user.nickname, message: '' }
+        this.joinned = true;
+        this.scrollToBottom();
       }
     }
-    this.socket.on('new-message', function (data) {
-      if(data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
+    this.socket.on('new-message', function(data) {
+      if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
         this.msgData = { room: user.room, nickname: user.nickname, message: '' }
         this.scrollToBottom();
@@ -53,7 +53,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   scrollToBottom(): void {
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+    } catch (err) { }
   }
 
   getChatByRoom(room) {
@@ -91,8 +91,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
 
-  togglehide(){
-    if(this.Hidden == true){
+  togglehide() {
+    if (this.Hidden == true) {
       this.Hidden = false;
     } else {
       this.Hidden = true;
