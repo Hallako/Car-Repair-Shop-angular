@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
+import { AuthService } from '../../services/auth.service';
 import * as io from "socket.io-client";
 
 
@@ -13,7 +14,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
-
+  Admin: boolean;
   Hidden: boolean;
   chats: any;
   joinned: boolean = false;
@@ -21,6 +22,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   msgData = { room: '', nickname: '', message: '' };
   socket = io('http://localhost:8081/');
 
+<<<<<<< HEAD
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
@@ -31,20 +33,54 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     if (user !== null) {
       if (user.room) {
+=======
+  constructor(private chatService: ChatService,
+              private authservice: AuthService) {}
+
+  ngOnInit() {
+
+    this.Admin = this.authservice.getAdmin();
+    console.log(this.Admin)
+    
+    this.newUser.nickname = 'Asiakaspalvelu '+JSON.parse(localStorage.getItem("user")).name;
+    var user = JSON.parse(localStorage.getItem("userr"));
+
+    if(user !== null) {
+      if(user.room){
+>>>>>>> refs/remotes/Hallako/ChatTest
         this.getChatByRoom(user.room);
         this.msgData = { room: user.room, nickname: user.nickname, message: '' }
         this.joinned = true;
         this.scrollToBottom();
       }
     }
+<<<<<<< HEAD
     this.socket.on('new-message', function(data) {
       if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
+=======
+
+    //###### SOCKETS ########
+    this.socket.on('new-message', function (data) {
+      if(data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
+>>>>>>> refs/remotes/Hallako/ChatTest
         this.chats.push(data.message);
-        this.msgData = { room: user.room, nickname: user.nickname, message: '' }
+        
+        this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' }
         this.scrollToBottom();
 
       }
     }.bind(this));
+
+    this.socket.on('userconn-response', function (data) {
+      this.newUser.room = data.socketconnection;
+      this.msgData.room = data.socketconnection;
+
+      localStorage.setItem("userr", JSON.stringify(this.newUser));
+      this.getChatByRoom(this.newUser.room);
+      console.log(data.socketconnection)
+    }.bind(this));
+
+    //Ngoninit END
   }
 
   ngAfterViewChecked() {
@@ -65,18 +101,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  joinRoom() {
+  createRoom() {
     var date = new Date();
-    localStorage.setItem("userr", JSON.stringify(this.newUser));
-    this.getChatByRoom(this.newUser.room);
     this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
-    this.joinned = true;
-    this.socket.emit('save-message', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room', updated_at: date });
+    this.socket.emit('createroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room', updated_at: date });
+    this.joinned = true;  
   }
 
   sendMessage() {
     this.chatService.saveChat(this.msgData).then((result) => {
       this.socket.emit('save-message', result);
+      this.msgData.message = '';
     }, (err) => {
       console.log(err);
     });
@@ -85,15 +120,21 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   logout() {
     var date = new Date();
     var user = JSON.parse(localStorage.getItem("userr"));
-    this.socket.emit('save-message', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
+
+    this.socket.emit('adminleaveroom', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
     localStorage.removeItem("userr");
     this.newUser.room = "";
     this.joinned = false;
   }
 
+<<<<<<< HEAD
 
   togglehide() {
     if (this.Hidden == true) {
+=======
+  togglehide(){
+    if(this.Hidden == true){
+>>>>>>> refs/remotes/Hallako/ChatTest
       this.Hidden = false;
     } else {
       this.Hidden = true;
