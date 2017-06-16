@@ -62,5 +62,17 @@ app.get('*', (req, res) => {
 });
 
 var httpServer = http.createServer(app);
-
 httpServer.listen(httpport);
+
+var io = require('socket.io').listen(httpServer);
+// socket io
+io.on('connection', function(socket) {
+    console.log('User connected');
+    socket.on('disconnect', function() {
+        console.log('User disconnected');
+    });
+    socket.on('save-message', function(data) {
+        console.log(data);
+        io.emit('new-message', { message: data });
+    });
+});
