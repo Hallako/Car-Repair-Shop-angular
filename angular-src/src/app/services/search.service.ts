@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers }       from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { User }           from '../components/admin/user';
+import { User } from '../variables/user'
 import { AuthService }  from './auth.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';

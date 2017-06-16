@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
     admin: Boolean = false;
     calElement = null;
     events: Event[];
+    event: Event
 
 
   constructor(private validateService: ValidateService,
