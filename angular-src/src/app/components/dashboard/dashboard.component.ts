@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
     end: String;
     color: String;
     description: String;
+    rekisteriNro: String;
     eventUsername: String;
     confirm: Boolean = true;
     admin: Boolean = false;
@@ -65,7 +66,8 @@ export class DashboardComponent implements OnInit {
               this.eventUsername = 'Hallinnon luoma';
             }
             this.confirm = calEvent.confirm;
-            this.id = calEvent._id,
+            this.id = calEvent._id;
+            this.rekisteriNro = calEvent.rekisteriNro;
             this.description = calEvent.description;
             this.title = calEvent.title;
             this.end = moment(calEvent.end).format('YYYY-MM-DD[T]HH:mm');
@@ -295,6 +297,7 @@ export class DashboardComponent implements OnInit {
         start: this.start,
         end: this.end,
         backgroundColor: this.color,
+        rekisteriNro: this.rekisteriNro,
         description: this.description,
         confirm: false,
         user: curuser['id']
