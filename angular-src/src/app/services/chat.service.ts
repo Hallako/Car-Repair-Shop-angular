@@ -4,11 +4,11 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ChatService {
-  
+
   nodeUrl: String;
 
-  constructor(private http: Http) { 
-    this.nodeUrl = ' ';
+  constructor(private http: Http) {
+    this.nodeUrl = 'http://localhost:8081/';
   }
 
   getChatByRoom(room) {
