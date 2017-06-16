@@ -22,56 +22,38 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   msgData = { room: '', nickname: '', message: '' };
   socket = io('http://localhost:8081/');
 
-<<<<<<< HEAD
-  constructor(private chatService: ChatService) { }
-
-  ngOnInit() {
-
-    this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
-
-    var user = JSON.parse(localStorage.getItem("userr"));
-
-    if (user !== null) {
-      if (user.room) {
-=======
   constructor(private chatService: ChatService,
-              private authservice: AuthService) {}
+    private authservice: AuthService) { }
 
   ngOnInit() {
 
     this.Admin = this.authservice.getAdmin();
     console.log(this.Admin)
-    
-    this.newUser.nickname = 'Asiakaspalvelu '+JSON.parse(localStorage.getItem("user")).name;
+
+    this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
     var user = JSON.parse(localStorage.getItem("userr"));
 
-    if(user !== null) {
-      if(user.room){
->>>>>>> refs/remotes/Hallako/ChatTest
+    if (user !== null) {
+      if (user.room) {
         this.getChatByRoom(user.room);
         this.msgData = { room: user.room, nickname: user.nickname, message: '' }
         this.joinned = true;
         this.scrollToBottom();
       }
     }
-<<<<<<< HEAD
-    this.socket.on('new-message', function(data) {
-      if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
-=======
 
     //###### SOCKETS ########
-    this.socket.on('new-message', function (data) {
-      if(data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
->>>>>>> refs/remotes/Hallako/ChatTest
+    this.socket.on('new-message', function(data) {
+      if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
-        
+
         this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' }
         this.scrollToBottom();
 
       }
     }.bind(this));
 
-    this.socket.on('userconn-response', function (data) {
+    this.socket.on('userconn-response', function(data) {
       this.newUser.room = data.socketconnection;
       this.msgData.room = data.socketconnection;
 
@@ -105,7 +87,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     var date = new Date();
     this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
     this.socket.emit('createroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room', updated_at: date });
-    this.joinned = true;  
+    this.joinned = true;
   }
 
   sendMessage() {
@@ -127,14 +109,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.joinned = false;
   }
 
-<<<<<<< HEAD
-
   togglehide() {
     if (this.Hidden == true) {
-=======
-  togglehide(){
-    if(this.Hidden == true){
->>>>>>> refs/remotes/Hallako/ChatTest
       this.Hidden = false;
     } else {
       this.Hidden = true;
