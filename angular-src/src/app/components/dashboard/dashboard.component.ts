@@ -305,12 +305,12 @@ export class DashboardComponent implements OnInit {
     if (event.title && event.start) {
       this.authService.addEvent(event).subscribe(data => {
         if (data.success) {
-          this.flashMessage.show('Tapahtuma lisätty', { cssClass: 'alert-success', timeout: 3000 });
+          this.flashMessage.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
           this.calElement.fullCalendar('refetchEvents');
           this.calElement.fullCalendar('unselect');
         } else {
 
-          this.flashMessage.show('Tapahtuman lisäämisessä tapahtui virhe!', { cssClass: 'alert-danger', timeout: 3000 });
+          this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
         }
       });
     } else {
