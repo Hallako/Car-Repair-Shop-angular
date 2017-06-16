@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
 import { Http } from '@angular/http'
-import { User } from './user'
-import { Event } from './event'
+import { User } from '../../variables/user'
+import { Event } from '../../variables/event'
 import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { SearchService } from '../../services/search.service';

@@ -10,7 +10,8 @@ import 'fullcalendar';
 import _ from 'lodash';
 import * as $ from 'jquery';
 import 'fullcalendar/dist/locale-all.js';
-import { Event } from '../admin/event'
+import { User } from '../../variables/user'
+import { Event } from '../../variables/event'
 
 declare var jQuery: any;
 

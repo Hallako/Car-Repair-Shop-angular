@@ -4,9 +4,9 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 import {tokenNotExpired} from 'angular2-jwt';
 import { Subject } from 'rxjs/Subject'
-import { User } from '../components/admin/user'
+import { User } from '../variables/user'
 import {Observable} from 'rxjs/Rx';
-import { Event } from '../components/admin/event'
+import { Event } from '../variables/event'
 
 @Injectable()
 export class AuthService {
