@@ -16,8 +16,11 @@
 
 .calendar-div {
     padding-top: 28px;
+    padding-bottom: 10px;
     width: 65%;
-    float: left;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
 }
 
 .form-group {
@@ -25,11 +28,12 @@
 }
 
 .eventinfo {
-    padding: 20px;
     padding: 30px;
     padding-top: 00px;
-    float: left;
-    width: 35%;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    /*width: 35%;*/
 }
 
 .clearfix {

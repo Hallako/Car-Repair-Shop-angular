@@ -18,14 +18,4 @@ export class AuthGuard implements CanActivate{
       return false;
     }
   }
-
-  ifAdmin() {
-    if(this.authService.getUser().admin === true){
-      return true;
-    }
-    else {
-      this.location.back()
-      return false
-    }
-  }
 }
