@@ -15,6 +15,7 @@ router.post('/addevent', (req, res, next) => {
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
+        rekisteriNro: req.body.rekisteriNro,
         backgroundColor: req.body.backgroundColor,
         description: req.body.description,
         confirm: false,
