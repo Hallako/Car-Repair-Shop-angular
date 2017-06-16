@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 
 import { AppComponent } from './app.component';
+import { User } from './components/admin/user';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
@@ -23,18 +24,21 @@ import { AccordionComponent, AccordionGroupComponent } from './components/help/a
 import { LoginGuard } from './guards/login.guard'
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
+import { ChatService } from './services/chat.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { ChatComponent } from './components/chat/chat.component';
 
 const appRoutes : Routes = [
     {path:'', component: HomeComponent},
     {path:'register', component: RegisterComponent, canActivate:[LoginGuard]},
     {path:'login', component: LoginComponent, canActivate:[LoginGuard]},
-    {path: 'help', component: HelpComponent},
+    {path:'help', component: HelpComponent},
     {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-    {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
+    {path:'admin', component: AdminComponent, canActivate:[AdminGuard]},
+    {path:'chat', component: ChatComponent, canActivate:[AuthGuard]}
 ]
 
 @NgModule({
@@ -51,7 +55,8 @@ const appRoutes : Routes = [
     AdminComponent,
     HelpComponent,
     AccordionComponent,
-    AccordionGroupComponent
+    AccordionGroupComponent,
+    ChatComponent
   ],
 
   imports: [
@@ -64,7 +69,8 @@ const appRoutes : Routes = [
     FlashMessagesModule,
     BrowserAnimationsModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService, LoginGuard],
+  providers: [ValidateService, AuthService, AuthGuard
+  , AdminGuard, SearchService, LoginGuard, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

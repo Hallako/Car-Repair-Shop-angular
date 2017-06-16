@@ -2,12 +2,18 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const logger = require('morgan');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const http = require('http');
+const favicon = require('serve-favicon');
+
 const config = require('./config/database');
+
 const users = require('./routes/users');
 const events = require('./routes/events');
-var http = require('http');
+const chat = require('./routes/chat');
+
 
 //DB conf
 mongoose.connect(config.database);
@@ -22,7 +28,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 const app = express();
-
+app.use(logger('dev'));
 //port
 const httpport = process.env.PORT || 8081;
 
@@ -42,6 +48,7 @@ app.use(passport.session());
 require('./config/passport')(passport);
 
 //routes
+app.use('/chat', chat);
 app.use('/users', users);
 app.use('/events', events);
 
@@ -55,5 +62,17 @@ app.get('*', (req, res) => {
 });
 
 var httpServer = http.createServer(app);
-
 httpServer.listen(httpport);
+
+var io = require('socket.io').listen(httpServer);
+// socket io
+io.on('connection', function(socket) {
+    console.log('User connected');
+    socket.on('disconnect', function() {
+        console.log('User disconnected');
+    });
+    socket.on('save-message', function(data) {
+        console.log(data);
+        io.emit('new-message', { message: data });
+    });
+});
