@@ -1,12 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var app = express();
-
-
 var Chat = require('../models/Chat.js');
-
-//server.listen(4000);
 
 /* GET ALL CHATS */
 router.get('/:room', function(req, res, next) {
