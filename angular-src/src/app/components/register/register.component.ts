@@ -3,6 +3,8 @@ import { ValidateService } from '../../services/validate.service'
 import { AuthService } from '../../services/auth.service'
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
+import { User } from '../../variables/user'
+
 
 @Component({
   selector: 'app-register',
@@ -11,10 +13,7 @@ import { Router } from '@angular/router'
 })
 export class RegisterComponent implements OnInit {
 
-    name: String;
-    username: String;
-    email: String;
-    password: String;
+    user: User;
 
   constructor(
        private validateService: ValidateService,
@@ -27,30 +26,24 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSubmit(){
 
-      const user = {
-        name: this.name,
-        email: this.email,
-        username: this.username,
-        password: this.password
-      }
 
     //check that username is unique (returns true if exists and vice versa)
-    this.authService.checkUsername(user).subscribe(res=> {
+    this.authService.checkUsername(this.user).subscribe(res=> {
 
       if(res.exists == false){
 
         //Validate given information
-        if(!this.validateService.validateRegister(user)){
+        if(!this.validateService.validateRegister(this.user)){
             this.flashmessage.show('Täytä kaikki kentät', {cssClass: 'alert-danger', timeout:3000});
             return false;
         }
-        if(!this.validateService.validateEmail(user.email)){
+        if(!this.validateService.validateEmail(this.user.email)){
             this.flashmessage.show('Anna oikea sähköposti', {cssClass: 'alert-danger', timeout:3000});
             return false;
         }
 
         //register user
-        this.authService.registerUser(user).subscribe(data => {
+        this.authService.registerUser(this.user).subscribe(data => {
             if(data.success){
                 this.flashmessage.show('Rekisteröity onnistuneesti', {cssClass: 'alert-success', timeout:3000});
                 this.router.navigate(['/login']);
