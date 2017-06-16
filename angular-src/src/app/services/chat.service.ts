@@ -7,11 +7,7 @@ export class ChatService {
 
   nodeUrl: String;
 
-<<<<<<< HEAD
   constructor(private http: Http) {
-=======
-  constructor(private http: Http) { 
->>>>>>> refs/remotes/Hallako/ChatTest
     this.nodeUrl = 'http://localhost:8081/';
   }
 
