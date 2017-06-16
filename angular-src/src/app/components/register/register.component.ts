@@ -17,7 +17,6 @@ name: String;
 username: String;
 email: String;
 password: String;
-user: User;
 
   constructor(
        private validateService: ValidateService,
