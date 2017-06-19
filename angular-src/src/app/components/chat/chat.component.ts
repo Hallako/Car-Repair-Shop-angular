@@ -28,7 +28,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
 
     this.Admin = this.authservice.getAdmin();
-    console.log(this.Admin)
 
     this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
     var user = JSON.parse(localStorage.getItem("userr"));
