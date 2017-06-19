@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
+<<<<<<< HEAD
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+=======
+import { User } from '../../variables/user'
+
+>>>>>>> refs/remotes/Hallako/master
 
 @Component({
   selector: 'app-register',
@@ -11,7 +16,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
+<<<<<<< HEAD
     registerForm: FormGroup;
+=======
+name: String;
+username: String;
+email: String;
+password: String;
+>>>>>>> refs/remotes/Hallako/master
 
   constructor(
        private flashmessage: FlashMessagesService,
@@ -39,6 +51,7 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSubmit(){
 
+<<<<<<< HEAD
       const user = {
         firstname: this.registerForm.get('firstname').value,
         lastname: this.registerForm.get('lastname').value,
@@ -46,6 +59,14 @@ export class RegisterComponent implements OnInit {
         username: this.registerForm.get('username').value,
         password: this.registerForm.get('password').value
       }
+=======
+    const user = {
+  name: this.name,
+  email: this.email,
+  username: this.username,
+  password: this.password
+}
+>>>>>>> refs/remotes/Hallako/master
 
       console.log(user);
     //check that username is unique (returns true if exists and vice versa)

@@ -13,7 +13,7 @@ export class ChatService {
 
   getChatByRoom(room) {
     return new Promise((resolve, reject) => {
-      this.http.get(this.nodeUrl+'chat/' + room)
+      this.http.get(this.nodeUrl + 'chat/' + room)
         .map(res => res.json())
         .subscribe(res => {
           resolve(res);
@@ -25,13 +25,13 @@ export class ChatService {
 
   saveChat(data) {
     return new Promise((resolve, reject) => {
-        this.http.post(this.nodeUrl+'chat/', data)
-          .map(res => res.json())
-          .subscribe(res => {
-            resolve(res);
-          }, (err) => {
-            reject(err);
-          });
+      this.http.post(this.nodeUrl + 'chat/', data)
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
     });
   }
 

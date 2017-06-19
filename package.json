@@ -25,7 +25,9 @@
     "morgan": "^1.8.2",
     "passport": "*",
     "passport-jwt": "*",
+    "promise": "^7.2.0",
     "serve-favicon": "^2.4.3",
+    "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "socketio": "^1.0.0"
   },
