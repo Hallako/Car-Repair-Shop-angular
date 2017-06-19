@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io('');
+  socket = io('http://localhost:8081/');
 
   constructor(private chatService: ChatService,
               private authservice: AuthService,
