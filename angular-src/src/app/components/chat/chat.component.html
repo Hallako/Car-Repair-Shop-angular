@@ -1,0 +1,98 @@
+<div class="chatcont">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5" id="chatti">
+                <div class="panel panel-primary" *ngIf="joinned; else createtemplate">
+                    <div class="panel-heading" (click)="togglehide()">
+                        <span class="glyphicon glyphicon-comment"></span> Livechat
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default btn-xs" (click)="logout(); togglehide()">
+                              X
+                          </button>
+                        </div>
+                    </div>
+                    <div #scrollMe class="panel-body" [hidden]="!Hidden">
+                        <ul class="chat">
+                            <li *ngFor="let c of chats">
+                                <div class="left clearfix" *ngIf="c.nickname===msgData.nickname; else rightchat">
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">{{ c.nickname }}</strong> <small class="pull-right text-muted">
+                                          <span class="glyphicon glyphicon-time"></span>{{ c.updated_at | date: 'medium' }}</small>
+                                        </div>
+                                        <p>{{ c.message }}</p>
+                                    </div>
+                                </div>
+                                <ng-template #rightchat>
+                                    <div class="right clearfix">
+
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{ c.updated_at | date: 'medium' }}</small>
+                                                <strong class="pull-right primary-font">{{ c.nickname }}</strong>
+                                            </div>
+                                            <p>{{ c.message }}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer" [hidden]="!Hidden">
+                        <form (ngSubmit)="sendMessage()" #msgForm="ngForm">
+                            <div class="input-group">
+                                <input type="hidden" [(ngModel)]="msgData.room" name="room" />
+                                <input type="hidden" [(ngModel)]="msgData.nickname" name="nickname" />
+                                <input id="btn-input" type="text" [(ngModel)]="msgData.message" name="message" class="form-control input-sm" placeholder="Type your message here..." required="" />
+                                <span class="input-group-btn">
+                              <button class="btn btn-warning btn-sm" id="btn-chat" [disabled]="!msgForm.form.valid">
+                                  Lähetä</button>
+                          </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <ng-template #createtemplate>
+                    <div *ngIf="Admin; else joinroom">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <h4 (click)="togglehide()" [hidden]="Hidden">Avaa Keskustelu</h4>
+                                <h4 (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
+                                <div class="panel-body" [hidden]="!Hidden">
+                                    <h1>Luo Keskustelu</h1>
+                                    <form (ngSubmit)="admincreateRoom()" #joinForm="ngForm">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="newUser.nickname" name="nickname" required="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success" [disabled]="!joinForm.form.valid">Luo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #joinroom>
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <h4 (click)="togglehide(); createRoom()" [hidden]="Hidden">Ota yhteys tukeen</h4>
+                                <h4 (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
+                                <!--div class="panel-body" [hidden]="!Hidden">
+                                    <h1>Luo Keskustelu</h1>
+                                    <form (ngSubmit)="createRoom()" #joinForm="ngForm">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="newUser.nickname" name="nickname" required="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success" [disabled]="!joinForm.form.valid">Luo</button>
+                                        </div>
+                                    </form>
+                                </div-->
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
