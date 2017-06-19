@@ -2124,7 +2124,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ChatService = (function () {
     function ChatService(http) {
         this.http = http;
-        this.nodeUrl = 'http://localhost:8081/';
+        this.nodeUrl = '';
     }
     ChatService.prototype.getChatByRoom = function (room) {
         var _this = this;
