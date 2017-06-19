@@ -114,13 +114,11 @@ io.on('connection', function(socket) {
         io.emit('userconn-response', { message: data, available: false });
     });
 
-
     socket.on('adminleaveroom', function(data) {
         var x = data.room;
         var y = false;
 
         io.in(data.room).emit('releasesocket', { room: data.room });
-
 
         for (var k = 0; k < SocketConnections.length; k++) {
             if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
@@ -132,12 +130,6 @@ io.on('connection', function(socket) {
             }
         }
 
-    });
-
-
-    socket.on('adminjoin', function(data) {
-
-        socket.join(data.room);
     });
 
     socket.on('userdisconnect', function(data) {
