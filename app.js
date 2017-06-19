@@ -20,10 +20,10 @@ mongoose.connect(config.database);
 
 //Check connection
 mongoose.connection.on('connected', () => {
-    console.log('connected to DB');
+  console.log('connected to DB');
 });
 mongoose.connection.on('error', (err) => {
-    console.log('connected to DB' + err);
+  console.log('connected to DB' + err);
 });
 
 const app = express();
@@ -53,11 +53,11 @@ app.use('/events', events);
 
 //index route
 app.get('/', (req, res) => {
-    res.send('Invalid Endpoint');
+  res.send('Invalid Endpoint');
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/index.html'));
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 //Start server
@@ -70,80 +70,87 @@ var io = require('socket.io').listen(httpServer);
 // socket io
 io.on('connection', function(socket) {
 
-    console.log('User connected');
+  console.log('User connected');
 
-    socket.on('createroom', function(data) {
-        console.log(data)
-        console.log('admin created room');
+  socket.on('createroom', function(data) {
 
-        for (var i = 0; i < SocketConnections.length; i++) {
-            if (SocketConnections[i][0] == undefined) {
-                SocketConnections[i][0] = socket.id;
-                SocketConnections[i][1] = true;
-                io.emit('userconn-response', { message: data, available: true, socketconnection: socket.id });
-                break;
-            }
-        }
+    for (var i = 0; i < SocketConnections.length; i++) {
+      if (SocketConnections[i][0] == undefined) {
+        SocketConnections[i][0] = socket.id;
+        SocketConnections[i][1] = true;
+        io.emit('userconn-response', {
+          message: data,
+          available: true,
+          socketconnection: socket.id
+        });
+        break;
+      }
+    }
 
-        console.log(SocketConnections);
+  });
+
+  socket.on('adminleaveroom', function(data) {
+    var x = socket.id;
+    var y = true;
+
+    for (var k = 0; k < SocketConnections.length; k++) {
+      if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+
+        SocketConnections[k][0] = null;
+        SocketConnections[k][1] = null;
+      }
+    }
+  });
+
+  socket.on('userconnect', function(data) {
+
+    for (var i = 0; i < SocketConnections.length; i++) {
+      if (SocketConnections[i][1] == true) {
+        io.emit('userconn-response', {
+          message: data,
+          available: true,
+          socketconnection: socket.id
+        });
+        SocketConnections[i][1] = false;
+        return;
+      }
+    }
+    io.emit('userconn-response', {
+      message: data,
+      available: false
     });
+  });
 
-    socket.on('adminleaveroom', function(data) {
-        var x = socket.id;
-        var y = true;
+  socket.on('userdisconnect', function(data) {
 
-        for (var k = 0; k < SocketConnections.length; k++) {
-            if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+    var x = socket.id;
+    var y = true;
 
-                SocketConnections[k][0] = null;
-                SocketConnections[k][1] = null;
-            }
-        }
-        console.log(SocketConnections);
+    for (var k = 0; k < SocketConnections.length; k++) {
+      if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+        SocketConnections[k][1] = true;
+      }
+    }
+  });
+
+
+  socket.on('disconnect', function(data) {
+
+  });
+
+  socket.on('save-message', function(data) {
+    io.emit('new-message', {
+      message: data
     });
-
-    socket.on('userconnect', function(data) {
-        console.log(data);
-
-        for (var i = 0; i < SocketConnections.length; i++) {
-            if (SocketConnections[i][1] == true) {
-                io.emit('userconn-response', { message: data, available: true, socketconnection: socket.id });
-                SocketConnections[i][1] = false;
-                return;
-            }
-        }
-        io.emit('userconn-response', { message: data, available: false });
-    });
-
-    socket.on('userdisconnect', function(data) {
-
-        var x = socket.id;
-        var y = true;
-
-        for (var k = 0; k < SocketConnections.length; k++) {
-            if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
-                SocketConnections[k][1] = true;
-            }
-        }
-    });
-
-
-    socket.on('disconnect', function(data) {
-
-    });
-
-    socket.on('save-message', function(data) {
-        console.log(data);
-        io.emit('new-message', { message: data });
-    });
+  });
 });
 
 function createArray(length) {
-    var arr = new Array(length || 0),
-        i = length;
-    if (arguments.length > 1) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        while (i--) arr[length - 1 - i] = createArray.apply(this, args);
-    }
-    return arr;
+  var arr = new Array(length || 0),
+    i = length;
+  if (arguments.length > 1) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    while (i--) arr[length - 1 - i] = createArray.apply(this, args);
+  }
+  return arr;
 }
