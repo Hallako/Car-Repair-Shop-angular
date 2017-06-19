@@ -378,7 +378,7 @@ export class DashboardComponent implements OnInit {
               overlapsCounter++;
             }
           });
-
+  
           let counter1 = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
