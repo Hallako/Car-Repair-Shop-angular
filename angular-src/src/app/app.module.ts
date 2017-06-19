@@ -21,7 +21,6 @@ import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
 import { AccordionComponent, AccordionGroupComponent } from './components/help/accordion/accordion.component';
 import { LoginGuard } from './guards/login.guard'
-import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 import { ChatService } from './services/chat.service';
 import { SearchService } from './services/search.service';
@@ -68,7 +67,7 @@ const appRoutes : Routes = [
     FlashMessagesModule,
     BrowserAnimationsModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard
+  providers: [AuthService, AuthGuard
   , AdminGuard, SearchService, LoginGuard, ChatService],
   bootstrap: [AppComponent]
 })

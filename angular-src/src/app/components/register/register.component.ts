@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidateService } from '../../services/validate.service'
 import { AuthService } from '../../services/auth.service'
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -11,43 +11,47 @@ import { Router } from '@angular/router'
 })
 export class RegisterComponent implements OnInit {
 
-    name: String;
-    username: String;
-    email: String;
-    password: String;
+    registerForm: FormGroup;
 
   constructor(
-       private validateService: ValidateService,
        private flashmessage: FlashMessagesService,
        private authService: AuthService,
-       private router: Router) { }
+       private router: Router,
+       private fb: FormBuilder)
+       {
+         this.registerForm = fb.group({
+           firstname: ['', Validators.compose([Validators.required])],
+           lastname: ['', Validators.compose([Validators.required])],
+           email: ['', Validators.compose([Validators.required, Validators.email])],
+           username: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+           password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+           passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+         }, {validator: this.areEqual})
+       }
 
   ngOnInit() {
+  }
+
+  areEqual(group: FormGroup) {
+    return group.get('password').value === group.get('passwordConfirm').value
+      ? null : {'mismatch': true}
   }
 
   onRegisterSubmit(){
 
       const user = {
-        name: this.name,
-        email: this.email,
-        username: this.username,
-        password: this.password
+        firstname: this.registerForm.get('firstname').value,
+        lastname: this.registerForm.get('lastname').value,
+        email: this.registerForm.get('email').value,
+        username: this.registerForm.get('username').value,
+        password: this.registerForm.get('password').value
       }
 
+      console.log(user);
     //check that username is unique (returns true if exists and vice versa)
     this.authService.checkUsername(user).subscribe(res=> {
 
-      if(res.exists == false){
-
-        //Validate given information
-        if(!this.validateService.validateRegister(user)){
-            this.flashmessage.show('Täytä kaikki kentät', {cssClass: 'alert-danger', timeout:3000});
-            return false;
-        }
-        if(!this.validateService.validateEmail(user.email)){
-            this.flashmessage.show('Anna oikea sähköposti', {cssClass: 'alert-danger', timeout:3000});
-            return false;
-        }
+      if(res.exists == false) {
 
         //register user
         this.authService.registerUser(user).subscribe(data => {
