@@ -1,11 +1,14 @@
 <div class="col-md-4">
-  <div class="search-box" id="search-component">
-    <h4>Hae käyttäjiä</h4>
-    <input #searchBox id="search-box" name="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off" />
-    <div *ngIf="users">
-      <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false;">{{ user.name }}</option>
+  <form id="form">
+    <div class="search-box" id="search-component">
+      <h4>Hae käyttäjiä</h4>
+      <input #searchBox id="search-box" name="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off" />
+      <div *ngIf="users">
+        <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false;" onclick="document.getElementById('form').reset()">{{ user.name }}</option>
+      </div>
     </div>
-  </div>
+  </form>
+
 
   <div class="form-horizontal right" id="formSearch" *ngIf="!selectedUser">
     <h4>Hae tapahtumia ajalla</h4>
