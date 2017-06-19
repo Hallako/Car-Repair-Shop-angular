@@ -6,8 +6,8 @@
                     <div class="panel-heading" (click)="togglehide()">
                         <span class="glyphicon glyphicon-comment"></span> Livechat
                         <div class="btn-group pull-right">
-                            <button type="button" class="btn btn-default btn-xs" (click)="logout()">
-                              Poistu
+                            <button type="button" class="btn btn-default btn-xs" (click)="logout(); togglehide()">
+                              X
                           </button>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                                 <h4 (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
                                 <div class="panel-body" [hidden]="!Hidden">
                                     <h1>Luo Keskustelu</h1>
-                                    <form (ngSubmit)="createRoom()" #joinForm="ngForm">
+                                    <form (ngSubmit)="admincreateRoom()" #joinForm="ngForm">
                                         <div class="form-group">
                                             <input type="text" class="form-control" [(ngModel)]="newUser.nickname" name="nickname" required="" />
                                         </div>
@@ -75,9 +75,9 @@
                     <ng-template #joinroom>
                         <div class="panel panel-primary">
                             <div class="panel-body">
-                                <h4 (click)="togglehide()" [hidden]="Hidden">Ota yhteys tukeen</h4>
+                                <h4 (click)="togglehide(); createRoom()" [hidden]="Hidden">Ota yhteys tukeen</h4>
                                 <h4 (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
-                                <div class="panel-body" [hidden]="!Hidden">
+                                <!--div class="panel-body" [hidden]="!Hidden">
                                     <h1>Luo Keskustelu</h1>
                                     <form (ngSubmit)="createRoom()" #joinForm="ngForm">
                                         <div class="form-group">
@@ -87,7 +87,7 @@
                                             <button type="submit" class="btn btn-success" [disabled]="!joinForm.form.valid">Luo</button>
                                         </div>
                                     </form>
-                                </div>
+                                </div-->
                             </div>
                         </div>
                     </ng-template>
