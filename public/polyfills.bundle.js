@@ -7955,7 +7955,7 @@ if (_global['PromiseRejectionEvent']) {
 
 /***/ }),
 
-/***/ 2:
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("../../../../../src/polyfills.ts");
@@ -7963,5 +7963,5 @@ module.exports = __webpack_require__("../../../../../src/polyfills.ts");
 
 /***/ })
 
-},[2]);
+},[1]);
 //# sourceMappingURL=polyfills.bundle.js.map

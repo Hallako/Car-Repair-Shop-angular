@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-navbar></app-navbar>\r\n<div class=\"container\">\r\n  <flash-messages></flash-messages>\r\n  <router-outlet></router-outlet>\r\n</div>\r\n<app-footer></app-footer>\r\n<app-chat *ngIf=\"checkLogIn()\"></app-chat>\r\n"
+module.exports = "<app-navbar></app-navbar>\r\n<div class=\"container\">\r\n    <flash-messages></flash-messages>\r\n    <router-outlet></router-outlet>\r\n</div>\r\n<app-footer></app-footer>"
 
 /***/ }),
 
@@ -43,7 +43,6 @@ module.exports = "<app-navbar></app-navbar>\r\n<div class=\"container\">\r\n  <f
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -51,18 +50,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
 
 var AppComponent = (function () {
-    function AppComponent(authService) {
-        this.authService = authService;
+    function AppComponent() {
     }
-    AppComponent.prototype.checkLogIn = function () {
-        return this.authService.loggedIn();
-    };
     return AppComponent;
 }());
 AppComponent = __decorate([
@@ -70,11 +61,9 @@ AppComponent = __decorate([
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_auth_service__["a" /* AuthService */]) === "function" && _a || Object])
+    })
 ], AppComponent);
 
-var _a;
 //# sourceMappingURL=C:/dev/Nodet/MeanAppi/angular-src/src/app.component.js.map
 
 /***/ }),
@@ -108,11 +97,9 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__guards_login_guard__ = __webpack_require__("../../../../../src/app/guards/login.guard.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_validate_service__ = __webpack_require__("../../../../../src/app/services/validate.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_chat_service__ = __webpack_require__("../../../../../src/app/services/chat.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__services_search_service__ = __webpack_require__("../../../../../src/app/services/search.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__guards_auth_guard__ = __webpack_require__("../../../../../src/app/guards/auth.guard.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__guards_admin_guard__ = __webpack_require__("../../../../../src/app/guards/admin.guard.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_chat_chat_component__ = __webpack_require__("../../../../../src/app/components/chat/chat.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_search_service__ = __webpack_require__("../../../../../src/app/services/search.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__guards_auth_guard__ = __webpack_require__("../../../../../src/app/guards/auth.guard.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__guards_admin_guard__ = __webpack_require__("../../../../../src/app/guards/admin.guard.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -146,17 +133,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-
 var appRoutes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_11__components_home_home_component__["a" /* HomeComponent */] },
     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_12__components_register_register_component__["a" /* RegisterComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_20__guards_login_guard__["a" /* LoginGuard */]] },
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_10__components_login_login_component__["a" /* LoginComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_20__guards_login_guard__["a" /* LoginGuard */]] },
     { path: 'help', component: __WEBPACK_IMPORTED_MODULE_18__components_help_help_component__["a" /* HelpComponent */] },
-    { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_14__components_dashboard_dashboard_component__["a" /* DashboardComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_25__guards_auth_guard__["a" /* AuthGuard */]] },
-    { path: 'profile', component: __WEBPACK_IMPORTED_MODULE_13__components_profile_profile_component__["a" /* ProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_25__guards_auth_guard__["a" /* AuthGuard */]] },
-    { path: 'admin', component: __WEBPACK_IMPORTED_MODULE_17__components_admin_admin_component__["a" /* AdminComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_26__guards_admin_guard__["a" /* AdminGuard */]] },
-    { path: 'chat', component: __WEBPACK_IMPORTED_MODULE_27__components_chat_chat_component__["a" /* ChatComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_25__guards_auth_guard__["a" /* AuthGuard */]] }
+    { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_14__components_dashboard_dashboard_component__["a" /* DashboardComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_24__guards_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'profile', component: __WEBPACK_IMPORTED_MODULE_13__components_profile_profile_component__["a" /* ProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_24__guards_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'admin', component: __WEBPACK_IMPORTED_MODULE_17__components_admin_admin_component__["a" /* AdminComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_25__guards_admin_guard__["a" /* AdminGuard */]] }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -178,8 +162,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_17__components_admin_admin_component__["a" /* AdminComponent */],
             __WEBPACK_IMPORTED_MODULE_18__components_help_help_component__["a" /* HelpComponent */],
             __WEBPACK_IMPORTED_MODULE_19__components_help_accordion_accordion_component__["a" /* AccordionComponent */],
-            __WEBPACK_IMPORTED_MODULE_19__components_help_accordion_accordion_component__["b" /* AccordionGroupComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__components_chat_chat_component__["a" /* ChatComponent */]
+            __WEBPACK_IMPORTED_MODULE_19__components_help_accordion_accordion_component__["b" /* AccordionGroupComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_3__angular_common__["CommonModule"],
@@ -191,8 +174,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7_angular2_flash_messages__["FlashMessagesModule"],
             __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
         ],
-        providers: [__WEBPACK_IMPORTED_MODULE_21__services_validate_service__["a" /* ValidateService */], __WEBPACK_IMPORTED_MODULE_22__services_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_25__guards_auth_guard__["a" /* AuthGuard */],
-            __WEBPACK_IMPORTED_MODULE_26__guards_admin_guard__["a" /* AdminGuard */], __WEBPACK_IMPORTED_MODULE_24__services_search_service__["a" /* SearchService */], __WEBPACK_IMPORTED_MODULE_20__guards_login_guard__["a" /* LoginGuard */], __WEBPACK_IMPORTED_MODULE_23__services_chat_service__["a" /* ChatService */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_21__services_validate_service__["a" /* ValidateService */], __WEBPACK_IMPORTED_MODULE_22__services_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_24__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_25__guards_admin_guard__["a" /* AdminGuard */], __WEBPACK_IMPORTED_MODULE_23__services_search_service__["a" /* SearchService */], __WEBPACK_IMPORTED_MODULE_20__guards_login_guard__["a" /* LoginGuard */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -209,7 +191,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".checkbox {\r\n  width: 1.5em;\r\n  height: auto;\r\n}\r\n\r\n.right {\r\n  width: 40%;\r\n  position: relative;\r\n  float: right;\r\n}\r\n\r\n.form {\r\n  float: right;\r\n  margin-right: 16px;\r\n}\r\n\r\n#input {\r\n  padding-right: 16px;\r\n}\r\n\r\n#searchDiv {\r\n  float: right;\r\n  padding: 0px;\r\n}\r\n\r\n#formSearch {\r\n  width: 40%;\r\n  float: right;\r\n}\r\n\r\n.form-group {\r\n  width: auto;\r\n}\r\n\r\n.hover {\r\n  border-radius: 0px;\r\n  border-top: 0px;\r\n}\r\n\r\n.hover:hover {\r\n  background-color: #f8f5f0\r\n}\r\n\r\n.desc {\r\n  width: auto;\r\n}\r\n\r\n.table-text {\r\n  width: 15em;\r\n}\r\n\r\n.table-name {\r\n  width: 6%;\r\n}\r\n\r\n.table-last {\r\n  width: 160px;\r\n}\r\n\r\n.form-control {\r\n  width: 50%;\r\n}\r\n\r\n.search-box {\r\n  position: absolute;\r\n  width: 50%;\r\n  z-index: 99999;\r\n}\r\n\r\n.col-md-4 {\r\n  position: relative;\r\n  width: 100%;\r\n  margin-top: 2em;\r\n}\r\n\r\n.panel-primary {\r\n  width: 40%;\r\n  height: 5%;\r\n  float: left;\r\n}\r\n\r\n.panel-success {\r\n  float: right;\r\n  width: 100%;\r\n  height: 5%;\r\n}\r\n\r\n.btn-group-vertical {\r\n  padding-top: 10px;\r\n  padding-bottom: 10px;\r\n  border-radius: 0px;\r\n  display: block;\r\n  width: 40%;\r\n}\r\n\r\n.btn {\r\n  border-radius: 0px;\r\n  float: right;\r\n}\r\n\r\n.btn-primary {\r\n  display: inline-block;\r\n  border-radius: 6px;\r\n  margin-bottom: 10px;\r\n  float: right;\r\n}\r\n\r\n.btn-sm {\r\n  margin-bottom: 5px;\r\n  border-radius: 3px;\r\n  float: right;\r\n  margin-right: 0.5em;\r\n}\r\n\r\n.btn-xs {\r\n  margin-left: 0.6em;\r\n  min-width: 4.5em;\r\n  float: right;\r\n  border-radius: 3px;\r\n}\r\n\r\n.btn-ok {\r\n  float: right;\r\n}\r\n\r\n.btn-default {\r\n  margin-bottom: 10px;\r\n}\r\n\r\n.btn-group-vertical>.btn:not(:first-child):not(:last-child) {\r\n  border-radius: 6px;\r\n}\r\n\r\n.btn-group-vertical>.btn:first-child:not(:last-child) {\r\n  border-radius: 6px;\r\n}\r\n\r\n.btn-group-vertical>.btn:last-child:not(:first-child) {\r\n  border-radius: 6px;\r\n}\r\n\r\n.form-horizontal {\r\n  padding-top: 0em;\r\n  width: 100%;\r\n  float: left;\r\n}\r\n\r\n.table-container {\r\n  width: 100%;\r\n  display: inline-block;\r\n  position: relative;\r\n  margin-top: 2em;\r\n}\r\n\r\n.form-control-left {\r\n  margin: auto;\r\n}\r\n\r\n.control-label {\r\n  text-align: left;\r\n}\r\n\r\n.table-hover {\r\n  position: relative;\r\n  margin-top: 10em;\r\n}\r\n", ""]);
+exports.push([module.i, ".checkbox {\r\n    width: 1.5em;\r\n    height: auto;\r\n}\r\n\r\n.right {\r\n  width:50%;\r\n  position: relative;\r\n  float: right;\r\n}\r\n\r\n.form {\r\n  float: right;\r\n  margin-right: 16px;\r\n}\r\n\r\n#input {\r\n  padding-right: 16px;\r\n}\r\n#searchDiv {\r\n  float: right;\r\n  padding: 0px;\r\n}\r\n#formSearch {\r\n  width: 40%;\r\n  float: right;\r\n}\r\n\r\n.form-group {\r\n  width:auto;\r\n}\r\n\r\n.hover {\r\n    border-radius: 0px;\r\n    border-top: 0px;\r\n}\r\n\r\n.hover:hover {\r\n    background-color: #f8f5f0\r\n}\r\n\r\n.desc {\r\n    width: auto;\r\n}\r\n\r\n.table-text {\r\n  width: 15em;\r\n}\r\n\r\n.table-name {\r\n  width: 6%;\r\n}\r\n\r\n.table-last {\r\n  width: 160px;\r\n}\r\n.form-control {\r\n    width: 50%;\r\n}\r\n\r\n.search-box {\r\n    position: absolute;\r\n    width: 50%;\r\n    z-index: 99999;\r\n}\r\n\r\n.col-md-4 {\r\n    position: relative;\r\n    width: 100%;\r\n    margin-top: 2em;\r\n}\r\n\r\n.panel-primary {\r\n    width: 40%;\r\n    height: 5%;\r\n    float: left;\r\n}\r\n\r\n.panel-success {\r\n    float: right;\r\n    width: 100%;\r\n    height: 5%;\r\n}\r\n\r\n.btn-group-vertical {\r\n    padding-top: 10px;\r\n    padding-bottom: 10px;\r\n    border-radius: 0px;\r\n    display: block;\r\n    width: 40%;\r\n}\r\n\r\n.btn {\r\n    border-radius: 0px;\r\n    float: right;\r\n}\r\n\r\n.btn-primary {\r\n    display: inline-block;\r\n    border-radius: 6px;\r\n    margin-bottom: 10px;\r\n    float: right;\r\n\r\n}\r\n\r\n.btn-sm {\r\n    margin-bottom: 5px;\r\n    border-radius: 3px;\r\n    float: right;\r\n    margin-right: 0.5em;\r\n}\r\n\r\n.btn-xs {\r\n    margin-left: 0.6em;\r\n    min-width: 4.5em;\r\n    float: right;\r\n    border-radius: 3px;\r\n}\r\n\r\n.btn-ok {\r\n    float: right;\r\n}\r\n\r\n.btn-default {\r\n    margin-bottom: 10px;\r\n}\r\n\r\n.btn-group-vertical>.btn:not(:first-child):not(:last-child) {\r\n    border-radius: 6px;\r\n}\r\n\r\n.btn-group-vertical>.btn:first-child:not(:last-child) {\r\n    border-radius: 6px;\r\n}\r\n\r\n.btn-group-vertical>.btn:last-child:not(:first-child) {\r\n    border-radius: 6px;\r\n}\r\n\r\n.form-horizontal {\r\n    padding-top: 0em;\r\n    width: 100%;\r\n    float: left;\r\n}\r\n\r\n.table-container {\r\n    width: 100%;\r\n    display: inline-block;\r\n    position: relative;\r\n    margin-top: 2em;\r\n}\r\n\r\n.table-hover {\r\n    position: relative;\r\n    margin-top: 10em;\r\n}\r\n", ""]);
 
 // exports
 
@@ -222,7 +204,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/admin/admin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-4\">\r\n  <form id=\"form\">\r\n    <div class=\"search-box\" id=\"search-component\">\r\n      <h4>Hae käyttäjiä</h4>\r\n      <input #searchBox id=\"search-box\" name=\"search-box\" (keyup)=\"searchTerm$.next($event.target.value)\" class=\"form-control\" autocomplete=\"off\" />\r\n      <div *ngIf=\"users\">\r\n        <option class=\"form-control hover\" *ngFor=\"let user of users\" (click)=\"onSelect(user); users=null; search = false;\" onclick=\"document.getElementById('form').reset()\">{{ user.name }}</option>\r\n      </div>\r\n    </div>\r\n  </form>\r\n\r\n\r\n  <div class=\"form-horizontal right\" id=\"formSearch\" *ngIf=\"!selectedUser\">\r\n    <h4>Hae tapahtumia ajalla</h4>\r\n    <div class=\"form-group\">\r\n      <label class=\"col-lg-2 control-label\">Alkamisaika</label>\r\n      <input type=\"datetime-local\" step=\"1800\" class=\"form-control form\" id=\"input\" [(ngModel)]=\"start\" name=\"start\" required>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <label class=\"col-lg-2 control-label \">Päättymisaika</label>\r\n      <input type=\"datetime-local\" step=\"1800\" class=\"form-control form\" id=\"input\" [(ngModel)]=\"end\" name=\"end\" required>\r\n    </div>\r\n    <input type=\"submit\" (click)=\"eventSearch(start,end)\" class=\"btn btn-primary\" value=\"Päivitä\">\r\n  </div>\r\n\r\n  <form class=\"form-horizontal right\" *ngIf=\"selectedUser\" id=\"formSearch\">\r\n    <div class=\"panel panel-success\">\r\n      <div class=\"panel-heading\">\r\n        <legend class=\"panel-title\">{{selectedUser.name}}</legend>\r\n      </div>\r\n      <div class=\"panel-body\">\r\n        <div class=\"form-group\">\r\n          <label class=\"col-lg-2 control-label\">Nimi:</label>\r\n          <input type=\"text\" [(ngModel)]=\"selectedUser.name\" id=\"inputName\" name=\"name\" placeholder=\"{{selectedUser.name}}\" text=\"\" class=\"form-control form\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label class=\"col-lg-2 control-label\">Käyttäjänimi:</label>\r\n          <input type=\"text\" [(ngModel)]=\"selectedUser.username\" name=\"username\" id=\"inputUsername\" placeholder=\"{{selectedUser.username}}\" class=\"form-control form\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label class=\"col-lg-2 control-label\">Email:</label>\r\n          <input type=\"email\" [(ngModel)]=\"selectedUser.email\" name=\"email\" id=\"inputEmail\" placeholder=\"{{selectedUser.email}\" class=\"form-control form\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label class=\"col-lg-2 control-label\">Admin:</label>\r\n          <input type=\"checkbox\" [(ngModel)]=\"selectedUser.admin\" name=\"admin\" id=\"inputAdmin\" placeholder=\"{{selectedUser.admin}}\" class=\"checkbox\" />\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <button type=\"reset\" (click)=\"selectedUser = null; getConfirms()\" class=\"btn btn-default btn-xs\">Peruuta</button>\r\n    <button type=\"submit\" class=\"btn btn-primary btn-xs\" (click)=\"updateUser()\">Tallenna</button>\r\n  </form>\r\n</div>\r\n\r\n<div *ngIf=\"events?.length && !selectedUser && !search\" class=\"form-horizontal\">\r\n  <table class=\"table table-hover\">\r\n    <thead>\r\n      <legend>\r\n        Hyväksymättömät varaukset\r\n      </legend>\r\n      <tr>\r\n        <th>Asiakas</th>\r\n        <th>Toimenpide</th>\r\n        <th>Aloitusaika</th>\r\n        <th>Päättymisaika</th>\r\n        <th>Lisätietoja</th>\r\n        <th>Hyväksy/Poista</th>\r\n      </tr>\r\n    </thead>\r\n    <tbody>\r\n      <tr *ngFor=\"let event of events\">\r\n        <td class=\"table-name\">{{event.user}}</td>\r\n        <td class=\"desc\">{{event.title}}</td>\r\n        <td class=\"desc\">{{event.start}}</td>\r\n        <td class=\"desc\">{{event.end}}</td>\r\n        <td class=\"table-text\">{{event.description}}</td>\r\n        <td class=\"table-last\"><button (click)=\"deleteEvent(event)\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n          <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n\r\n<div class=\"table-container\" *ngIf=\"selectedUser\">\r\n  <table class=\"table table-hover\">\r\n    <thead>\r\n      <tr>\r\n        <th>Asiakas</th>\r\n        <th>Toimenpide</th>\r\n        <th>Aloitusaika</th>\r\n        <th>Päättymisaika</th>\r\n        <th>Lisätietoja</th>\r\n        <th>Hyväksy/Poista</th>\r\n\r\n      </tr>\r\n    </thead>\r\n    <tbody>\r\n      <tr *ngFor=\"let event of events\">\r\n        <td class=\"table-name\">{{event.user}}</td>\r\n        <td class=\"desc\">{{event.title}}</td>\r\n        <td class=\"desc\">{{event.start}}</td>\r\n        <td class=\"desc\">{{event.end}}</td>\r\n        <td class=\"table-text\">{{event.description}}</td>\r\n        <td class=\"table-last\"><button (click)=\"(deleteEvent(event))\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n          <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n\r\n<div class=\"table-container\" *ngIf=\"search\">\r\n  <table class=\"table table-hover \">\r\n    <thead>\r\n      <tr>\r\n        <th>Asiakas</th>\r\n        <th>Toimenpide</th>\r\n        <th>Aloitusaika</th>\r\n        <th>Päättymisaika</th>\r\n        <th>Lisätietoja</th>\r\n        <th>Hyväksy/Poista</th>\r\n      </tr>\r\n    </thead>\r\n    <tbody>\r\n      <tr *ngFor=\"let event of events\">\r\n        <td class=\"table-name\">{{event.user}}</td>\r\n        <td class=\"desc\">{{event.title}}</td>\r\n        <td class=\"desc\">{{event.start}}</td>\r\n        <td class=\"desc\">{{event.end}}</td>\r\n        <td class=\"table-text\">{{event.description}}</td>\r\n        <td class=\"table-last\"><button (click)=\"(deleteEvent(event))\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n          <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div class=\"col-md-4\">\r\n    <div class=\"search-box\" id=\"search-component\">\r\n        <h4>Hae käyttäjiä</h4>\r\n        <input #searchBox id=\"search-box\" (keyup)=\"searchTerm$.next($event.target.value)\" class=\"form-control\" autocomplete=\"off\" />\r\n        <div *ngIf=\"users\">\r\n            <option class=\"form-control hover\" *ngFor=\"let user of users\" (click)=\"onSelect(user); users=null; search = false\">{{ user.name }}</option>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"form-horizontal right\" id=\"formSearch\" *ngIf=\"!selectedUser\">\r\n        <h4>Hae tapahtumia ajalla</h4>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-2 control-label\">Alkamisaika</label>\r\n            <input type=\"datetime-local\" step=\"1800\" class=\"form-control form\" id=\"input\" [(ngModel)]=\"start\" name=\"start\" required>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-lg-2 control-label \">Päättymisaika</label>\r\n            <input type=\"datetime-local\" step=\"1800\" class=\"form-control form\" id=\"input\" [(ngModel)]=\"end\" name=\"end\" required>\r\n        </div>\r\n        <input type=\"submit\" (click)=\"eventSearch(start,end)\" class=\"btn btn-primary\" value=\"Päivitä\">\r\n    </div>\r\n\r\n    <form class=\"form-horizontal right\" id=\"formSearch\" *ngIf=\"selectedUser\">\r\n        <div class=\"panel panel-success\">\r\n            <div class=\"panel-heading\">\r\n                <legend class=\"panel-title\">{{selectedUser.name}}</legend>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <div class=\"form-group\">\r\n                    <label for=\"inputName\" class=\"col-lg-2 control-label\">Nimi:</label>\r\n                    <div class=\"col-lg-10\">\r\n                        <input type=\"text\" [(ngModel)]=\"selectedUser.name\" id=\"inputName\" name=\"name\" placeholder=\"{{selectedUser.name}}\" text=\"\" class=\"form-control\" />\r\n                    </div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"inputUsername\" class=\"col-lg-2 control-label\">Käyttäjänimi:</label>\r\n                    <div class=\"col-lg-10\">\r\n                        <input type=\"text\" [(ngModel)]=\"selectedUser.username\" name=\"username\" id=\"inputUsername\" placeholder=\"{{selectedUser.username}}\" class=\"form-control\" />\r\n                    </div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"inputEmail\" class=\"col-lg-2 control-label\">Email:</label>\r\n                    <div class=\"col-lg-10\">\r\n                        <input type=\"email\" [(ngModel)]=\"selectedUser.email\" name=\"email\" id=\"inputEmail\" placeholder=\"{{selectedUser.email}\" class=\"form-control\" />\r\n                    </div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"inputAdmin\" class=\"col-lg-2 control-label\">Admin:</label>\r\n                    <div class=\"col-lg-10\">\r\n                        <input type=\"checkbox\" [(ngModel)]=\"selectedUser.admin\" name=\"admin\" id=\"inputAdmin\" placeholder=\"{{selectedUser.admin}}\" class=\"checkbox\" />\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <button type=\"reset\" (click)=\"selectedUser = null\" class=\"btn btn-default btn-xs\">Peruuta</button>\r\n        <button type=\"submit\" class=\"btn btn-primary btn-xs\" (click)=\"updateUser()\">Tallenna</button>\r\n    </form>\r\n</div>\r\n\r\n<div *ngIf=\"events?.length && !selectedUser && !search\" class=\"form-horizontal\">\r\n    <table class=\"table table-hover\">\r\n        <thead>\r\n            <legend>\r\n                Hyväksymättömät varaukset\r\n            </legend>\r\n            <tr>\r\n                <th>Asiakas</th>\r\n                <th>Toimenpide</th>\r\n                <th>Aloitusaika</th>\r\n                <th>Päättymisaika</th>\r\n                <th>Lisätietoja</th>\r\n                <th></th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr *ngFor=\"let event of events\">\r\n                <td class=\"table-name\">{{event.user}}</td>\r\n                <td class=\"desc\">{{event.title}}</td>\r\n                <td class=\"desc\">{{event.start}}</td>\r\n                <td class=\"desc\">{{event.end}}</td>\r\n                <td class=\"table-text\">{{event.description}}</td>\r\n                <td class=\"table-last\"><button (click)=\"deleteEvent(event)\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n                    <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div class=\"table-container\" *ngIf=\"selectedUser\">\r\n    <table class=\"table table-hover \">\r\n        <thead>\r\n            <tr>\r\n                <th>Toimenpide</th>\r\n                <th>Aloitusaika</th>\r\n                <th>Päättymisaika</th>\r\n                <th>Lisätietoja</th>\r\n                <th></th>\r\n\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr *ngFor=\"let event of events\">\r\n                <td class=\"table-name\">{{event.user}}</td>\r\n                <td class=\"desc\">{{event.title}}</td>\r\n                <td class=\"desc\">{{event.start}}</td>\r\n                <td class=\"desc\">{{event.end}}</td>\r\n                <td class=\"table-text\">{{event.description}}</td>\r\n                <td class=\"table-last\"><button (click)=\"(deleteEvent(event))\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n                    <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div class=\"table-container\" *ngIf=\"search\">\r\n    <table class=\"table table-hover \">\r\n        <thead>\r\n            <tr>\r\n                <th>Toimenpide</th>\r\n                <th>Aloitusaika</th>\r\n                <th>Päättymisaika</th>\r\n                <th>Lisätietoja</th>\r\n                <th></th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr *ngFor=\"let event of events\">\r\n                <td class=\"table-name\">{{event.user}}</td>\r\n                <td class=\"desc\">{{event.title}}</td>\r\n                <td class=\"desc\">{{event.start}}</td>\r\n                <td class=\"desc\">{{event.end}}</td>\r\n                <td class=\"table-text\">{{event.description}}</td>\r\n                <td class=\"table-last\"><button (click)=\"(deleteEvent(event))\" class=\"btn btn-danger btn-sm\">Poista</button>\r\n                    <button (click)=\"confirmEvent(event)\" class=\"btn btn-success btn-sm\" *ngIf=\"!event.confirm\">Hyväksy</button></td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -380,214 +362,6 @@ AdminComponent = __decorate([
 
 var _a, _b, _c;
 //# sourceMappingURL=C:/dev/Nodet/MeanAppi/angular-src/src/admin.component.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/chat/chat.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".chat {\r\n    list-style: none;\r\n    margin: 0;\r\n    padding: 0;\r\n}\r\n\r\n#chatti {\r\n    position: fixed;\r\n    bottom: 0;\r\n    right: 0;\r\n    padding: 0;\r\n    margin-right: 5px;\r\n    z-index: 1000;\r\n    width: auto;\r\n    min-width: 300px;\r\n    max-width: 400px;\r\n}\r\n\r\n#chatcont {\r\n    position: fixed;\r\n    margin-bottom: 0;\r\n    bottom: 0;\r\n    z-index: 1000;\r\n}\r\n\r\n.panel-primary {\r\n    border-color: #555;\r\n    box-shadow: 0 0 6px rgba(0, 0, 0, .5);\r\n    border-radius: 3px;\r\n    border: 0.3px solid grey;\r\n}\r\n\r\n.chat li {\r\n    margin-bottom: 4px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 1px dotted #B3A9A9;\r\n}\r\n\r\n.chat li.left .chat-body {\r\n    margin-left: 60px;\r\n}\r\n\r\n.chat li.right .chat-body {\r\n    margin-right: 20px;\r\n}\r\n\r\n.chat li .chat-body p {\r\n    margin: 0;\r\n    color: #777777;\r\n}\r\n\r\n.panel {\r\n    margin-bottom: 8px;\r\n}\r\n\r\n.panel-heading {\r\n    border-bottom: 0;\r\n    border-radius: 2px;\r\n}\r\n\r\n.panel .slidedown .glyphicon,\r\n.chat .glyphicon {\r\n    margin-right: 5px;\r\n    border: 0;\r\n}\r\n\r\n.panel-body {\r\n    height: auto;\r\n    width: auto;\r\n    max-height: 290px;\r\n    max-width: 400px;\r\n    overflow: auto;\r\n    padding: 5px;\r\n    border-radius: 3px;\r\n    background-color: #F5F5F5;\r\n}\r\n\r\n#btn-chat {\r\n    line-height: 21px;\r\n    border-radius: 3px;\r\n    margin-left: 3px;\r\n}\r\n\r\n.btn-xs {\r\n    text-transform: none;\r\n    background-color: #325d88;\r\n    font-size: 11px;\r\n}\r\n\r\n::-webkit-scrollbar-track {\r\n    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);\r\n    background-color: #F5F5F5;\r\n}\r\n\r\n::-webkit-scrollbar {\r\n    width: 12px;\r\n    background-color: #F5F5F5;\r\n}\r\n\r\n::-webkit-scrollbar-thumb {\r\n    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);\r\n    background-color: #555;\r\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/chat/chat.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"chatcont\">\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-5\" id=\"chatti\">\r\n                <div class=\"panel panel-primary\" *ngIf=\"joinned; else createtemplate\">\r\n                    <div class=\"panel-heading\" (click)=\"togglehide()\">\r\n                        <span class=\"glyphicon glyphicon-comment\"></span> Livechat\r\n                        <div class=\"btn-group pull-right\">\r\n                            <button type=\"button\" class=\"btn btn-default btn-xs\" (click)=\"logout(); togglehide()\">\r\n                              X\r\n                          </button>\r\n                        </div>\r\n                    </div>\r\n                    <div #scrollMe class=\"panel-body\" [hidden]=\"!Hidden\">\r\n                        <ul class=\"chat\">\r\n                            <li *ngFor=\"let c of chats\">\r\n                                <div class=\"left clearfix\" *ngIf=\"c.nickname===msgData.nickname; else rightchat\">\r\n                                    <div class=\"chat-body clearfix\">\r\n                                        <div class=\"header\">\r\n                                            <strong class=\"primary-font\">{{ c.nickname }}</strong> <small class=\"pull-right text-muted\">\r\n                                          <span class=\"glyphicon glyphicon-time\"></span>{{ c.updated_at | date: 'medium' }}</small>\r\n                                        </div>\r\n                                        <p>{{ c.message }}</p>\r\n                                    </div>\r\n                                </div>\r\n                                <ng-template #rightchat>\r\n                                    <div class=\"right clearfix\">\r\n\r\n                                        <div class=\"chat-body clearfix\">\r\n                                            <div class=\"header\">\r\n                                                <small class=\" text-muted\"><span class=\"glyphicon glyphicon-time\"></span>{{ c.updated_at | date: 'medium' }}</small>\r\n                                                <strong class=\"pull-right primary-font\">{{ c.nickname }}</strong>\r\n                                            </div>\r\n                                            <p>{{ c.message }}</p>\r\n                                        </div>\r\n                                    </div>\r\n                                </ng-template>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                    <div class=\"panel-footer\" [hidden]=\"!Hidden\">\r\n                        <form (ngSubmit)=\"sendMessage()\" #msgForm=\"ngForm\">\r\n                            <div class=\"input-group\">\r\n                                <input type=\"hidden\" [(ngModel)]=\"msgData.room\" name=\"room\" />\r\n                                <input type=\"hidden\" [(ngModel)]=\"msgData.nickname\" name=\"nickname\" />\r\n                                <input id=\"btn-input\" type=\"text\" [(ngModel)]=\"msgData.message\" name=\"message\" class=\"form-control input-sm\" placeholder=\"Type your message here...\" required=\"\" />\r\n                                <span class=\"input-group-btn\">\r\n                              <button class=\"btn btn-warning btn-sm\" id=\"btn-chat\" [disabled]=\"!msgForm.form.valid\">\r\n                                  Lähetä</button>\r\n                          </span>\r\n                            </div>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n                <ng-template #createtemplate>\r\n                    <div *ngIf=\"Admin; else joinroom\">\r\n                        <div class=\"panel panel-primary\">\r\n                            <div class=\"panel-body\">\r\n                                <h4 (click)=\"togglehide()\" [hidden]=\"Hidden\">Avaa Keskustelu</h4>\r\n                                <h4 (click)=\"togglehide()\" [hidden]=\"!Hidden\">Sulje Keskustelu</h4>\r\n                                <div class=\"panel-body\" [hidden]=\"!Hidden\">\r\n                                    <h1>Luo Keskustelu</h1>\r\n                                    <form (ngSubmit)=\"admincreateRoom()\" #joinForm=\"ngForm\">\r\n                                        <div class=\"form-group\">\r\n                                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newUser.nickname\" name=\"nickname\" required=\"\" />\r\n                                        </div>\r\n                                        <div class=\"form-group\">\r\n                                            <button type=\"submit\" class=\"btn btn-success\" [disabled]=\"!joinForm.form.valid\">Luo</button>\r\n                                        </div>\r\n                                    </form>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                    <ng-template #joinroom>\r\n                        <div class=\"panel panel-primary\">\r\n                            <div class=\"panel-body\">\r\n                                <h4 (click)=\"togglehide(); createRoom()\" [hidden]=\"Hidden\">Ota yhteys tukeen</h4>\r\n                                <h4 (click)=\"togglehide()\" [hidden]=\"!Hidden\">Sulje Keskustelu</h4>\r\n                                <!--div class=\"panel-body\" [hidden]=\"!Hidden\">\r\n                                    <h1>Luo Keskustelu</h1>\r\n                                    <form (ngSubmit)=\"createRoom()\" #joinForm=\"ngForm\">\r\n                                        <div class=\"form-group\">\r\n                                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newUser.nickname\" name=\"nickname\" required=\"\" />\r\n                                        </div>\r\n                                        <div class=\"form-group\">\r\n                                            <button type=\"submit\" class=\"btn btn-success\" [disabled]=\"!joinForm.form.valid\">Luo</button>\r\n                                        </div>\r\n                                    </form>\r\n                                </div-->\r\n                            </div>\r\n                        </div>\r\n                    </ng-template>\r\n                </ng-template>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/chat/chat.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_chat_service__ = __webpack_require__("../../../../../src/app/services/chat.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_flash_messages__ = __webpack_require__("../../../../angular2-flash-messages/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_flash_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_socket_io_client__ = __webpack_require__("../../../../socket.io-client/lib/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_socket_io_client__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var ChatComponent = (function () {
-    function ChatComponent(chatService, authservice, flashMessage) {
-        this.chatService = chatService;
-        this.authservice = authservice;
-        this.flashMessage = flashMessage;
-        this.joinned = false;
-        this.newUser = { nickname: '', room: '' };
-        this.msgData = { room: '', nickname: '', message: '' };
-        this.socket = __WEBPACK_IMPORTED_MODULE_4_socket_io_client__('');
-    }
-    ChatComponent.prototype.ngOnInit = function () {
-        this.user = this.authservice.getUser();
-        this.Admin = this.user.admin;
-        if (this.Admin) {
-            this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
-        }
-        var user = JSON.parse(localStorage.getItem("userr"));
-        if (user !== null) {
-            this.msgData = { room: null, nickname: user.nickname, message: '' };
-            this.joinned = true;
-            this.scrollToBottom();
-        }
-        //###### SOCKETS ########
-        this.socket.on('new-message', function (data) {
-            if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
-                this.chats.push(data.message);
-                this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' };
-                this.scrollToBottom();
-            }
-        }.bind(this));
-        this.socket.on('userdc', function (data) {
-            if (this.user.admin) {
-                this.chats = null;
-                this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 6000 });
-            }
-        }.bind(this));
-        this.socket.on('adminconn-response', function (data) {
-            localStorage.setItem("userr", JSON.stringify(this.newUser));
-        }.bind(this));
-        this.socket.on('releasesocket', function (data) {
-            this.socket.emit('userdisconnect', { room: data.room });
-            this.newUser.room = '';
-            this.msgData.room = '';
-            this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
-            this.Hidden = false;
-            this.joinned = false;
-            localStorage.setItem("userr", JSON.stringify(this.newUser));
-        }.bind(this));
-        this.socket.on('userconn-response', function (data) {
-            if (data.available == true) {
-                this.newUser.room = data.room;
-                this.msgData.room = data.room;
-                this.joinned = true;
-                if (this.user.admin) {
-                    this.socket.emit('adminjoin', data.room);
-                    localStorage.setItem("userr", JSON.stringify(this.newUser));
-                    this.getChatByRoom(this.newUser.room);
-                }
-                else {
-                    localStorage.setItem("userr", JSON.stringify(this.newUser));
-                    this.getChatByRoom(this.newUser.room);
-                    this.flashMessage.show('Yhditetty asiakaspalveluun', { cssClass: 'alert-success', timeout: 3000 });
-                }
-            }
-            else {
-                this.flashMessage.show('Henkilökuntaa ei ole tavoitettavissa', { cssClass: 'alert-danger', timeout: 3000 });
-                this.Hidden = false;
-                this.joinned = false;
-            }
-        }.bind(this));
-        //Ngoninit END
-    };
-    ChatComponent.prototype.ngAfterViewChecked = function () {
-        this.scrollToBottom();
-    };
-    ChatComponent.prototype.scrollToBottom = function () {
-        try {
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        }
-        catch (err) { }
-    };
-    ChatComponent.prototype.getChatByRoom = function (room) {
-        var _this = this;
-        this.chatService.getChatByRoom(room).then(function (res) {
-            _this.chats = res;
-        }, function (err) {
-            console.log(err);
-        });
-    };
-    ChatComponent.prototype.admincreateRoom = function () {
-        var date = new Date();
-        this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
-        this.newUser.room = this.user.username;
-        localStorage.setItem("userr", JSON.stringify(this.newUser));
-        this.socket.emit('admincreateroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-            updated_at: date, user: this.user.username });
-        this.joinned = true;
-    };
-    ChatComponent.prototype.createRoom = function () {
-        var date = new Date();
-        this.newUser.nickname = this.user.username;
-        this.socket.emit('userjoin', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-            updated_at: date, user: this.user.username });
-    };
-    ChatComponent.prototype.sendMessage = function () {
-        var _this = this;
-        if (this.msgData.room && this.msgData.message && this.msgData.nickname) {
-            this.chatService.saveChat(this.msgData).then(function (result) {
-                _this.socket.emit('save-message', result);
-                _this.msgData.message = '';
-            }, function (err) {
-                console.log(err);
-            });
-        }
-    };
-    ChatComponent.prototype.logout = function () {
-        var date = new Date();
-        var user = JSON.parse(localStorage.getItem("userr"));
-        if (this.user.admin) {
-            this.socket.emit('adminleaveroom', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
-        }
-        else {
-            this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
-        }
-        this.chats = null;
-        localStorage.removeItem("userr");
-        this.newUser.room = "";
-        this.joinned = false;
-    };
-    ChatComponent.prototype.togglehide = function () {
-        if (this.Hidden == true) {
-            this.Hidden = false;
-        }
-        else {
-            this.Hidden = true;
-        }
-    };
-    return ChatComponent;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('scrollMe'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
-], ChatComponent.prototype, "myScrollContainer", void 0);
-ChatComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-chat',
-        template: __webpack_require__("../../../../../src/app/components/chat/chat.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/components/chat/chat.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_chat_service__["a" /* ChatService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_flash_messages__["FlashMessagesService"]) === "function" && _d || Object])
-], ChatComponent);
-
-var _a, _b, _c, _d;
-//# sourceMappingURL=C:/dev/Nodet/MeanAppi/angular-src/src/chat.component.js.map
 
 /***/ }),
 
@@ -1610,6 +1384,7 @@ var ProfileComponent = (function () {
                 event.start = __WEBPACK_IMPORTED_MODULE_4_moment__(event.start).format('DD.MM.YYYY [klo] HH:mm');
                 event.end = __WEBPACK_IMPORTED_MODULE_4_moment__(event.end).format('DD.MM.YYYY [klo] HH:mm');
             });
+            //console.log(this.events);
         });
     };
     ProfileComponent.prototype.areEqual = function (group) {
@@ -1626,6 +1401,7 @@ var ProfileComponent = (function () {
             this.authService.changePassword(user).subscribe(function (res) {
                 _this.flashmessage.show(res, { cssClass: 'alert-success', timeout: 3000 });
                 ;
+                //location.reload();
             });
         }
     };
@@ -2100,68 +1876,6 @@ var _a;
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/chat.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var ChatService = (function () {
-    function ChatService(http) {
-        this.http = http;
-        this.nodeUrl = 'http://localhost:8081/';
-    }
-    ChatService.prototype.getChatByRoom = function (room) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.http.get(_this.nodeUrl + 'chat/' + room)
-                .map(function (res) { return res.json(); })
-                .subscribe(function (res) {
-                resolve(res);
-            }, function (err) {
-                reject(err);
-            });
-        });
-    };
-    ChatService.prototype.saveChat = function (data) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.http.post(_this.nodeUrl + 'chat/', data)
-                .map(function (res) { return res.json(); })
-                .subscribe(function (res) {
-                resolve(res);
-            }, function (err) {
-                reject(err);
-            });
-        });
-    };
-    return ChatService;
-}());
-ChatService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"]) === "function" && _a || Object])
-], ChatService);
-
-var _a;
-//# sourceMappingURL=C:/dev/Nodet/MeanAppi/angular-src/src/chat.service.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/services/search.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2564,13 +2278,6 @@ webpackContext.id = "../../../../moment/locale recursive ^\\.\\/.*$";
 /***/ }),
 
 /***/ 0:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("../../../../../src/main.ts");
@@ -2578,5 +2285,5 @@ module.exports = __webpack_require__("../../../../../src/main.ts");
 
 /***/ })
 
-},[1]);
+},[0]);
 //# sourceMappingURL=main.bundle.js.map
