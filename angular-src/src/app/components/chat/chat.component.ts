@@ -49,9 +49,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.on('new-message', function (data) {
       if(data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
-        
+
         this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' }
         this.scrollToBottom();
+
       }
     }.bind(this));
 
@@ -118,7 +119,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   scrollToBottom(): void {
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+    } catch (err) { }
   }
 
   getChatByRoom(room) {
@@ -175,8 +176,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.joinned = false;
   }
 
-  togglehide(){
-    if(this.Hidden == true){
+  togglehide() {
+    if (this.Hidden == true) {
       this.Hidden = false;
     } else {
       this.Hidden = true;
