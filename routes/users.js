@@ -9,7 +9,8 @@ const User = require('../models/user');
 //Register
 router.post('/register', (req, res, next) => {
     let newUser = new User({
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
@@ -18,9 +19,9 @@ router.post('/register', (req, res, next) => {
 
     User.addUser(newUser, (err, user) => {
         if (err) {
-            res.json({ success: false, msg: 'Failed to register' });
+            res.json({ success: false, msg: 'Rekisteröityminen epäonnistui' });
         } else {
-            res.json({ success: true, msg: 'User registered' });
+            res.json({ success: true, msg: 'Rekisteröityminen onnistui!' });
         }
     });
 });
