@@ -38,18 +38,10 @@ export class DashboardComponent implements OnInit {
   events: Event[];
   event: Event
 
-
-<<<<<<< HEAD
   constructor(
        private authService: AuthService,
        private flashMessage: FlashMessagesService,
        private router: Router) { }
-=======
-  constructor(private validateService: ValidateService,
-    private authService: AuthService,
-    private flashMessage: FlashMessagesService,
-    private router: Router) { }
->>>>>>> refs/remotes/Hallako/master
 
   ngOnInit() {
     var curuser = this.authService.getUser();
@@ -179,102 +171,6 @@ export class DashboardComponent implements OnInit {
               this.flashMessage.show('Valitse toimenpide', { cssClass: 'alert-danger', timeout: 3000 });
             }
 
-<<<<<<< HEAD
-        let boundClick = clickFunc.bind(this);
-        //options
-        let options: any = {
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-
-            events: function(start, end, timezone, callback) {
-
-              end = moment(end).add(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
-              start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
-
-                $.ajax({
-                    url: 'http://localhost:8081/events/getevents/'
-                    +start+"/"+end+"/"+userId+"/"+ true,
-                    dataType: 'json',
-                    success: function(response) {
-                        if(!curuser.admin){
-                          response.forEach(event => {
-
-                            if((event.user != curuser.id || event.user == null)){
-                              event.backgroundColor = '#71893f';
-                              event.rendering = 'background';
-                            }
-                            else if(event.confirm == false){
-                              event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-                              event.textColor = '#111'
-                            }
-                            else if(event.confirm == true){
-                              event.backgroundColor = 'rgba(0, 170, 0, 0.7)';
-                            }
-
-                          });
-                        } else {
-                          response.forEach(event => {
-                            if(event.confirm == false){
-                              event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-                              event.textColor = '#111'
-                            }
-                          });
-                        }
-                      callback(response)
-                    }
-                });
-            },
-              businessHours: {
-              dow: [1, 2, 3, 4, 5],
-              start: '7:00',
-              end: '18:00',
-            },
-
-            validRange: function(nowDate) {
-                return {
-                    start: moment(),
-                    end: nowDate.clone().add(60, 'days')
-                };
-            },
-            hiddenDays:[0,6],
-            locale: 'fi',
-            minTime: "07:00:00",
-            maxTime: "18:00:00",
-            allDaySlot: false,
-            height: 'auto',
-            selectable: false,
-            defaultView: 'agendaWeek',
-            timeFormat: 'H:mm',
-            slotLabelFormat: 'H:mm',
-            aspectRatio: 1,
-            fixedWeekCount : false,
-            selectHelper: true,
-            unselectAuto: false,
-            nowIndicator: true,
-            selectConstraint: 'businessHours',
-            eventConstraint: 'businessHours',
-            eventClick: boundClick,
-            //Event selection based on selected type of event.
-            dayClick: (date, jsEvent, view) => {
-
-              this.eventUsername = null;
-
-              this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
-
-                if ( view.type == 'month' ){
-                  this.calElement.fullCalendar('changeView', 'agendaWeek');
-                  this.calElement.fullCalendar('gotoDate', date);
-                } else {
-
-                this.calElement.fullCalendar('rerenderEvents');
-
-                if (this.title == undefined) {
-                  this.flashMessage.show('Valitse toimenpide', {cssClass: 'alert-danger', timeout: 3000 });
-                }
-=======
             else if (res >= 2) {
               this.flashMessage.show('Et voi varata yli 2 päällekkäistä tapahtumaa', { cssClass: 'alert-danger', timeout: 3000 });
               this.calElement.fullCalendar('unselect');
@@ -282,7 +178,6 @@ export class DashboardComponent implements OnInit {
               this.start = null;
               this.end = null;
             }
->>>>>>> refs/remotes/Hallako/master
 
             else if (res < 2) {
 
@@ -481,7 +376,7 @@ export class DashboardComponent implements OnInit {
               overlapsCounter++;
             }
           });
-  
+
           let counter1 = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
