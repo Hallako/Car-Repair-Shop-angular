@@ -6,4 +6,5 @@ export class Event {
   start: String
   title: String
   confirm: Boolean
+  backgroundColor: String
 }
