@@ -450,12 +450,14 @@ var ChatComponent = (function () {
         if (this.Admin) {
             this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
         }
+
         else {
             this.newUser.nickname = JSON.parse(localStorage.getItem("user")).name;
         }
         var user = JSON.parse(localStorage.getItem("userr"));
         if (user !== null) {
             this.msgData = { room: null, nickname: this.newUser.nickname, message: '' };
+
             this.joinned = true;
             this.scrollToBottom();
         }
@@ -467,6 +469,7 @@ var ChatComponent = (function () {
                 this.scrollToBottom();
             }
         }.bind(this));
+
         //User leave callback
         this.socket.on('userleavedroom', function (data) {
             this.chats = null;
@@ -489,6 +492,7 @@ var ChatComponent = (function () {
             }
         }.bind(this));
         //User connection callback
+
         this.socket.on('userconn-response', function (data) {
             if (data.available == true) {
                 this.newUser.room = data.room;
@@ -566,10 +570,12 @@ var ChatComponent = (function () {
             this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
         }
         this.chats = null;
+
         this.newUser.room = "";
         this.joinned = false;
         this.Hidden = true;
         localStorage.removeItem("userr");
+
     };
     ChatComponent.prototype.togglehide = function () {
         if (this.Hidden == true) {
