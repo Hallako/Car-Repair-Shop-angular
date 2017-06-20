@@ -447,10 +447,10 @@ var ChatComponent = (function () {
         this.user = this.authservice.getUser();
         this.Admin = this.user.admin;
         if (this.Admin) {
-            this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname + this.user.lastname;
+            this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname + ' ' + this.user.lastname;
         }
         else {
-            this.newUser.nickname = this.user.firstname + this.user.lastname;
+            this.newUser.nickname = this.user.firstname + ' ' + this.user.lastname;
         }
         var user = JSON.parse(localStorage.getItem("userr"));
         if (user !== null) {
@@ -468,7 +468,7 @@ var ChatComponent = (function () {
         }.bind(this));
         //User leave callback
         this.socket.on('userleavedroom', function (data) {
-            this.chats = null;
+            this.chats = [];
             this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 3000 });
         }.bind(this));
         //Admin connect callback
