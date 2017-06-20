@@ -151,7 +151,9 @@ io.on('connection', function(socket) {
         var x = data.room;
         var y = false;
 
-        if (this.user.admin) {
+        console.log(data)
+
+        if (data.admin) {
             io.in(data.room).emit('releasesocket', { room: data.room });
             for (var k = 0; k < SocketConnections.length; k++) {
                 if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
