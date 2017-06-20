@@ -1,22 +1,36 @@
-<h2 class="page-header">Rekisteröityminen</h2>
 <div class="register-form">
-    <form (submit)="onRegisterSubmit()">
-        <div class="form-group">
-            <label>Nimi</label>
-            <input type="text" [(ngModel)]="name" name="name" class="form-control">
+  <h2 class="page-header">Rekisteröityminen</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit() ; registerForm.reset()">
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('firstname').invalid && !registerForm.get('firstname').pristine}">
+            <label>Etunimi</label>
+            <input type="text" formControlName="firstname" name="firstname" class="form-control" [ngClass]="{'form-control-danger': registerForm.get('firstname').invalid}">
         </div>
-        <div class="form-group">
-            <label>Käyttäjänimi</label>
-            <input type="text" [(ngModel)]="username" name="username" class="form-control">
+
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('lastname').invalid && !registerForm.get('lastname').pristine}">
+            <label>Sukunimi</label>
+            <input type="text" formControlName="lastname" name="lastname" class="form-control" [ngClass]="{'form-control-danger': registerForm.get('lastname').invalid}">
         </div>
-        <div class="form-group">
+
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('email').invalid && !registerForm.get('email').pristine}">
             <label>Sähköposti</label>
-            <input type="text" [(ngModel)]="email" name="email" class="form-control">
+            <input type="text" formControlName="email" name="email" class="form-control" placeholder="Esimerkki@email.com" [ngClass]="{'form-control-danger': registerForm.get('email').invalid}">
         </div>
-        <div class="form-group">
+
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('username').invalid && !registerForm.get('username').pristine}">
+            <label>Käyttäjänimi</label>
+            <input type="text" formControlName="username" name="username" class="form-control" [ngClass]="{'form-control-danger': registerForm.get('username').invalid}">
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('password').invalid && !registerForm.get('password').pristine}">
             <label>Salasana</label>
-            <input type="password" [(ngModel)]="password" name="password" class="form-control">
+            <input type="password" class="form-control" formControlName="password" name="password" placeholder="Salasana" [ngClass]="{'form-control-danger': registerForm.get('password').invalid && !registerForm.get('password').pristine}">
         </div>
-        <input type="submit" class="btn btn-primary" value="Rekisteröidy">
+
+        <div class="form-group" [ngClass]="{'has-error': registerForm.get('passwordConfirm').invalid && !registerForm.get('passwordConfirm').pristine}">
+            <label>Kirjoita salasana uudelleen</label>
+            <input type="password" class="form-control" formControlName="passwordConfirm" name="passwordConfirm" placeholder="Salasana" [ngClass]="{'form-control-danger': registerForm.get('passwordConfirm').invalid}">
+        </div>
+
+        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary">Rekisteröidy</button>
     </form>
 </div>

@@ -4,7 +4,7 @@
       <h4>Hae käyttäjiä</h4>
       <input #searchBox id="search-box" name="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off" />
       <div *ngIf="users">
-        <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false;" onclick="document.getElementById('form').reset()">{{ user.name }}</option>
+        <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false;" onclick="document.getElementById('form').reset()">{{ user.lastname }} {{user.firstname}}: {{user.email}}</option>
       </div>
     </div>
   </form>
@@ -26,12 +26,16 @@
   <form class="form-horizontal right" *ngIf="selectedUser" id="formSearch">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <legend class="panel-title">{{selectedUser.name}}</legend>
+        <legend class="panel-title">{{selectedUser.username}}</legend>
       </div>
       <div class="panel-body">
         <div class="form-group">
-          <label class="col-lg-2 control-label">Nimi:</label>
-          <input type="text" [(ngModel)]="selectedUser.name" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" class="form-control form" />
+          <label class="col-lg-2 control-label">Sukunimi:</label>
+          <input type="text" [(ngModel)]="selectedUser.lastname" id="inputLastname" name="Lastname" placeholder="{{selectedUser.lastname}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Etunimi:</label>
+          <input type="text" [(ngModel)]="selectedUser.firstname" id="inputFirstname" name="Firstname" placeholder="{{selectedUser.firstname}}" text="" class="form-control form" />
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Käyttäjänimi:</label>

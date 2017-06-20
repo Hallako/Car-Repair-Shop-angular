@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   Admin: boolean;
   Hidden: boolean;
-  chats: any;
+  chats: any = [];
   user: any;
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
@@ -34,12 +34,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.Admin = this.user.admin;
 
     if (this.Admin) {
-      this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
+      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.name;
+    } else {
+      this.newUser.nickname = this.user.name;
     }
 
-    else {
-      this.newUser.nickname = JSON.parse(localStorage.getItem("user")).name;
-    }
     var user = JSON.parse(localStorage.getItem("userr"));
 
     if (user !== null) {
@@ -53,43 +52,40 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.on('new-message', function(data) {
       if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
-
-        this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' }
+        this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' }
         this.scrollToBottom();
-
       }
     }.bind(this));
 
-    this.socket.on('userdc', function(data) {
-      if (this.user.admin) {
-        this.chats = null;
-        this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 6000 });
-      }
+    //User leave callback
+    this.socket.on('userleavedroom', function(data) {
+      this.chats = null;
+      this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 3000 });
     }.bind(this));
 
 
+    //Admin connect callback
     this.socket.on('adminconn-response', function(data) {
       localStorage.setItem("userr", JSON.stringify(this.newUser));
     }.bind(this));
 
+    //Admin leave callback
     this.socket.on('releasesocket', function(data) {
+      if (!this.user.admin) {
+        this.socket.emit('userdisconnect', { room: data.room, userleaved: false });
+        this.newUser.room = '';
+        this.msgData.room = '';
 
-      this.socket.emit('userdisconnect', { room: data.room });
-      this.newUser.room = '';
-      this.msgData.room = '';
+        this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
+        this.Hidden = false;
+        this.joinned = false;
 
-      this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
-      this.Hidden = false;
-      this.joinned = false;
-
-      localStorage.setItem("userr", JSON.stringify(this.newUser));
+        localStorage.setItem("userr", JSON.stringify(this.newUser));
+      }
     }.bind(this));
 
-
-
-
+    //User connection callback
     this.socket.on('userconn-response', function(data) {
-
       if (data.available == true) {
         this.newUser.room = data.room;
         this.msgData.room = data.room;
@@ -110,7 +106,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.Hidden = false;
         this.joinned = false;
       }
-
     }.bind(this));
 
     //Ngoninit END
@@ -128,7 +123,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   getChatByRoom(room) {
     this.chatService.getChatByRoom(room).then((res) => {
-      this.chats = res;
+      if (res) {
+        this.chats = res;
+      } else {
+        this.chats = [];
+      }
+
     }, (err) => {
       console.log(err);
     });
@@ -149,20 +149,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   createRoom() {
     var date = new Date();
-    this.newUser.nickname = this.user.username;
-
+    this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
     this.socket.emit('userjoin', {
       room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
       updated_at: date, user: this.user.username
     });
-
   }
 
   sendMessage() {
     if (this.msgData.room && this.msgData.message) {
       this.chatService.saveChat(this.msgData).then((result) => {
         this.socket.emit('save-message', result);
-        this.msgData.message = '';
+        this.msgData.message = null;
       }, (err) => {
         console.log(err);
       });
@@ -172,16 +170,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   logout() {
     var date = new Date();
     var user = JSON.parse(localStorage.getItem("userr"));
+
     if (this.user.admin) {
       this.socket.emit('adminleaveroom', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
-
     } else {
       this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
     }
+
     this.chats = null;
-    localStorage.removeItem("userr");
     this.newUser.room = "";
     this.joinned = false;
+    this.Hidden = true;
+    localStorage.removeItem("userr");
   }
 
   togglehide() {
