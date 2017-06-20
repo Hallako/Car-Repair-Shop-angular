@@ -79,7 +79,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
       this.Hidden = false;
       this.joinned = false;
-      
+
       localStorage.setItem("userr", JSON.stringify(this.newUser));
       }
     }.bind(this));
@@ -136,13 +136,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   admincreateRoom() {
     var date = new Date();
-    
+
     this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
     this.newUser.room = this.user.username;
     localStorage.setItem("userr", JSON.stringify(this.newUser));
     this.socket.emit('admincreateroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
                        updated_at: date, user: this.user.username });
-    this.joinned = true;  
+    this.joinned = true;
   }
 
   createRoom() {
