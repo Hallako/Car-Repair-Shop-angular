@@ -67,13 +67,14 @@ httpServer.listen(httpport);
 //Start Socket.io
 var io = require('socket.io').listen(httpServer);
 
-// socket io
+// Socket io Signals
 io.on('connection', function(socket) {
 
+    //Admin created room.
     socket.on('admincreateroom', function(data) {
 
         for (var i = 0; i < SocketConnections.length; i++) {
-            if (SocketConnections[i][0] == undefined) {
+            if (SocketConnections[i][0] == undefined || SocketConnections[i][2] == data.user) {
 
                 SocketConnections[i][0] = data.user;
                 SocketConnections[i][1] = true;
@@ -86,6 +87,7 @@ io.on('connection', function(socket) {
         }
     });
 
+    //User joins room.
     socket.on('userjoin', function(data) {
 
         for (var i = 0; i < SocketConnections.length; i++) {
@@ -105,6 +107,7 @@ io.on('connection', function(socket) {
         socket.emit('userconn-response', { message: data, available: false });
     });
 
+    //Admin leaves room
     socket.on('adminleaveroom', function(data) {
         var x = data.room;
         var y = false;
@@ -113,7 +116,6 @@ io.on('connection', function(socket) {
 
         for (var k = 0; k < SocketConnections.length; k++) {
             if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
-
                 SocketConnections[k][0] = null;
                 SocketConnections[k][1] = null;
                 SocketConnections[k][2] = null;
@@ -122,6 +124,7 @@ io.on('connection', function(socket) {
         }
     });
 
+    //User disconnects manually
     socket.on('userdisconnect', function(data) {
         var x = data.room;
         var y = false;
@@ -132,18 +135,46 @@ io.on('connection', function(socket) {
                 SocketConnections[k][0] = SocketConnections[k][2];
 
                 socket.to(data.room).emit('userleavedroom', { room: data.room });
-                socket.leave(data.room);
+                socket.close();
                 break;
             }
         }
     });
 
+    //Callback to join admin to correct room.
     socket.on('adminjoin', function(data) {
         socket.join(data);
     });
 
-    socket.on('disconnect', function(data) {});
+    //Disconnect function to tidy up stuff after unexpected disconnect.
+    socket.on('disconnect', function(data) {
+        var x = data.room;
+        var y = false;
 
+        if (this.user.admin) {
+            io.in(data.room).emit('releasesocket', { room: data.room });
+            for (var k = 0; k < SocketConnections.length; k++) {
+                if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+                    SocketConnections[k][0] = null;
+                    SocketConnections[k][1] = null;
+                    SocketConnections[k][2] = null;
+                    break;
+                }
+            }
+        } else {
+            for (var k = 0; k < SocketConnections.length; k++) {
+                if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+                    SocketConnections[k][1] = true;
+                    SocketConnections[k][0] = SocketConnections[k][2];
+                    socket.to(data.room).emit('userleavedroom', { room: data.room });
+                    socket.close();
+                    break;
+                }
+            }
+        }
+    });
+
+    //Emits message !(to all on room)!
     socket.on('save-message', function(data) {
         io.emit('new-message', { message: data });
     });
