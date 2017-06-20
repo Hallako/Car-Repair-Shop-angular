@@ -442,7 +442,7 @@ var ChatComponent = (function () {
         this.joinned = false;
         this.newUser = { nickname: '', room: '' };
         this.msgData = { room: '', nickname: '', message: '' };
-        this.socket = __WEBPACK_IMPORTED_MODULE_4_socket_io_client__('http://localhost:8081/');
+        this.socket = __WEBPACK_IMPORTED_MODULE_4_socket_io_client__('');
     }
     ChatComponent.prototype.ngOnInit = function () {
         this.user = this.authservice.getUser();
@@ -713,7 +713,7 @@ var DashboardComponent = (function () {
                 end = __WEBPACK_IMPORTED_MODULE_5_moment__(end).add(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
                 start = __WEBPACK_IMPORTED_MODULE_5_moment__(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
                 __WEBPACK_IMPORTED_MODULE_7_jquery__["ajax"]({
-                    url: 'http://localhost:8081/events/getevents/'
+                    url: 'events/getevents/'
                         + start + "/" + end + "/" + userId + "/" + true,
                     dataType: 'json',
                     success: function (response) {
@@ -1942,7 +1942,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AuthService = (function () {
     function AuthService(http) {
         this.http = http;
-        this.nodeUrl = 'http://localhost:8081/';
+        this.nodeUrl = '';
         if (this.user == null) {
             this.user = JSON.parse(localStorage.getItem('user'));
         }
@@ -2132,7 +2132,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ChatService = (function () {
     function ChatService(http) {
         this.http = http;
-        this.nodeUrl = 'http://localhost:8081/';
+        this.nodeUrl = '';
     }
     ChatService.prototype.getChatByRoom = function (room) {
         var _this = this;
