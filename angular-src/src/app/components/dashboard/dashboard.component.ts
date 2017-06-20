@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
@@ -39,11 +38,10 @@ export class DashboardComponent implements OnInit {
   events: Event[];
   event: Event
 
-
-  constructor(private validateService: ValidateService,
-    private authService: AuthService,
-    private flashMessage: FlashMessagesService,
-    private router: Router) { }
+  constructor(
+       private authService: AuthService,
+       private flashMessage: FlashMessagesService,
+       private router: Router) { }
 
   ngOnInit() {
     var curuser = this.authService.getUser();
@@ -378,7 +376,7 @@ export class DashboardComponent implements OnInit {
               overlapsCounter++;
             }
           });
-  
+
           let counter1 = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
