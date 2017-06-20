@@ -61,8 +61,9 @@ router.post('/authenticate', (req, res, next) => {
                     token: 'JWT ' + token,
                     user: {
                         id: user._id,
-                        name: user.name,
                         username: user.username,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
                         email: user.email,
                         admin: user.admin
                     }
@@ -106,10 +107,12 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res
 //search router
 router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     var param = new RegExp(req.params.term, "i");
-    User.find({ $or: [
-       {'lastname': param },
-       {'firstname': param }]
-     }, function(err, user) {
+    User.find({
+        $or: [
+            { 'lastname': param },
+            { 'firstname': param }
+        ]
+    }, function(err, user) {
         if (err) throw err;
         return res.json(user)
     });
