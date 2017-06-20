@@ -34,9 +34,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.Admin = this.user.admin;
 
     if(this.Admin) {
-      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.name;
+      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname + this.user.lastname;
     } else {
-      this.newUser.nickname = this.user.name;
+      this.newUser.nickname = this.user.firstname + this.user.lastname;
     }
 
     var user = JSON.parse(localStorage.getItem("userr"));
