@@ -1,0 +1,41 @@
+[
+{
+  "category": "Ajanvaraus",
+  "faq": [
+    {
+      "header": "Kuinka perun varaamani ajan?",
+      "content": "Voit perua varaamasi ajan soittamalla numeroon [PUHNRO] tai lähettämällä sähköpostia osoitteeseen [SÄHKÖPOSTI]. Voit perua ajan viimeistään edeltävänä päivänä."
+    },
+    {
+      "header": "En voi varata haluamaani aikaa ajanvarauskalenterista!",
+      "content": "Kalenterissa vapaat ajat näkyvät valkoisella tai vaaleanvihreällä. Tummanvihreät ajat ovat täysin varattuja aikoja."
+    }
+  ]
+},
+{
+  "category": "Korjaukset",
+  "faq": [
+    {
+      "header": "Kuinka kauan autoni on korjaamolla?",
+      "content": "Ajanvarauksessa tehdyt varaukset ovat arvioita toimenpiteisiin kuluvista ajoista. Mahdollisista poikkeuksista ilmoitetaan tuodessane auton korjaamolle tai puhelimitse."
+    },
+    {
+      "header": "pää",
+      "content": "pöö"
+    }
+  ]
+},
+{
+  "category": "yläotsikko2",
+  "faq": [
+    {
+      "header": "header",
+      "content": "terve"
+    },
+    {
+      "header": "pää",
+      "content": "pöö"
+    }
+  ]
+}
+]
