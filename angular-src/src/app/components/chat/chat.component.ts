@@ -17,12 +17,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   Admin: boolean;
   Hidden: boolean;
-  chats: any;
+  chats: any = [];
   user: any;
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io('');
+  socket = io('http://localhost:8081/');
 
   constructor(private chatService: ChatService,
               private authservice: AuthService,
@@ -34,9 +34,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.Admin = this.user.admin;
 
     if(this.Admin) {
-      this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
+      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.name;
     } else {
-      this.newUser.nickname = JSON.parse(localStorage.getItem("user")).name;
+      this.newUser.nickname = this.user.name;
     }
 
     var user = JSON.parse(localStorage.getItem("userr"));
@@ -52,8 +52,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.on('new-message', function (data) {
       if(data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
-
-        this.msgData = { room: this.newUser.room, nickname: user.nickname, message: '' }
+        this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' }
         this.scrollToBottom();
       }
     }.bind(this));
@@ -124,7 +123,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   getChatByRoom(room) {
     this.chatService.getChatByRoom(room).then((res) => {
-      this.chats = res;
+      if(res){
+        this.chats = res;
+      } else {
+        this.chats = [];
+      }
+
     }, (err) => {
       console.log(err);
     });
@@ -143,7 +147,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   createRoom() {
     var date = new Date();
-    this.newUser.nickname = this.user.username;
+    this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
     this.socket.emit('userjoin', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
                        updated_at: date, user: this.user.username });
   }
@@ -152,7 +156,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     if(this.msgData.room && this.msgData.message && this.msgData.nickname){
       this.chatService.saveChat(this.msgData).then((result) => {
         this.socket.emit('save-message', result);
-        this.msgData.message = '';
+        this.msgData.message = null;
       }, (err) => {
         console.log(err);
       });
