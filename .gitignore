@@ -221,3 +221,4 @@ pip-log.txt
 angular-src/src/styles.css
 routes/events.js
 package.json
+public/vendor.bundle.js.map

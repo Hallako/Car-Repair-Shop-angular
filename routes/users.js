@@ -9,7 +9,8 @@ const User = require('../models/user');
 //Register
 router.post('/register', (req, res, next) => {
   let newUser = new User({
-    name: req.body.name,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
@@ -20,12 +21,12 @@ router.post('/register', (req, res, next) => {
     if (err) {
       res.json({
         success: false,
-        msg: 'Failed to register'
+        msg: 'Rekisteröityminen epäonnistui'
       });
     } else {
       res.json({
         success: true,
-        msg: 'User registered'
+        msg: 'Rekisteröityminen onnistui!'
       });
     }
   });
@@ -130,10 +131,17 @@ router.get('/admin', passport.authenticate('jwt', {
 router.get('/search/:term?', passport.authenticate('jwt', {
   session: false
 }), (req, res, next) => {
+  var param = new RegExp(req.params.term, "i");
   User.find({
-    name: new RegExp(req.params.term, "i")
+    $or: [{
+        'lastname': param
+      },
+      {
+        'firstname': param
+      }
+    ]
   }, function(err, user) {
-    if (err) throw err
+    if (err) throw err;
     return res.json(user)
   });
 });
