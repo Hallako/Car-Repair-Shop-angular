@@ -102,7 +102,7 @@ io.on('connection', function(socket) {
                 return;
             }
         }
-        io.emit('userconn-response', { message: data, available: false });
+        socket.emit('userconn-response', { message: data, available: false });
     });
 
     socket.on('adminleaveroom', function(data) {

@@ -8,7 +8,7 @@ export class ChatService {
   nodeUrl: String;
 
   constructor(private http: Http) {
-    this.nodeUrl = '';
+    this.nodeUrl = 'http://localhost:8081/';
   }
 
   getChatByRoom(room) {
