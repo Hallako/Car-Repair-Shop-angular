@@ -450,9 +450,14 @@ var ChatComponent = (function () {
         if (this.Admin) {
             this.newUser.nickname = 'Asiakaspalvelu ' + JSON.parse(localStorage.getItem("user")).name;
         }
+
+        else {
+            this.newUser.nickname = JSON.parse(localStorage.getItem("user")).name;
+        }
         var user = JSON.parse(localStorage.getItem("userr"));
         if (user !== null) {
-            this.msgData = { room: null, nickname: user.nickname, message: '' };
+            this.msgData = { room: null, nickname: this.newUser.nickname, message: '' };
+
             this.joinned = true;
             this.scrollToBottom();
         }
@@ -464,24 +469,30 @@ var ChatComponent = (function () {
                 this.scrollToBottom();
             }
         }.bind(this));
-        this.socket.on('userdc', function (data) {
-            if (this.user.admin) {
-                this.chats = null;
-                this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 6000 });
-            }
+
+        //User leave callback
+        this.socket.on('userleavedroom', function (data) {
+            this.chats = null;
+            this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 3000 });
         }.bind(this));
+        //Admin connect callback
         this.socket.on('adminconn-response', function (data) {
             localStorage.setItem("userr", JSON.stringify(this.newUser));
         }.bind(this));
+        //Admin leave callback
         this.socket.on('releasesocket', function (data) {
-            this.socket.emit('userdisconnect', { room: data.room });
-            this.newUser.room = '';
-            this.msgData.room = '';
-            this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
-            this.Hidden = false;
-            this.joinned = false;
-            localStorage.setItem("userr", JSON.stringify(this.newUser));
+            if (!this.user.admin) {
+                this.socket.emit('userdisconnect', { room: data.room, userleaved: false });
+                this.newUser.room = '';
+                this.msgData.room = '';
+                this.flashMessage.show('Asiakaspalvelussa tapahtui odottamaton virhe, yhteys on katkennut.', { cssClass: 'alert-danger', timeout: 6000 });
+                this.Hidden = false;
+                this.joinned = false;
+                localStorage.setItem("userr", JSON.stringify(this.newUser));
+            }
         }.bind(this));
+        //User connection callback
+
         this.socket.on('userconn-response', function (data) {
             if (data.available == true) {
                 this.newUser.room = data.room;
@@ -559,9 +570,12 @@ var ChatComponent = (function () {
             this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
         }
         this.chats = null;
-        localStorage.removeItem("userr");
+
         this.newUser.room = "";
         this.joinned = false;
+        this.Hidden = true;
+        localStorage.removeItem("userr");
+
     };
     ChatComponent.prototype.togglehide = function () {
         if (this.Hidden == true) {
