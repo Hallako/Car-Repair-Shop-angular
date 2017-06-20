@@ -8,7 +8,7 @@ export class ChatService {
   nodeUrl: String;
 
   constructor(private http: Http) {
-    this.nodeUrl = 'http://localhost:8081/';
+    this.nodeUrl = ''; //'http://localhost:8081/' for local deployement empty for heroku.
   }
 
   getChatByRoom(room) {
