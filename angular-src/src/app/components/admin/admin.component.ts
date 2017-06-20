@@ -50,6 +50,7 @@ export class AdminComponent implements OnInit {
     this.selectedUser = user
     this.editUser = null
     this.onEvents();
+    this.searchTerm$.next();
   }
 
   editSelected() {
@@ -98,7 +99,7 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
-        this.user = user
+          this.user = user
           if (user != null) {
             event.user = this.user.username
           } else event.user = 'Hallinnon luoma'
@@ -139,7 +140,7 @@ export class AdminComponent implements OnInit {
 
   getEventUser(event) {
     this.authService.getUserById(event).subscribe(user => {
-    this.user = user
+      this.user = user
     })
   }
 
