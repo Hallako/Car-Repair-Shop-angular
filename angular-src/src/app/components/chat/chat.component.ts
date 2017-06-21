@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@ang
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { Router } from '@angular/router';
+import { Router, NavigationStart, Event } from '@angular/router';
 import * as io from "socket.io-client";
 
 @Component({
