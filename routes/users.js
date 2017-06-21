@@ -74,8 +74,9 @@ router.post('/authenticate', (req, res, next) => {
           token: 'JWT ' + token,
           user: {
             id: user._id,
-            name: user.name,
             username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
             email: user.email,
             admin: user.admin
           }
@@ -87,82 +88,82 @@ router.post('/authenticate', (req, res, next) => {
         });
       }
     });
+
+    //Profile
+    router.get('/profile', passport.authenticate('jwt', {
+      session: false
+    }), (req, res, next) => {
+      res.json({
+        user: req.user
+      });
+    });
+
+    //Returns user object bt passed id
+    router.post('/getuserbyid', (req, res) => {
+      User.getUserById(req.body.user, (err, response) => {
+        res.json(response);
+      });
+    });
+
+
+    //Change password
+    router.post('/password', passport.authenticate('jwt', {
+      session: false
+    }), (req, res, err) => {
+      User.changePassword(req.body.id, req.body.password, (err, res) => {
+        if (err) throw err;
+      });
+      res.json('Salasana vaihdettu.');
+    });
+
+    //admin route(returns all users)
+    router.get('/admin', passport.authenticate('jwt', {
+      session: false
+    }), (req, res, next) => {
+      User.find({}, (err, user) => {
+        if (err) throw err;
+        return res.json(user);
+      });
+    });
+
+    //search router
+    router.get('/search/:term?', passport.authenticate('jwt', {
+      session: false
+    }), (req, res, next) => {
+      var param = new RegExp(req.params.term, "i");
+      User.find({
+        $or: [{
+            'lastname': param
+          },
+          {
+            'firstname': param
+          }
+        ]
+      }, function(err, user) {
+        if (err) throw err;
+        return res.json(user)
+      });
+    });
+
+    //user update (admin)
+    router.put('/update', (req, res) => {
+      User.findByIdAndUpdate(req.body._id, req.body, (err, res) => {
+        if (err) throw err
+        else res.json('Käyttäjä päivitetty');
+      });
+    });
+
+
+    //Change password
+    router.post('/password', passport.authenticate('jwt', {
+      session: false
+    }), (req, res, err) => {
+      User.changePassword(req.body.id, req.body.password, (err, res) => {
+        if (err) throw err;
+      });
+      res.json('Salasana vaihdettu.');
+    });
   });
-});
-
-//Profile
-router.get('/profile', passport.authenticate('jwt', {
-  session: false
-}), (req, res, next) => {
-  res.json({
-    user: req.user
-  });
-});
-
-//Returns user object bt passed id
-router.post('/getuserbyid', (req, res) => {
-  User.getUserById(req.body.user, (err, response) => {
-    res.json(response);
-  });
-});
-
-
-//Change password
-router.post('/password', passport.authenticate('jwt', {
-  session: false
-}), (req, res, err) => {
-  User.changePassword(req.body.id, req.body.password, (err, res) => {
-    if (err) throw err;
-  });
-  res.json('Salasana vaihdettu.');
-});
-
-//admin route(returns all users)
-router.get('/admin', passport.authenticate('jwt', {
-  session: false
-}), (req, res, next) => {
-  User.find({}, (err, user) => {
-    if (err) throw err;
-    return res.json(user);
-  });
-});
-
-//search router
-router.get('/search/:term?', passport.authenticate('jwt', {
-  session: false
-}), (req, res, next) => {
-  var param = new RegExp(req.params.term, "i");
-  User.find({
-    $or: [{
-        'lastname': param
-      },
-      {
-        'firstname': param
-      }
-    ]
-  }, function(err, user) {
-    if (err) throw err;
-    return res.json(user)
-  });
-});
-
-//user update (admin)
-router.put('/update', (req, res) => {
-  User.findByIdAndUpdate(req.body._id, req.body, (err, res) => {
-    if (err) throw err
-    else res.json('Käyttäjä päivitetty');
-  });
-});
-
-
-//Change password
-router.post('/password', passport.authenticate('jwt', {
-  session: false
-}), (req, res, err) => {
-  User.changePassword(req.body.id, req.body.password, (err, res) => {
-    if (err) throw err;
-  });
-  res.json('Salasana vaihdettu.');
-});
+})
 
 module.exports = router;
