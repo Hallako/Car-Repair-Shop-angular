@@ -2,8 +2,8 @@ import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@ang
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router, NavigationStart, Event } from '@angular/router';
 import * as io from "socket.io-client";
-
 
 @Component({
   selector: 'app-chat',
@@ -22,11 +22,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io('http://localhost:8081/');
+  socket = io('http://localhost:8081/'); //'http://localhost:8081/' for local deployement empty for heroku.
 
   constructor(private chatService: ChatService,
     private authservice: AuthService,
-    private flashMessage: FlashMessagesService) { }
+    private flashMessage: FlashMessagesService,
+    private router: Router) {
+    router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (event.url == "/login") {
+          this.logout();
+        }
+      }
+    });
+  }
 
   ngOnInit() {
 
@@ -34,16 +43,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.Admin = this.user.admin;
 
     if (this.Admin) {
-      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.name;
+      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname + ' ' + this.user.lastname
     } else {
-      this.newUser.nickname = this.user.name;
+      this.newUser.nickname = this.user.firstname + ' ' + this.user.lastname;
     }
 
     var user = JSON.parse(localStorage.getItem("userr"));
 
     if (user !== null) {
       this.msgData = { room: null, nickname: this.newUser.nickname, message: '' }
-      this.joinned = true;
+      //this.joinned = true;
       this.scrollToBottom();
     }
 
@@ -57,9 +66,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }
     }.bind(this));
 
+
+    //On disconnect
+    this.socket.on('disconnected', function(data) {
+      this.socket.emit('disconnectrelease', { room: this.newUser.room, admin: this.user.admin });
+    }.bind(this));
+
     //User leave callback
     this.socket.on('userleavedroom', function(data) {
-      this.chats = null;
+      this.chats = [];
       this.flashMessage.show('Asiakas on poistunut keskustelusta', { cssClass: 'alert-danger', timeout: 3000 });
     }.bind(this));
 
@@ -67,6 +82,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     //Admin connect callback
     this.socket.on('adminconn-response', function(data) {
       localStorage.setItem("userr", JSON.stringify(this.newUser));
+      this.getChatByRoom(this.newUser.room);
     }.bind(this));
 
     //Admin leave callback
@@ -128,7 +144,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       } else {
         this.chats = [];
       }
-
     }, (err) => {
       console.log(err);
     });
@@ -142,7 +157,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     localStorage.setItem("userr", JSON.stringify(this.newUser));
     this.socket.emit('admincreateroom', {
       room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-      updated_at: date, user: this.user.username
+      updated_at: date, user: this.user.username, admin: true
     });
     this.joinned = true;
   }
@@ -150,9 +165,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   createRoom() {
     var date = new Date();
     this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
+    localStorage.setItem("userr", JSON.stringify(this.newUser));
     this.socket.emit('userjoin', {
       room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-      updated_at: date, user: this.user.username
+      updated_at: date, user: this.user.username, admin: false
     });
   }
 
@@ -172,9 +188,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     var user = JSON.parse(localStorage.getItem("userr"));
 
     if (this.user.admin) {
-      this.socket.emit('adminleaveroom', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('adminleaveroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
     } else {
-      this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('userdisconnect', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
     }
 
     this.chats = null;
