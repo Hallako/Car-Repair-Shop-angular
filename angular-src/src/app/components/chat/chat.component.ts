@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
@@ -13,6 +13,12 @@ import * as io from "socket.io-client";
 
 export class ChatComponent implements OnInit, AfterViewChecked {
 
+  @Input()
+  loggedout = function logout(data) {
+    console.log('logout catched')
+    this.logout();
+  };
+
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   Admin: boolean;
@@ -22,7 +28,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io(''); //'http://localhost:8081/' for local deployement empty for heroku.
+  socket = io('http://localhost:8081/'); //'http://localhost:8081/' for local deployement empty for heroku.
 
   constructor(private chatService: ChatService,
               private authservice: AuthService,
@@ -34,11 +40,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.Admin = this.user.admin;
 
     if(this.Admin) {
-      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname +' '+ this.user.lastname;
-
-      
-
-
+      this.newUser.nickname = 'Asiakaspalvelu ' + this.user.firstname +' '+ this.user.lastname
     } else {
       this.newUser.nickname = this.user.firstname +' '+ this.user.lastname;
     }
@@ -47,7 +49,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     if(user !== null) {
         this.msgData = { room: null, nickname: this.newUser.nickname, message: '' }
-        this.joinned = true;
+        //this.joinned = true;
         this.scrollToBottom();
     }
 
@@ -61,6 +63,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }
     }.bind(this));
 
+
+    //On disconnect
+    this.socket.on('disconnected', function (data) {
+      this.socket.emit('disconnectrelease', { room: this.newUser.room, admin: this.user.admin });
+    }.bind(this));
+
     //User leave callback
     this.socket.on('userleavedroom', function (data) {
         this.chats = [];
@@ -71,6 +79,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     //Admin connect callback
     this.socket.on('adminconn-response', function (data) {
       localStorage.setItem("userr", JSON.stringify(this.newUser));
+      this.getChatByRoom(this.newUser.room);
     }.bind(this));
 
     //Admin leave callback
@@ -144,15 +153,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.newUser.room = this.user.username;
     localStorage.setItem("userr", JSON.stringify(this.newUser));
     this.socket.emit('admincreateroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-                       updated_at: date, user: this.user.username });
+                       updated_at: date, user: this.user.username, admin: true });
     this.joinned = true;
   }
 
   createRoom() {
     var date = new Date();
     this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' };
+    localStorage.setItem("userr", JSON.stringify(this.newUser));
     this.socket.emit('userjoin', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Join this room',
-                       updated_at: date, user: this.user.username });
+                       updated_at: date, user: this.user.username, admin: false });
   }
 
   sendMessage() {
