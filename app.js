@@ -77,7 +77,7 @@ io.on('connection', function(socket) {
             if (SocketConnections[i][0] == undefined || SocketConnections[i][2] == data.user) {
 
                 if (SocketConnections[i][2] == data.user) {
-                    io.emit('adminconn-response', { message: 'success' });
+                    socket.emit('adminconn-response', { message: 'success' });
                     socket.join(SocketConnections[i][0]);
                 } else {
                     SocketConnections[i][0] = data.user;
@@ -87,7 +87,7 @@ io.on('connection', function(socket) {
                     socket.conn.admin = data.admin;
 
                     socket.join(data.user);
-                    io.emit('adminconn-response', { message: 'success' });
+                    socket.emit('adminconn-response', { message: 'success' });
                 }
                 break;
             }
@@ -118,16 +118,18 @@ io.on('connection', function(socket) {
 
     //Admin leaves room
     socket.on('adminleaveroom', function(data) {
-        var x = data.room;
+        var x = data.nickname;
         var y = false;
 
         io.in(data.room).emit('releasesocket', { room: data.room });
 
         for (var k = 0; k < SocketConnections.length; k++) {
-            if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+            if (SocketConnections[k][2] == x) {
                 SocketConnections[k][0] = null;
                 SocketConnections[k][1] = null;
                 SocketConnections[k][2] = null;
+
+                socket.leave(data.room);
                 break;
             }
         }
@@ -144,7 +146,7 @@ io.on('connection', function(socket) {
                 SocketConnections[k][0] = SocketConnections[k][2];
 
                 socket.to(data.room).emit('userleavedroom', { room: data.room });
-                socket.disconnect();
+                socket.leave(data.room);
                 break;
             }
         }
