@@ -184,9 +184,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     var user = JSON.parse(localStorage.getItem("userr"));
 
     if(this.user.admin){
-      this.socket.emit('adminleaveroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('adminleaveroom', { room: this.newUser.room, nickname: this.user.username, message: 'Left this room', updated_at: date });
     } else {
-      this.socket.emit('userdisconnect', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('userdisconnect', { room: this.newUser.room, nickname: this.user.username, message: 'Left this room', updated_at: date });
     }
 
     this.chats = null;
