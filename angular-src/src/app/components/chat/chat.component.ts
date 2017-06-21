@@ -1,9 +1,9 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router } from '@angular/router';
 import * as io from "socket.io-client";
-
 
 @Component({
   selector: 'app-chat',
@@ -12,12 +12,6 @@ import * as io from "socket.io-client";
 })
 
 export class ChatComponent implements OnInit, AfterViewChecked {
-
-  @Input()
-  loggedout = function logout(data) {
-    console.log('logout catched')
-    this.logout();
-  };
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
@@ -32,7 +26,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   constructor(private chatService: ChatService,
               private authservice: AuthService,
-              private flashMessage: FlashMessagesService) {}
+              private flashMessage: FlashMessagesService,
+              private router: Router ) {
+                router.events.subscribe(event => {
+                if(event instanceof NavigationStart) {
+                  if(event.url == "/login"){
+                    this.logout();
+                  }
+                }
+              });
+            }
 
   ngOnInit() {
 
@@ -181,9 +184,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     var user = JSON.parse(localStorage.getItem("userr"));
 
     if(this.user.admin){
-      this.socket.emit('adminleaveroom', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('adminleaveroom', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
     } else {
-      this.socket.emit('userdisconnect', { room: user.room, nickname: user.nickname, message: 'Left this room', updated_at: date });
+      this.socket.emit('userdisconnect', { room: this.newUser.room, nickname: this.newUser.nickname, message: 'Left this room', updated_at: date });
     }
 
     this.chats = null;

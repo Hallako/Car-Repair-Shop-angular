@@ -11,25 +11,15 @@ import { Subscription }   from 'rxjs/Subscription';
 })
 export class NavbarComponent implements OnInit {
 
-  @Output()
-  loggedout: EventEmitter<boolean> = new EventEmitter<boolean>();
-  sendlogout(){
-    console.log('logout emit')
-    this.loggedout.emit(true);
-  }
-
   admin: Boolean = false;
   subscription: Subscription
 
   constructor(private authService:AuthService,
               private router:Router,
-              private flashMessage:FlashMessagesService
-
-            ) {}
-
+              private flashMessage:FlashMessagesService) {}
+              
   ngOnInit() {
   }
-
 
   onLogoutClick(){
     this.authService.logout();
@@ -37,8 +27,6 @@ export class NavbarComponent implements OnInit {
       cssClass:'alert-success',
       timeout: 3000
     });
-    this.sendlogout();
-    
     this.router.navigate(['/login']);
     return false;
   }

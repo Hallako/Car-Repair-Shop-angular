@@ -144,7 +144,7 @@ io.on('connection', function(socket) {
                 SocketConnections[k][0] = SocketConnections[k][2];
 
                 socket.to(data.room).emit('userleavedroom', { room: data.room });
-                socket.close();
+                socket.disconnect();
                 break;
             }
         }
