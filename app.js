@@ -67,25 +67,34 @@ httpServer.listen(httpport);
 //Start Socket.io
 var io = require('socket.io').listen(httpServer);
 
-// socket io
+// Socket io Signals
 io.on('connection', function(socket) {
 
+    //Admin created room.
     socket.on('admincreateroom', function(data) {
 
         for (var i = 0; i < SocketConnections.length; i++) {
-            if (SocketConnections[i][0] == undefined) {
+            if (SocketConnections[i][0] == undefined || SocketConnections[i][2] == data.user) {
 
-                SocketConnections[i][0] = data.user;
-                SocketConnections[i][1] = true;
-                SocketConnections[i][2] = data.user;
+                if (SocketConnections[i][2] == data.user) {
+                    io.emit('adminconn-response', { message: 'success' });
+                    socket.join(SocketConnections[i][0]);
+                } else {
+                    SocketConnections[i][0] = data.user;
+                    SocketConnections[i][1] = true;
+                    SocketConnections[i][2] = data.user;
 
-                socket.join(data.user);
-                io.emit('adminconn-response', { message: 'success' });
+                    socket.conn.admin = data.admin;
+
+                    socket.join(data.user);
+                    io.emit('adminconn-response', { message: 'success' });
+                }
                 break;
             }
         }
     });
 
+    //User joins room.
     socket.on('userjoin', function(data) {
 
         for (var i = 0; i < SocketConnections.length; i++) {
@@ -95,6 +104,8 @@ io.on('connection', function(socket) {
                 socket.join(roomid);
 
                 io.in(SocketConnections[i][0]).emit('userconn-response', { message: data, available: true, room: roomid });
+                socket.conn.admin = data.admin;
+                socket.conn.roomi = roomid;
 
                 SocketConnections[i][0] = roomid;
                 SocketConnections[i][1] = false;
@@ -105,6 +116,7 @@ io.on('connection', function(socket) {
         socket.emit('userconn-response', { message: data, available: false });
     });
 
+    //Admin leaves room
     socket.on('adminleaveroom', function(data) {
         var x = data.room;
         var y = false;
@@ -113,7 +125,6 @@ io.on('connection', function(socket) {
 
         for (var k = 0; k < SocketConnections.length; k++) {
             if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
-
                 SocketConnections[k][0] = null;
                 SocketConnections[k][1] = null;
                 SocketConnections[k][2] = null;
@@ -122,6 +133,7 @@ io.on('connection', function(socket) {
         }
     });
 
+    //User disconnects manually
     socket.on('userdisconnect', function(data) {
         var x = data.room;
         var y = false;
@@ -132,18 +144,57 @@ io.on('connection', function(socket) {
                 SocketConnections[k][0] = SocketConnections[k][2];
 
                 socket.to(data.room).emit('userleavedroom', { room: data.room });
-                socket.leave(data.room);
+                socket.disconnect();
                 break;
             }
         }
     });
 
+    //Callback to join admin to correct room.
     socket.on('adminjoin', function(data) {
         socket.join(data);
+        socket.conn.roomi = data;
     });
 
-    socket.on('disconnect', function(data) {});
 
+    /* socket.on('disconnecting', function(data) {
+         console.log(socket.conn.admin = data.admin)
+         socket.emit('disconnected')
+     });*/
+
+    //Disconnect function to tidy up stuff after unexpected disconnect.
+    socket.on('disconnecting', function(data) {
+
+        var x = socket.conn.roomi;
+        var y = false;
+
+        console.log(socket.conn.admin + " " + x)
+        if (socket.conn.admin) {
+            io.in(x).emit('releasesocket', { room: x });
+            for (var k = 0; k < SocketConnections.length; k++) {
+                if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+                    SocketConnections[k][0] = null;
+                    SocketConnections[k][1] = null;
+                    SocketConnections[k][2] = null;
+                    console.log('Admin left')
+                    break;
+                }
+            }
+        } else {
+            for (var k = 0; k < SocketConnections.length; k++) {
+                if (SocketConnections[k][0] == x && SocketConnections[k][1] == y) {
+                    SocketConnections[k][1] = true;
+                    SocketConnections[k][0] = SocketConnections[k][2];
+                    socket.to(x).emit('userleavedroom', { room: x });
+
+                    console.log('user left')
+                    break;
+                }
+            }
+        }
+    });
+
+    //Emits message !(to all on room)!
     socket.on('save-message', function(data) {
         io.emit('new-message', { message: data });
     });
