@@ -51,10 +51,10 @@ router.post('/checkname', (req, res) => {
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+const username = req.body.username;
+const password = req.body.password;
 
-  User.getUserByUsername(username, (err, user) => {
+User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({
@@ -75,9 +75,9 @@ router.post('/authenticate', (req, res, next) => {
           token: 'JWT ' + token,
           user: {
             id: user._id,
-            username: user.username,
             firstname: user.firstname,
             lastname: user.lastname,
+            username: user.username,
             email: user.email,
             admin: user.admin
           }
@@ -89,7 +89,14 @@ router.post('/authenticate', (req, res, next) => {
         });
       }
     });
-  });
+  } else {
+    return res.json({
+      success: false,
+      msg: 'Wrong password'
+    });
+  }
+});
+});
 });
 
 //Profile
