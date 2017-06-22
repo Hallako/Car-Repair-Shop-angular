@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
         start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
         $.ajax({
-          url: 'http://localhost:8081/events/getevents/'
+          url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
           + start + "/" + end + "/" + userId + "/" + true,
           dataType: 'json',
           success: function(response) {
