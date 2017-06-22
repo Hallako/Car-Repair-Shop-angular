@@ -61,9 +61,9 @@ router.post('/authenticate', (req, res, next) => {
                     token: 'JWT ' + token,
                     user: {
                         id: user._id,
-                        username: user.username,
                         firstname: user.firstname,
                         lastname: user.lastname,
+                        username: user.username,
                         email: user.email,
                         admin: user.admin
                     }

@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit {
     private searchService: SearchService,
 
   ) {
-    this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+    this.searchService.search(this.searchTerm$).subscribe(users => {this.users = users})
   }
 
 
@@ -47,8 +47,9 @@ export class AdminComponent implements OnInit {
   }
 
   onSelect(user: User) {
-    this.selectedUser = user
-    this.editUser = null
+    this.selectedUser = user;
+    this.editUser = null;
+    this.searchTerm$.next();
     this.onEvents();
   }
 
