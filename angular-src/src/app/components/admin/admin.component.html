@@ -3,7 +3,7 @@
     <div class="search-box" id="search-component">
       <h4>Hae käyttäjiä</h4>
       <input #searchBox id="search-box" name="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off" />
-      <button *ngIf="!showCustomers; else hide" (click)="showCustomers = true; getUsers()" class="btn btn-primary">Näytä asiakaslista</button>
+      <button *ngIf="!showCustomers; else hide" (click)="showCustomers = true; getUsers(); selectedUser = null" class="btn btn-primary">Näytä asiakaslista</button>
       <ng-template #hide> <button (click)="showCustomers = false;" class="btn btn-primary">Piilota asiakaslista</button></ng-template>
       <div *ngIf="users">
         <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false; showCustomers = false" onclick="document.getElementById('form').reset()">{{ user.lastname }} {{user.firstname}}: {{user.email}}</option>
@@ -46,6 +46,22 @@
         <div class="form-group">
           <label class="col-lg-2 control-label">Email:</label>
           <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Puhelin:</label>
+          <input type="text" [(ngModel)]="selectedUser.phone" id="inputFirstname" name="Phone" placeholder="{{selectedUser.phone}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Osoite:</label>
+          <input type="text" [(ngModel)]="selectedUser.address" id="inputAddress" name="Address" placeholder="{{selectedUser.address}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Postinumero:</label>
+          <input type="text" [(ngModel)]="selectedUser.area" id="inputArea" name="Area" placeholder="{{selectedUser.area}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Postitoimipaikka:</label>
+          <input type="text" [(ngModel)]="selectedUser.city" id="inputFirstname" name="City" placeholder="{{selectedUser.city}}" text="" class="form-control form" />
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Admin:</label>
