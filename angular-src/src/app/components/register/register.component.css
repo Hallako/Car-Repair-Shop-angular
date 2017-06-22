@@ -1,3 +1,35 @@
 .register-form {
-    width: 30%;
+    width: 60%;
+}
+
+.form-group {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.form-alert {
+  display: inline-block;
+  position: relative;
+  margin-left: 1em;
+  margin-bottom: 0;
+  height: 100%;
+  color: red;
+}
+
+.form-input {
+  display: inline-block;
+  position: relative;
+  height: 100%;
+}
+
+.form-solo {
+  width: 50%;
+}
+
+.register-container-2 {
+  overflow: hidden;
+}
+
+.btn-primary {
+  margin-left: 15px;
 }
