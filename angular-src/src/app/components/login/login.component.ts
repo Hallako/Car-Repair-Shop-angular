@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     }
     if (this.username == undefined || this.password == undefined) {
       this.flashMessage.show('Anna käyttäjänimi ja salasana!', {
-        cssClass: 'alert-success',
+        cssClass: 'alert-danger',
         timeout: 3000
       })
     }

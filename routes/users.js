@@ -12,6 +12,10 @@ router.post('/register', (req, res, next) => {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        area: req.body.area,
+        city: req.body.city,
         username: req.body.username,
         password: req.body.password,
         admin: false
