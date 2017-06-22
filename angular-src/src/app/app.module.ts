@@ -18,23 +18,25 @@ import { CalendarComponent } from 'ap-angular2-fullcalendar';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { HelpComponent } from './components/help/help.component';
-import { User } from './components/admin/user';
+import { User } from './variables/user';
 import { AccordionComponent, AccordionGroupComponent } from './components/help/accordion/accordion.component';
 import { LoginGuard } from './guards/login.guard'
-import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
+import { ChatService } from './services/chat.service';
 import { SearchService } from './services/search.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { ChatComponent } from './components/chat/chat.component';
 
-const appRoutes : Routes = [
-    {path:'', component: HomeComponent},
-    {path:'register', component: RegisterComponent, canActivate:[LoginGuard]},
-    {path:'login', component: LoginComponent, canActivate:[LoginGuard]},
-    {path: 'help', component: HelpComponent},
-    {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
-    {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-    {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]}
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'help', component: HelpComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] }
 ]
 
 @NgModule({
@@ -51,7 +53,8 @@ const appRoutes : Routes = [
     AdminComponent,
     HelpComponent,
     AccordionComponent,
-    AccordionGroupComponent
+    AccordionGroupComponent,
+    ChatComponent
   ],
 
   imports: [
@@ -64,7 +67,8 @@ const appRoutes : Routes = [
     FlashMessagesModule,
     BrowserAnimationsModule,
   ],
-  providers: [ValidateService, AuthService, AuthGuard, AdminGuard, SearchService, LoginGuard],
+  providers: [AuthService, AuthGuard
+  , AdminGuard, SearchService, LoginGuard, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
