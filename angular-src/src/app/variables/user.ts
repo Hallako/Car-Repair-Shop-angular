@@ -5,4 +5,5 @@ export class User {
   username: String
   password: String
   admin: Boolean
+  notes: String
 }

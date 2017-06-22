@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
 
   users: User[]
   user: User
+  userList: User[]
   events: Event[]
   event: Event
   selectedUser: User
@@ -26,7 +27,7 @@ export class AdminComponent implements OnInit {
   end: String
   search: Boolean
   username: String
-
+  showCustomers: Boolean
 
   private searchTerm$ = new Subject<string>();
 
@@ -41,7 +42,7 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getConfirms()
+    this.getConfirms();
     this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
@@ -142,6 +143,13 @@ export class AdminComponent implements OnInit {
     this.authService.getUserById(event).subscribe(user => {
       this.user = user
     })
+  }
+
+  getUsers() {
+    this.authService.getAllUser().subscribe(users => {
+      this.userList = users
+    });
+    this.showCustomers = true;
   }
 
 }
