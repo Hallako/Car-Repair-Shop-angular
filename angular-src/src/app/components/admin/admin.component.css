@@ -1,10 +1,10 @@
 .checkbox {
-    width: 1.5em;
-    height: auto;
+  width: 1.5em;
+  height: auto;
 }
 
 .right {
-  width:50%;
+  width: 40%;
   position: relative;
   float: right;
 }
@@ -17,30 +17,32 @@
 #input {
   padding-right: 16px;
 }
+
 #searchDiv {
   float: right;
   padding: 0px;
 }
+
 #formSearch {
   width: 40%;
   float: right;
 }
 
 .form-group {
-  width:auto;
+  width: auto;
 }
 
 .hover {
-    border-radius: 0px;
-    border-top: 0px;
+  border-radius: 0px;
+  border-top: 0px;
 }
 
 .hover:hover {
-    background-color: #f8f5f0
+  background-color: #f8f5f0
 }
 
 .desc {
-    width: auto;
+  width: auto;
 }
 
 .table-text {
@@ -54,104 +56,113 @@
 .table-last {
   width: 160px;
 }
+
 .form-control {
-    width: 50%;
+  width: 50%;
 }
 
 .search-box {
-    position: absolute;
-    width: 50%;
-    z-index: 99999;
+  position: absolute;
+  width: 50%;
+  z-index: 99999;
 }
 
 .col-md-4 {
-    position: relative;
-    width: 100%;
-    margin-top: 2em;
+  position: relative;
+  width: 100%;
+  margin-top: 2em;
 }
 
 .panel-primary {
-    width: 40%;
-    height: 5%;
-    float: left;
+  width: 40%;
+  height: 5%;
+  float: left;
 }
 
 .panel-success {
-    float: right;
-    width: 100%;
-    height: 5%;
+  float: right;
+  width: 100%;
+  height: 5%;
 }
 
 .btn-group-vertical {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 0px;
-    display: block;
-    width: 40%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 0px;
+  display: block;
+  width: 40%;
 }
 
 .btn {
-    border-radius: 0px;
-    float: right;
+  border-radius: 0px;
+  float: right;
 }
 
 .btn-primary {
-    display: inline-block;
-    border-radius: 6px;
-    margin: 5px;
-    float: right;
+  display: inline-block;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  float: right;
 }
 
 .btn-sm {
-    margin-bottom: 5px;
-    border-radius: 3px;
-    float: right;
-    margin-right: 0.5em;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  float: right;
+  margin-right: 0.5em;
 }
 
 .btn-xs {
-    margin-left: 0.6em;
-    min-width: 4.5em;
-    float: right;
-    border-radius: 3px;
+  margin-left: 0.6em;
+  min-width: 4.5em;
+  float: right;
+  border-radius: 3px;
 }
 
 .btn-ok {
-    float: right;
+  float: right;
 }
 
 .btn-default {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .btn-group-vertical>.btn:not(:first-child):not(:last-child) {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 .btn-group-vertical>.btn:first-child:not(:last-child) {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 .btn-group-vertical>.btn:last-child:not(:first-child) {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 .form-horizontal {
-    padding-top: 0em;
-    width: 100%;
-    float: left;
+  padding-top: 0em;
+  width: 100%;
+  float: left;
 }
 
 .table-container {
-    width: 100%;
-    display: inline-block;
-    position: relative;
-    margin-top: 2em;
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  margin-top: 2em;
+}
+
+.form-control-left {
+  margin: auto;
+}
+
+.control-label {
+  text-align: left;
 }
 
 .table-hover {
-    position: relative;
-    margin-top: 10em;
+  position: relative;
+  margin-top: 10em;
 }
 
 .control-label {
