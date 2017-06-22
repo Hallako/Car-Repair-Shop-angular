@@ -14,7 +14,8 @@ router.post('/register', (req, res, next) => {
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
-    admin: false
+    admin: false,
+    notes: ''
   });
 
   User.addUser(newUser, (err, user) => {
@@ -124,6 +125,8 @@ router.get('/admin', passport.authenticate('jwt', {
 }), (req, res, next) => {
   User.find({}, (err, user) => {
     if (err) throw err;
+
+    console.log(user)
     return res.json(user);
   });
 });
