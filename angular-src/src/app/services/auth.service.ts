@@ -131,7 +131,7 @@ export class AuthService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-type', 'application/json');
     return this.http.get(this.nodeUrl + 'users/admin', { headers: headers })
-      .map(res => res.json().data as User[]).catch(this.handleError);
+      .map(res => res.json()).catch(this.handleError);
   }
 
   //pushes user object to DB must contain existing user.id
