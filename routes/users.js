@@ -14,8 +14,7 @@ router.post('/register', (req, res, next) => {
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
-    admin: false,
-    notes: ''
+    admin: false
   });
 
   User.addUser(newUser, (err, user) => {
@@ -51,10 +50,10 @@ router.post('/checkname', (req, res) => {
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-const username = req.body.username;
-const password = req.body.password;
+  const username = req.body.username;
+  const password = req.body.password;
 
-User.getUserByUsername(username, (err, user) => {
+  User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({
@@ -89,14 +88,7 @@ User.getUserByUsername(username, (err, user) => {
         });
       }
     });
-  } else {
-    return res.json({
-      success: false,
-      msg: 'Wrong password'
-    });
-  }
-});
-});
+  });
 });
 
 //Profile
@@ -132,8 +124,6 @@ router.get('/admin', passport.authenticate('jwt', {
 }), (req, res, next) => {
   User.find({}, (err, user) => {
     if (err) throw err;
-
-    console.log(user)
     return res.json(user);
   });
 });
