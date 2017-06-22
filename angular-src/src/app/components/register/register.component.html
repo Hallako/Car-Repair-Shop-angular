@@ -1,22 +1,105 @@
-<h2 class="page-header">Rekisteröityminen</h2>
 <div class="register-form">
-    <form (submit)="onRegisterSubmit()">
-        <div class="form-group">
-            <label>Nimi</label>
-            <input type="text" [(ngModel)]="name" name="name" class="form-control">
+  <h2 class="page-header">Rekisteröityminen</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+
+      <div class="register-container-2">
+
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('firstname').invalid && registerForm.get('firstname').touched}">
+            <label>Etunimi</label>
+            <small *ngIf="registerForm.get('firstname').hasError('required') && registerForm.get('firstname').touched" class="form-alert">Pakollinen tieto</small>
+            <div>
+              <input type="text" formControlName="firstname" name="firstname" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('firstname').invalid}">
+            </div>
         </div>
-        <div class="form-group">
-            <label>Käyttäjänimi</label>
-            <input type="text" [(ngModel)]="username" name="username" class="form-control">
+
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('lastname').invalid && registerForm.get('lastname').touched}">
+            <label>Sukunimi</label>
+            <small *ngIf="registerForm.get('lastname').hasError('required') && registerForm.get('lastname').touched" class="form-alert">Pakollinen tieto</small>
+            <div>
+              <input type="text" formControlName="lastname" name="lastname" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('lastname').invalid}">
+            </div>
         </div>
-        <div class="form-group">
+
+      </div>
+
+      <div class="register-container-2">
+
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('email').invalid && registerForm.get('email').touched}">
             <label>Sähköposti</label>
-            <input type="text" [(ngModel)]="email" name="email" class="form-control">
+            <small *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched" class="form-alert">Pakollinen tieto</small>
+            <small *ngIf="!registerForm.get('email').hasError('required') && registerForm.get('email').hasError('email') && registerForm.get('email').touched" class="form-alert">Anna voimassaoleva sähköpostiosoite</small>
+            <div>
+              <input type="text" formControlName="email" name="email" class="form-control form-input" placeholder="Esimerkki@email.com" [ngClass]="{'form-control-danger': registerForm.get('email').invalid}">
+            </div>
         </div>
-        <div class="form-group">
-            <label>Salasana</label>
-            <input type="password" [(ngModel)]="password" name="password" class="form-control">
+
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('phone').invalid && registerForm.get('phone').touched}">
+            <label>Puhelinnumero</label>
+            <small *ngIf="registerForm.get('phone').hasError('required') && registerForm.get('phone').touched" class="form-alert">Pakollinen tieto</small>
+            <small *ngIf="!registerForm.get('phone').hasError('required') && registerForm.get('phone').hasError('pattern') && registerForm.get('phone').touched" class="form-alert">Anna voimassaoleva puhelinnumero</small>
+            <div>
+              <input type="text" formControlName="phone" name="phone" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('phone').invalid}">
+            </div>
         </div>
-        <input type="submit" class="btn btn-primary" value="Rekisteröidy">
+
+      </div>
+
+      <div class="form-group form-solo" [ngClass]="{'has-error': registerForm.get('address').invalid && registerForm.get('address').touched}">
+          <label>Katuosoite</label>
+          <small *ngIf="registerForm.get('address').hasError('required') && registerForm.get('address').touched" class="form-alert">Pakollinen tieto</small>
+          <div>
+            <input type="text" formControlName="address" name="address" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('address').invalid}">
+          </div>
+      </div>
+
+      <div class="register-container-2">
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('area').invalid && registerForm.get('area').touched}">
+            <label>Postinumero</label>
+            <small *ngIf="registerForm.get('area').hasError('required') && registerForm.get('area').touched" class="form-alert">Pakollinen tieto</small>
+            <small *ngIf="!registerForm.get('area').hasError('required') && registerForm.get('area').hasError('pattern') && registerForm.get('area').touched" class="form-alert">Syötä postinumero</small>
+            <small *ngIf="!registerForm.get('area').hasError('required') && !registerForm.get('area').hasError('pattern') && registerForm.get('area').hasError('minlength') && registerForm.get('area').touched" class="form-alert">Vähintään 5 numeroa</small>
+            <div>
+              <input type="text" formControlName="area" name="area" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('area').invalid}">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('city').invalid && registerForm.get('city').touched}">
+            <label>Postitoimipaikka</label>
+            <small *ngIf="registerForm.get('city').hasError('required') && registerForm.get('city').touched" class="form-alert">Pakollinen tieto</small>
+            <div>
+              <input type="text" formControlName="city" name="city" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('city').invalid}">
+            </div>
+        </div>
+      </div>
+
+        <div class="form-group form-solo" [ngClass]="{'has-error': registerForm.get('username').invalid && registerForm.get('username').touched}">
+            <label>Käyttäjänimi</label>
+            <small *ngIf="registerForm.get('username').hasError('required') && registerForm.get('username').touched" class="form-alert">Pakollinen tieto</small>
+            <small *ngIf="registerForm.get('username').hasError('minlength') && registerForm.get('username').touched" class="form-alert">Käyttäjänimen on oltava vähintään 4 merkkiä</small>
+            <div>
+              <input type="text" formControlName="username" name="username" class="form-control form-input" [ngClass]="{'form-control-danger': registerForm.get('username').invalid}">
+            </div>
+        </div>
+
+        <div>
+          <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('password').invalid && registerForm.get('password').touched}">
+              <label>Salasana</label>
+              <small *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched" class="form-alert">Pakollinen tieto</small>
+              <small *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched" class="form-alert">Salasanan on oltava vähintään 4 merkkiä</small>
+              <div>
+                <input type="password" class="form-control form-input" formControlName="password" name="password" placeholder="Salasana" [ngClass]="{'form-control-danger': registerForm.get('password').invalid && !registerForm.get('password').pristine}">
+              </div>
+          </div>
+
+          <div class="form-group col-sm-6" [ngClass]="{'has-error': registerForm.get('passwordConfirm').invalid && registerForm.get('passwordConfirm').touched}">
+              <label>Kirjoita salasana uudelleen</label>
+              <small *ngIf="registerForm.get('passwordConfirm').hasError('areEqual') && registerForm.get('passwordConfirm').touched" class="form-alert">Salasanat eivät täsmää</small>
+              <div>
+                <input type="password" class="form-control form-input" formControlName="passwordConfirm" name="passwordConfirm" placeholder="Salasana" [ngClass]="{'form-control-danger': registerForm.get('passwordConfirm').invalid}">
+              </div>
+          </div>
+        </div>
+
+        <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary">Rekisteröidy</button>
     </form>
 </div>

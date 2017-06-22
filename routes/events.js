@@ -26,7 +26,7 @@ router.post('/addevent', (req, res, next) => {
         if (err) {
             res.json({ success: false, msg: err.errors.title.message });
         } else {
-            res.json({ success: true, msg: 'Event Updated' });
+            res.json({ success: true, msg: 'Tapahtuman lisääminen onnistui' });
         }
     });
 });

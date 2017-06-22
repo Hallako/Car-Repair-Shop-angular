@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
 import { Http } from '@angular/http'
-import { User } from './user'
-import { Event } from './event'
+import { User } from '../../variables/user'
+import { Event } from '../../variables/event'
 import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { SearchService } from '../../services/search.service';
@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit {
     private searchService: SearchService,
 
   ) {
-    this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+    this.searchService.search(this.searchTerm$).subscribe(users => {this.users = users})
   }
 
 
@@ -47,8 +47,9 @@ export class AdminComponent implements OnInit {
   }
 
   onSelect(user: User) {
-    this.selectedUser = user
-    this.editUser = null
+    this.selectedUser = user;
+    this.editUser = null;
+    this.searchTerm$.next();
     this.onEvents();
   }
 

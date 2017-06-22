@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
-import { Event } from '../admin/event'
+import { Event } from '../../variables/event'
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -46,8 +46,6 @@ export class ProfileComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
       });
-
-      //console.log(this.events);
     })
   }
 
@@ -65,7 +63,6 @@ export class ProfileComponent implements OnInit {
     if (this.authService.loggedIn()) {
         this.authService.changePassword(user).subscribe(res => {
           this.flashmessage.show(res, { cssClass: 'alert-success', timeout: 3000 });;
-          //location.reload();
         });
       }
     }

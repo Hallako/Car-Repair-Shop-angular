@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidateService } from '../../services/validate.service'
 import { AuthService } from '../../services/auth.service'
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
+
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -11,43 +12,61 @@ import { Router } from '@angular/router'
 })
 export class RegisterComponent implements OnInit {
 
-    name: String;
-    username: String;
-    email: String;
-    password: String;
+registerForm: FormGroup;
 
   constructor(
-       private validateService: ValidateService,
        private flashmessage: FlashMessagesService,
        private authService: AuthService,
-       private router: Router) { }
+       private router: Router,
+       private fb: FormBuilder)
+       {
+         this.registerForm = fb.group({
+           firstname: ['', Validators.compose([Validators.required])],
+           lastname: ['', Validators.compose([Validators.required])],
+           email: ['', Validators.compose([Validators.required, Validators.email])],
+           phone: ['', Validators.compose([Validators.required, Validators.pattern("[+-\d]+")])],
+           address: ['', Validators.compose([Validators.required])],
+           area: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]+"), Validators.minLength(5)])],
+           city: ['', Validators.compose([Validators.required])],
+           username: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+           password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+           passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+         }, {validator: this.areEqual})
+       }
 
   ngOnInit() {
+  }
+
+  areEqual(AC: AbstractControl) {
+    let password = AC.get('password').value;
+    let passwordConfirm = AC.get('passwordConfirm').value;
+
+    if (password != passwordConfirm) {
+      AC.get('passwordConfirm').setErrors( {areEqual: true} );
+    }
+    else {
+      return null;
+    }
   }
 
   onRegisterSubmit(){
 
       const user = {
-        name: this.name,
-        email: this.email,
-        username: this.username,
-        password: this.password
+        firstname: this.registerForm.get('firstname').value,
+        lastname: this.registerForm.get('lastname').value,
+        email: this.registerForm.get('email').value,
+        phone: this.registerForm.get('phone').value,
+        address: this.registerForm.get('address').value,
+        area: this.registerForm.get('area').value,
+        city: this.registerForm.get('city').value,
+        username: this.registerForm.get('username').value,
+        password: this.registerForm.get('password').value
       }
 
     //check that username is unique (returns true if exists and vice versa)
     this.authService.checkUsername(user).subscribe(res=> {
 
-      if(res.exists == false){
-
-        //Validate given information
-        if(!this.validateService.validateRegister(user)){
-            this.flashmessage.show('Täytä kaikki kentät', {cssClass: 'alert-danger', timeout:3000});
-            return false;
-        }
-        if(!this.validateService.validateEmail(user.email)){
-            this.flashmessage.show('Anna oikea sähköposti', {cssClass: 'alert-danger', timeout:3000});
-            return false;
-        }
+      if(res.exists == false) {
 
         //register user
         this.authService.registerUser(user).subscribe(data => {
