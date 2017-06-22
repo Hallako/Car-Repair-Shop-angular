@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
 
   users: User[]
   user: User
+  userList: User[]
   events: Event[]
   event: Event
   selectedUser: User
@@ -26,7 +27,7 @@ export class AdminComponent implements OnInit {
   end: String
   search: Boolean
   username: String
-
+  showCustomers: Boolean
 
   private searchTerm$ = new Subject<string>();
 
@@ -36,21 +37,21 @@ export class AdminComponent implements OnInit {
     private searchService: SearchService,
 
   ) {
-    this.searchService.search(this.searchTerm$).subscribe(users => {this.users = users})
+    this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
   }
 
 
   ngOnInit() {
-    this.getConfirms()
+    this.getConfirms();
     this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
 
   onSelect(user: User) {
-    this.selectedUser = user;
-    this.editUser = null;
-    this.searchTerm$.next();
+    this.selectedUser = user
+    this.editUser = null
     this.onEvents();
+    this.searchTerm$.next();
   }
 
   editSelected() {
@@ -99,7 +100,7 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
-        this.user = user
+          this.user = user
           if (user != null) {
             event.user = this.user.username
           } else event.user = 'Hallinnon luoma'
@@ -140,8 +141,15 @@ export class AdminComponent implements OnInit {
 
   getEventUser(event) {
     this.authService.getUserById(event).subscribe(user => {
-    this.user = user
+      this.user = user
     })
+  }
+
+  getUsers() {
+    this.authService.getAllUser().subscribe(users => {
+      this.userList = users
+    });
+    this.showCustomers = true;
   }
 
 }
