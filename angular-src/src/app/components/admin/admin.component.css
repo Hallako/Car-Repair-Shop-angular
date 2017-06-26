@@ -45,6 +45,17 @@
   width: auto;
 }
 
+.fixed {
+  width: 50%;
+  position: relative;
+  float: left;
+}
+
+.top {
+  width: 100%;
+  position: relative;
+}
+
 .hover {
   border-radius: 0px;
   border-top: 0px;
@@ -81,9 +92,8 @@
 }
 
 .col-md-4 {
-  position: relative;
-  width: 100%;
   margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .panel-primary {
