@@ -57,11 +57,10 @@ module.exports.getUserById = function(id, callback) {
 
 module.exports.getUserByUsername = function(username, callback) {
     const query = {
-        username: new RegExp(username, "i")
+        username: new RegExp('^' + username + '$', "i")
     }
     User.findOne(query, callback);
 }
-
 
 module.exports.addUser = function(newUser, callback) {
     bcrypt.genSalt(10, (err, salt) => {
@@ -79,6 +78,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 }
+
 module.exports.checkUsername = function(user, callback) {
     User.count({
         'username': new RegExp(user, "i")
