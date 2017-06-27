@@ -34,10 +34,14 @@ router.post('/register', (req, res, next) => {
 router.post('/checkname', (req, res) => {
     User.checkUsername(req.body.username, (err, user) => {
         if (user == 0) {
-            res.json({ exists: false });
+            res.json({
+                exists: false
+            });
 
         } else {
-            res.json({ exists: true });
+            res.json({
+                exists: true
+            });
         }
     });
 });
@@ -50,7 +54,10 @@ router.post('/authenticate', (req, res, next) => {
     User.getUserByUsername(username, (err, user) => {
         if (err) throw err;
         if (!user) {
-            return res.json({ success: false, msg: 'User not found' });
+            return res.json({
+                success: false,
+                msg: 'User not found'
+            });
         }
 
         User.comparePassword(password, user.password, (err, isMatch) => {
@@ -73,15 +80,22 @@ router.post('/authenticate', (req, res, next) => {
                     }
                 });
             } else {
-                return res.json({ success: false, msg: 'Wrong password' });
+                return res.json({
+                    success: false,
+                    msg: 'Wrong password'
+                });
             }
         });
     });
 });
 
 //Profile
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.json({ user: req.user });
+router.get('/profile', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    res.json({
+        user: req.user
+    });
 });
 
 //Returns user object bt passed id
@@ -93,7 +107,9 @@ router.post('/getuserbyid', (req, res) => {
 
 
 //Change password
-router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
+router.post('/password', passport.authenticate('jwt', {
+    session: false
+}), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
         if (err) throw err;
     });
@@ -101,7 +117,9 @@ router.post('/password', passport.authenticate('jwt', { session: false }), (req,
 });
 
 //admin route(returns all users)
-router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/admin', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
     User.find({}, (err, user) => {
         if (err) throw err;
         return res.json(user);
@@ -109,12 +127,19 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res
 });
 
 //search router
-router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/search/:term?', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
     var param = new RegExp(req.params.term, "i");
-    User.find({ $or: [
-       {'lastname': param },
-       {'firstname': param }]
-     }, function(err, user) {
+    User.find({
+        $or: [{
+                'lastname': param
+            },
+            {
+                'firstname': param
+            }
+        ]
+    }, function(err, user) {
         if (err) throw err;
         return res.json(user)
     });
@@ -129,7 +154,9 @@ router.put('/update', (req, res) => {
 
 
 //Change password
-router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
+router.post('/password', passport.authenticate('jwt', {
+    session: false
+}), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
         if (err) throw err;
     });

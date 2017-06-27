@@ -9,6 +9,14 @@
   float: right;
 }
 
+.left {
+  float: left;
+}
+
+.button-right {
+  float: right;
+}
+
 .form {
   float: right;
   margin-right: 16px;
@@ -16,6 +24,11 @@
 
 #input {
   padding-right: 16px;
+}
+
+#search-box {
+  display: inline-block;
+  margin-right: 1em;
 }
 
 #searchDiv {
@@ -95,14 +108,13 @@
 
 .btn {
   border-radius: 0px;
-  float: right;
 }
 
 .btn-primary {
   display: inline-block;
   border-radius: 6px;
-  margin-bottom: 10px;
-  float: right;
+  margin: auto;
+  max-width: 144px;
 }
 
 .btn-sm {
@@ -163,4 +175,8 @@
 .table-hover {
   position: relative;
   margin-top: 10em;
+}
+
+.control-label {
+  text-align: left;
 }
