@@ -170,6 +170,10 @@
   margin-top: 10em;
 }
 
+.table-hover:hover {
+  cursor: pointer;
+}
+
 .control-label {
   text-align: left;
 }
