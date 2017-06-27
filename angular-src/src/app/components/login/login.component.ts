@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder)
     {
     this.loginForm = fb.group({
-      username: ['', Validators.compose([Validators.required])],
+      login: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])]
     })
   }
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     const user = {
-      username: this.loginForm.get('username').value,
+      login: this.loginForm.get('login').value,
       password: this.loginForm.get('password').value
     }
 

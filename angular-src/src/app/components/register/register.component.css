@@ -2,6 +2,12 @@
     width: 60%;
 }
 
+.infobox {
+  display: inline-block;
+  text-align: center;
+  padding: .5em;
+}
+
 .form-group {
   padding-left: 15px;
   padding-right: 15px;

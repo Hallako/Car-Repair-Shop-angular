@@ -55,9 +55,13 @@ module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(username, callback) {
+module.exports.getUserByLogin = function(login, callback) {
     const query = {
-        username: new RegExp(username, "i")
+      $or:
+        [
+          {username: new RegExp('^' + login + '$', "i")},
+          {email: new RegExp('^' + login + '$', "i")}
+        ]
     }
     User.findOne(query, callback);
 }
