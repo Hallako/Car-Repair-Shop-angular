@@ -56,7 +56,7 @@ router.post('/authenticate', (req, res, next) => {
         if (!user) {
             return res.json({
                 success: false,
-                msg: 'User not found'
+                msg: 'Virheellinen käyttäjänimi tai salasana!'
             });
         }
 
