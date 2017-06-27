@@ -1,13 +1,18 @@
-<h2 class="page-header">Kirjautuminen</h2>
-<form (submit)="onLoginSubmit()" class="login-form">
-    <div class="form-group">
-        <label>Käyttäjänimi</label>
-        <input type="text" class="form-control" [(ngModel)]="username" name="username">
-    </div>
+<div class="logincontainer">
+  <h2 class="page-header">Kirjautuminen</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit(); loginForm.reset()">
 
-    <div class="form-group">
-        <label>Salasana</label>
-        <input type="password" class="form-control" [(ngModel)]="password" name="password">
-    </div>
-    <input type="submit" class="btn btn-primary" value="Kirjaudu">
-</form>
+      <div class="form-group form-solo" [ngClass]="{'has-error': loginForm.get('username').invalid && loginForm.get('username').touched}">
+          <label>Käyttäjänimi</label>
+          <small class="form-alert" *ngIf="loginForm.get('username').hasError('required') && loginForm.get('username').touched">Anna käyttäjänimi</small>
+          <input type="text" class="form-control" formControlName="username" name="username">
+      </div>
+
+      <div class="form-group form-solo" [ngClass]="{'has-error': loginForm.get('password').invalid && loginForm.get('password').touched}">
+          <label>Salasana</label>
+          <small class="form-alert" *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">Anna salasana</small>
+          <input type="password" class="form-control" formControlName="password" name="password">
+      </div>
+      <input [disabled]="!loginForm.valid" type="submit" class="btn btn-primary" value="Kirjaudu">
+  </form>
+</div>
