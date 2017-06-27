@@ -169,3 +169,7 @@
   position: relative;
   margin-top: 10em;
 }
+
+.control-label {
+  text-align: left;
+}
