@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private flashMessage: FlashMessagesService,
     private location: Location,
-    private fb: FormBuilder
-  ) {
+    private fb: FormBuilder)
+    {
     this.loginForm = fb.group({
       username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])]
