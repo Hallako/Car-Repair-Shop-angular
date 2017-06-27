@@ -10,9 +10,24 @@
         <form class="login-form">
 
             <div *ngIf="admin" class="form-group">
-                <label>Asiakas</label>
+                <label>Asiakas</label><br>
 
-                <p>{{eventUsername}}</p>
+                <div *ngIf="!userSelectMenu; else userMenu">
+                    <input class="form-control" id="userselection" [(ngModel)]="eventUsername" name="eventUsername" disabled>
+                    <div id="pickHelper">
+                        <p (click)="userSelectionClick()">Valitse asiakas</p>
+                    </div>
+                </div>
+
+                <ng-template #userMenu>
+
+                    <input class="form-control" id="search-boxi" (keyup)="searchTerm$.next($event.target.value)" autocomplete="off" placeholder="Hae käyttäjiä nimellä" />
+                    <div class="search-box">
+                        <option class="form-control hover" *ngFor="let user of users" (click)="userSelectionClick(user);" onclick="document.getElementById('search-boxi').reset()">
+                            {{ user.lastname }} {{user.firstname}}
+                        </option>
+                    </div>
+                </ng-template>
             </div>
 
             <div class="form-group">
@@ -32,13 +47,13 @@
 
             <div class="form-group">
                 <label>Päättymisaika</label>
-                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="end" name="end">
+                <input type="datetime-local" [disabled]="!admin" step="1800" class="form-control" [(ngModel)]="end" name="end" required>
 
             </div>
 
             <div class="form-group">
-              <label>Rekisterinumero</label>
-              <input class="form-control" [(ngModel)]="rekisteriNro" name="rekisteriNro" />
+                <label>Rekisterinumero</label>
+                <input class="form-control" [(ngModel)]="rekisteriNro" name="rekisteriNro" required/>
             </div>
 
             <div class="form-group">
@@ -55,7 +70,6 @@
     </div>
 
 
-    <p>
-        <a [routerLink]="['/help']">Ohje ajavarauksen tekemiseen</a>
-    </p>
+    <a class="helplink" [routerLink]="['/help']">Ohje ajanvarauksen tekemiseen</a>
+
 </div>
