@@ -36,7 +36,6 @@
     display: inline-block;
     position: relative;
     vertical-align: top;
-    /*width: 35%;*/
 }
 
 .clearfix {
@@ -89,4 +88,9 @@ footer {
     position: absolute;
     width: 100%;
     z-index: 99999;
+}
+
+.helplink {
+    color: blue;
+    text-decoration-color: blue;
 }
