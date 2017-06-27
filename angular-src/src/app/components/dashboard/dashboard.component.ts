@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { SearchService } from '../../services/search.service';
 import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
-import {Observable} from 'rxjs/Rx';
+import { Observable, Subject} from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'fullcalendar';
 import _ from 'lodash';
@@ -24,6 +25,7 @@ export class DashboardComponent implements OnInit {
 
   //Variables
   duration: number;
+
   id: String;
   title: String;
   start: String;
@@ -31,17 +33,27 @@ export class DashboardComponent implements OnInit {
   color: String;
   description: String;
   rekisteriNro: String;
+
   eventUsername: String;
   confirm: Boolean = true;
   admin: Boolean = false;
+  userSelectMenu: boolean = false;
   calElement = null;
+
   events: Event[];
   event: Event
+
+  users: User[]
+  user: User
+  private searchTerm$ = new Subject<string>();
 
   constructor(
        private authService: AuthService,
        private flashMessage: FlashMessagesService,
-       private router: Router) { }
+       private router: Router,
+       private searchService: SearchService) { 
+         this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+       }
 
   ngOnInit() {
     var curuser = this.authService.getUser();
@@ -91,7 +103,7 @@ export class DashboardComponent implements OnInit {
         start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
         $.ajax({
-          url: 'events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
+          url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
           + start + "/" + end + "/" + userId + "/" + true,
           dataType: 'json',
           success: function(response) {
@@ -410,4 +422,18 @@ export class DashboardComponent implements OnInit {
         });
     });
   }
+  
+  userSelectionClick(user: User){
+    if(this.userSelectMenu){
+      this.userSelectMenu = false;
+      if(user){
+        this.eventUsername = user.username;
+        this.searchTerm$.next();
+      }
+    } else { 
+      this.userSelectMenu = true;
+    }
+  }
+
+
 }
