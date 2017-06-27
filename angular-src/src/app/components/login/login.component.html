@@ -1,6 +1,6 @@
 <div class="logincontainer">
   <h2 class="page-header">Kirjautuminen</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit(); loginForm.reset()">
+  <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit(); reset()">
 
       <div class="form-group form-solo" [ngClass]="{'has-error': loginForm.get('username').invalid && loginForm.get('username').touched}">
           <label>Käyttäjänimi</label>
