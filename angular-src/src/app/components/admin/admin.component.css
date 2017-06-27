@@ -9,10 +9,6 @@
   float: right;
 }
 
-.left {
-  float: left;
-}
-
 .button-right {
   float: right;
 }
@@ -29,11 +25,6 @@
 #search-box {
   display: inline-block;
   margin-right: 1em;
-}
-
-#searchDiv {
-  float: right;
-  padding: 0px;
 }
 
 #formSearch {
@@ -141,10 +132,6 @@
   border-radius: 3px;
 }
 
-.btn-ok {
-  float: right;
-}
-
 .btn-default {
   margin-bottom: 10px;
 }
@@ -172,10 +159,6 @@
   display: inline-block;
   position: relative;
   margin-top: 2em;
-}
-
-.form-control-left {
-  margin: auto;
 }
 
 .control-label {
