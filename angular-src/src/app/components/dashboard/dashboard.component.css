@@ -54,7 +54,8 @@ footer {
 
 #userselection {
     display: inline-block;
-    width: 70%;
+    width: 76%;
+    vertical-align: middle;
 }
 
 #pickHelper {
@@ -62,7 +63,7 @@ footer {
     display: inline-block;
     background-color: #3a87ad;
     font-size: 12px;
-    height: 44px;
+    height: 46px;
     width: 20%;
     margin: 0;
     padding: 3px 10px;
