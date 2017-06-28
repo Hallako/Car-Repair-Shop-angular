@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   description: String;
   rekisteriNro: String;
 
-  eventUsername: { id: String, name: String };
+  eventUsername: User = new User;
   confirm: Boolean = true;
   admin: Boolean = false;
   userSelectMenu: boolean = false;
@@ -59,6 +59,9 @@ export class DashboardComponent implements OnInit {
     var curuser = this.authService.getUser();
     var userId = curuser.id;
     this.admin = curuser.admin;
+
+    this.eventUsername.firstname = curuser.firstname;
+    this.eventUsername.lastname = curuser.lastname;
 
     this.calElement = $('#myCalendar');
 
@@ -104,7 +107,7 @@ export class DashboardComponent implements OnInit {
         start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
         $.ajax({
-          url: 'events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
+          url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
           + start + "/" + end + "/" + userId + "/" + true,
           dataType: 'json',
           success: function(response) {
@@ -302,7 +305,7 @@ export class DashboardComponent implements OnInit {
     let userid;
     
     if(this.admin){
-      userid = this.eventUsername.id;
+      userid = this.eventUsername._id;
     } else {
       userid = curuser.id
     }
@@ -339,7 +342,9 @@ export class DashboardComponent implements OnInit {
   //gets name whoever owns event
   updatename(event) {
     this.authService.getUserById(event).subscribe(user => {
-      this.eventUsername.name = user.firstname + ' ' + user.lastname;
+      this.eventUsername.firstname = user.firstname;
+      this.eventUsername.lastname = user.lastname;
+
     });
   }
 
@@ -435,8 +440,9 @@ export class DashboardComponent implements OnInit {
     if(this.userSelectMenu){
       this.userSelectMenu = false;
       if(user){
-        this.eventUsername.name = user.firstname +' '+ user.lastname;
-        this.eventUsername.id = user._id;
+        this.eventUsername.firstname = user.firstname;
+        this.eventUsername.lastname = user.lastname;
+        this.eventUsername._id = user._id;
         this.searchTerm$.next();
       }
     } else { 
