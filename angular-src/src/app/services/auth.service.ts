@@ -80,7 +80,6 @@ export class AuthService {
     let headers = new Headers();
     headers.append('Authorization', this.authToken);
     headers.append('Content-type', 'application/json');
-    //console.log(user);
     return this.http.post(this.nodeUrl + 'users/password/', user, { headers: headers })
       .map(res => res.json());
   }

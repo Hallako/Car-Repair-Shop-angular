@@ -158,19 +158,13 @@ io.on('connection', function(socket) {
         socket.conn.roomi = data;
     });
 
-
-    /* socket.on('disconnecting', function(data) {
-         console.log(socket.conn.admin = data.admin)
-         socket.emit('disconnected')
-     });*/
-
     //Disconnect function to tidy up stuff after unexpected disconnect.
     socket.on('disconnecting', function(data) {
 
         var x = socket.conn.roomi;
         var y = false;
 
-        console.log(socket.conn.admin + " " + x)
+
         if (socket.conn.admin) {
             io.in(x).emit('releasesocket', { room: x });
             for (var k = 0; k < SocketConnections.length; k++) {
@@ -178,7 +172,7 @@ io.on('connection', function(socket) {
                     SocketConnections[k][0] = null;
                     SocketConnections[k][1] = null;
                     SocketConnections[k][2] = null;
-                    console.log('Admin left')
+
                     break;
                 }
             }
@@ -189,7 +183,7 @@ io.on('connection', function(socket) {
                     SocketConnections[k][0] = SocketConnections[k][2];
                     socket.to(x).emit('userleavedroom', { room: x });
 
-                    console.log('user left')
+
                     break;
                 }
             }
