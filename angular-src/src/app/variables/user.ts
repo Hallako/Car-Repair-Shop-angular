@@ -1,6 +1,7 @@
 export class User {
   _id?: String
-  name: String
+  firstname: String
+  lastname: String
   email: String
   username: String
   password: String
