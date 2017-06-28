@@ -17,7 +17,8 @@ const UserSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     phone: {
         type: String,
@@ -37,7 +38,8 @@ const UserSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -55,9 +57,13 @@ module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(username, callback) {
+module.exports.getUserByLogin = function(login, callback) {
     const query = {
-        username: new RegExp('^' + username + '$', "i")
+      $or:
+        [
+          {username: new RegExp('^' + login + '$', "i")},
+          {email: new RegExp('^' + login + '$', "i")}
+        ]
     }
     User.findOne(query, callback);
 }
