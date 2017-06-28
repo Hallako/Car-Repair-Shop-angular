@@ -54,10 +54,10 @@ router.post('/checkname', (req, res) => {
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-const login = req.body.login;
-const password = req.body.password;
+  const login = req.body.login;
+  const password = req.body.password;
 
-User.getUserByLogin(login, (err, user) => {
+  User.getUserByLogin(login, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({
@@ -92,10 +92,9 @@ User.getUserByLogin(login, (err, user) => {
         });
       }
     });
-  }
+  })
 });
-});
-});
+
 
 //Profile
 router.get('/profile', passport.authenticate('jwt', {
