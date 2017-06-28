@@ -22,7 +22,6 @@ export class AdminComponent implements OnInit {
   events: Event[]
   event: Event
   selectedUser: User
-  editUser: User
   start: String
   end: String
   search: Boolean
@@ -49,20 +48,14 @@ export class AdminComponent implements OnInit {
 
   onSelect(user: User) {
     this.selectedUser = user
-    this.editUser = null
     this.onEvents();
     this.searchTerm$.next();
-  }
-
-  editSelected() {
-    this.editUser = this.selectedUser
   }
 
   updateUser(): void {
     this.authService.update(this.selectedUser).subscribe();
     location.reload()
   }
-
 
   onEvents() {
     this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {

@@ -68,7 +68,6 @@ module.exports.getUserByLogin = function(login, callback) {
     User.findOne(query, callback);
 }
 
-
 module.exports.addUser = function(newUser, callback) {
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -85,6 +84,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 }
+
 module.exports.checkUsername = function(user, callback) {
     User.count({
         'username': new RegExp(user, "i")

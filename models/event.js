@@ -28,15 +28,15 @@ const EventSchema = mongoose.Schema({
     },
 
     rekisteriNro: {
-      type: String
+        type: String
     },
-    
+
     description: {
         type: String
     },
 
     confirm: {
-      type: Boolean
+        type: Boolean
     },
 
     user: {
@@ -61,5 +61,10 @@ module.exports.addEvent = function(newEvent, callback) {
     if (newEvent._id == null) {
         newEvent._id = new mongoose.mongo.ObjectID();
     }
-    event.findByIdAndUpdate(newEvent._id, newEvent, { upsert: true, setDefaultsOnInsert: true, new: true, runValidators: true }, callback);
+    event.findByIdAndUpdate(newEvent._id, newEvent, {
+        upsert: true,
+        setDefaultsOnInsert: true,
+        new: true,
+        runValidators: true
+    }, callback);
 }

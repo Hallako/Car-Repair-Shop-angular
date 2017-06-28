@@ -9,10 +9,6 @@
   float: right;
 }
 
-.left {
-  float: left;
-}
-
 .button-right {
   float: right;
 }
@@ -31,11 +27,6 @@
   margin-right: 1em;
 }
 
-#searchDiv {
-  float: right;
-  padding: 0px;
-}
-
 #formSearch {
   width: 40%;
   float: right;
@@ -43,6 +34,17 @@
 
 .form-group {
   width: auto;
+}
+
+.fixed {
+  width: 50%;
+  position: relative;
+  float: left;
+}
+
+.top {
+  width: 100%;
+  position: relative;
 }
 
 .hover {
@@ -81,9 +83,8 @@
 }
 
 .col-md-4 {
-  position: relative;
-  width: 100%;
   margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .panel-primary {
@@ -131,10 +132,6 @@
   border-radius: 3px;
 }
 
-.btn-ok {
-  float: right;
-}
-
 .btn-default {
   margin-bottom: 10px;
 }
@@ -162,10 +159,6 @@
   display: inline-block;
   position: relative;
   margin-top: 2em;
-}
-
-.form-control-left {
-  margin: auto;
 }
 
 .control-label {
