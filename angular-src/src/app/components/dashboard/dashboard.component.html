@@ -13,7 +13,7 @@
                 <label>Asiakas</label><br>
 
                 <div *ngIf="!userSelectMenu; else userMenu">
-                    <input class="form-control" id="userselection" [(ngModel)]="eventUsername" name="eventUsername" disabled>
+                    <input class="form-control" id="userselection" [(ngModel)]="eventUsername.name" name="eventUsername.name" disabled>
                     <div id="pickHelper">
                         <p (click)="userSelectionClick()">Valitse asiakas</p>
                     </div>

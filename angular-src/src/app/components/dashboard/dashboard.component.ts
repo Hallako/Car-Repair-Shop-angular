@@ -34,8 +34,7 @@ export class DashboardComponent implements OnInit {
   description: String;
   rekisteriNro: String;
 
-  eventUsername: String;
-  eventUsernameId: any;
+  eventUsername: { id: String, name: String };
   confirm: Boolean = true;
   admin: Boolean = false;
   userSelectMenu: boolean = false;
@@ -90,6 +89,7 @@ export class DashboardComponent implements OnInit {
     };
 
     let boundClick = clickFunc.bind(this);
+
     //options
     let options: any = {
       header: {
@@ -302,7 +302,7 @@ export class DashboardComponent implements OnInit {
     let userid;
     
     if(this.admin){
-      userid = this.eventUsernameId;
+      userid = this.eventUsername.id;
     } else {
       userid = curuser.id
     }
@@ -339,7 +339,7 @@ export class DashboardComponent implements OnInit {
   //gets name whoever owns event
   updatename(event) {
     this.authService.getUserById(event).subscribe(user => {
-      this.eventUsername = user.username;
+      this.eventUsername.name = user.firstname + ' ' + user.lastname;
     });
   }
 
@@ -431,18 +431,16 @@ export class DashboardComponent implements OnInit {
     });
   }
   
-  userSelectionClick(user: User){
+  userSelectionClick(user){
     if(this.userSelectMenu){
       this.userSelectMenu = false;
       if(user){
-        this.eventUsername = user.username;
-        this.eventUsernameId = user._id;
+        this.eventUsername.name = user.firstname +' '+ user.lastname;
+        this.eventUsername.id = user._id;
         this.searchTerm$.next();
       }
     } else { 
       this.userSelectMenu = true;
     }
   }
-
-
 }
