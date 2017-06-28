@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   description: String;
   rekisteriNro: String;
 
-  eventUsername: String;
+  eventUsername: User = new User;
   confirm: Boolean = true;
   admin: Boolean = false;
   userSelectMenu: boolean = false;
@@ -60,6 +60,9 @@ export class DashboardComponent implements OnInit {
     var userId = curuser.id;
     this.admin = curuser.admin;
 
+    this.eventUsername.firstname = curuser.firstname;
+    this.eventUsername.lastname = curuser.lastname;
+
     this.calElement = $('#myCalendar');
 
     //Event click function
@@ -73,7 +76,7 @@ export class DashboardComponent implements OnInit {
         if (calEvent.user) {
           this.updatename(calEvent);
         } else {
-          this.eventUsername = 'Hallinnon luoma';
+          
         }
         this.confirm = calEvent.confirm;
         this.id = calEvent._id;
@@ -89,6 +92,7 @@ export class DashboardComponent implements OnInit {
     };
 
     let boundClick = clickFunc.bind(this);
+
     //options
     let options: any = {
       header: {
@@ -168,7 +172,7 @@ export class DashboardComponent implements OnInit {
       //Event selection based on selected type of event.
       dayClick: (date, jsEvent, view) => {
 
-        this.eventUsername = null;
+        
 
         this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
@@ -295,12 +299,18 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   //Event adding func
   onEventSubmit() {
     var curuser = this.authService.getUser();
-    var user: String;
-
+    let userid;
+    
+    if(this.admin){
+      userid = this.eventUsername._id;
+    } else {
+      userid = curuser.id
+    }
+  
+    
     const event = {
       _id: this.id,
       title: this.title,
@@ -310,8 +320,9 @@ export class DashboardComponent implements OnInit {
       rekisteriNro: this.rekisteriNro,
       description: this.description,
       confirm: false,
-      user: curuser['id']
+      user: userid
     }
+
     if (event.title && event.start) {
       this.authService.addEvent(event).subscribe(data => {
         if (data.success) {
@@ -331,7 +342,9 @@ export class DashboardComponent implements OnInit {
   //gets name whoever owns event
   updatename(event) {
     this.authService.getUserById(event).subscribe(user => {
-      this.eventUsername = user.username;
+      this.eventUsername.firstname = user.firstname;
+      this.eventUsername.lastname = user.lastname;
+
     });
   }
 
@@ -423,17 +436,17 @@ export class DashboardComponent implements OnInit {
     });
   }
   
-  userSelectionClick(user: User){
+  userSelectionClick(user){
     if(this.userSelectMenu){
       this.userSelectMenu = false;
       if(user){
-        this.eventUsername = user.username;
+        this.eventUsername.firstname = user.firstname;
+        this.eventUsername.lastname = user.lastname;
+        this.eventUsername._id = user._id;
         this.searchTerm$.next();
       }
     } else { 
       this.userSelectMenu = true;
     }
   }
-
-
 }

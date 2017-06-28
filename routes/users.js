@@ -54,10 +54,10 @@ router.post('/checkname', (req, res) => {
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+const login = req.body.login;
+const password = req.body.password;
 
-  User.getUserByUsername(username, (err, user) => {
+User.getUserByLogin(login, (err, user) => {
     if (err) throw err;
     if (!user) {
       return res.json({
@@ -88,11 +88,13 @@ router.post('/authenticate', (req, res, next) => {
       } else {
         return res.json({
           success: false,
-          msg: 'Väärä salasana.'
+          msg: 'Virheellinen käyttäjänimi tai salasana!'
         });
       }
     });
-  });
+  }
+});
+});
 });
 
 //Profile
