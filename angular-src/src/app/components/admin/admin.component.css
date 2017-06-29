@@ -18,6 +18,15 @@
   margin-right: 16px;
 }
 
+textarea {
+  resize: none;
+  scroll-behavior: smooth;
+}
+
+#inputAdd {
+  width: 65%;
+}
+
 #input {
   padding-right: 16px;
 }
