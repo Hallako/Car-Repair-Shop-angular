@@ -4,7 +4,7 @@ import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
 import { Event } from '../../variables/event'
 import * as moment from 'moment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
     {
       this.changePwForm = fb.group({
       password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      passwordConfirm: ['', Validators.required]
+      passwordConfirm: ['', Validators.compose([Validators.required])]
     }, {validator: this.areEqual})
     }
 
@@ -49,9 +49,16 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  areEqual(group: FormGroup) {
-    return group.get('password').value === group.get('passwordConfirm').value
-      ? null : {'mismatch': true}
+  areEqual(AC: AbstractControl) {
+    let password = AC.get('password').value;
+    let passwordConfirm = AC.get('passwordConfirm').value;
+
+    if (password != passwordConfirm) {
+      AC.get('passwordConfirm').setErrors( {areEqual: true} );
+    }
+    else {
+      return null;
+    }
   }
 
   onPasswordChange() {
