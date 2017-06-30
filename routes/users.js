@@ -4,7 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
-
+const mailer = require('../config/mailer');
 
 //Register
 router.post('/register', (req, res, next) => {
@@ -26,6 +26,23 @@ router.post('/register', (req, res, next) => {
             res.json({ success: false, msg: 'Rekisteröityminen epäonnistui' });
         } else {
             res.json({ success: true, msg: 'Rekisteröityminen onnistui!' });
+
+            var mailOptions = {
+                from: 'sukatesti@hotmail.com', // sender address
+                to: req.body.email, // list of receivers
+                subject: 'Korjaamo laitila', // Subject line
+                text: '', // plain text body
+                html: `<b>Kiitos liittymisestäsi laitilaan </br></br>
+                          käyttäjä tunnuksesi on ${req.body.username}</br>
+                          ja salasanasi ${req.body.password}</b>` // html body
+            }
+            mailer.transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message %s sent: %s', info.messageId, info.response);
+            });
+
         }
     });
 });
