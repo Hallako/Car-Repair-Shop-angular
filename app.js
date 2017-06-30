@@ -11,6 +11,10 @@ const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
 const chat = require('./routes/chat');
+const mailer = require('./config/mailer');
+const nodemailer = require('nodemailer');
+
+
 
 //Variables
 var SocketConnections = createArray(5, 3);
@@ -82,6 +86,7 @@ io.on('connection', function(socket) {
           });
           socket.join(SocketConnections[i][0]);
         } else {
+
           SocketConnections[i][0] = data.user;
           SocketConnections[i][1] = true;
           SocketConnections[i][2] = data.user;
