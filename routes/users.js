@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const mailer = require('../config/mailer');
+const passgen = require('generate-password')
+
 
 //Register
 router.post('/register', (req, res, next) => {
@@ -27,14 +29,31 @@ router.post('/register', (req, res, next) => {
         } else {
             res.json({ success: true, msg: 'Rekisteröityminen onnistui!' });
 
+
+            if (!newUser.username) {
+                var parts = newUser.email.split('@');
+                newUser.username = parts[0];
+            }
+
+            if (!newUser.password) {
+                newUser.password = passgen.generate({
+                    length: 8,
+                    numbers: true
+                });
+            }
+
+
+
             var mailOptions = {
                 from: 'sukatesti@hotmail.com', // sender address
-                to: req.body.email, // list of receivers
+                to: newUser.email, // list of receivers
                 subject: 'Korjaamo laitila', // Subject line
                 text: '', // plain text body
                 html: `<b>Kiitos liittymisestäsi laitilaan </br></br>
-                          käyttäjä tunnuksesi on ${req.body.username}</br>
-                          ja salasanasi ${req.body.password}</b>` // html body
+                          käyttäjä tunnuksesi on ${newUser.username}</br>
+                          ja salasanasi ${newUser.password}</b></br></br>
+                          Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
+                          ` // html body
             }
             mailer.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
