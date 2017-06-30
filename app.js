@@ -228,8 +228,7 @@ io.on('connection', function(socket) {
   //######## SOCKETS END ###########
 });
 
-function createArray(length) { <<
-  << << < HEAD
+function createArray(length) {
   var arr = new Array(length || 0),
     i = length;
   if (arguments.length > 1) {
@@ -237,3 +236,4 @@ function createArray(length) { <<
     while (i--) arr[length - 1 - i] = createArray.apply(this, args);
   }
   return arr;
+}
