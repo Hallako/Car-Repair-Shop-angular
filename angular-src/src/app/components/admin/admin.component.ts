@@ -178,7 +178,7 @@ export class AdminComponent implements OnInit {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
     })
-
+    this.addCustomer = false;
   }
 
 }
