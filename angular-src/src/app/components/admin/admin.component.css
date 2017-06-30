@@ -18,6 +18,15 @@
   margin-right: 16px;
 }
 
+textarea {
+  resize: none;
+  scroll-behavior: smooth;
+}
+
+#inputAdd {
+  width: 65%;
+}
+
 #input {
   padding-right: 16px;
 }
@@ -168,6 +177,10 @@
 .table-hover {
   position: relative;
   margin-top: 10em;
+}
+
+.table-hover:hover {
+  cursor: pointer;
 }
 
 .control-label {
