@@ -204,4 +204,56 @@ router.post('/password', passport.authenticate('jwt', {
   res.json('Salasana vaihdettu.');
 });
 
+//Generate random new password
+router.post('/resetPassword/:term', (req, res) => {
+
+  //if (err) throw err;
+
+  //else
+  //{
+    var email = req.params;
+    var query = { email: this.email };
+    var password = passgen.generate(
+      {
+          length: 8,
+          numbers: true
+      });
+
+    User.findOneAndUpdate( query, { password: this.password }, (user, err) => {
+
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Salasanan vaihto epäonnistui"
+        });
+      }
+
+      var mailOptions = {
+
+        from: 'sukatesti@hotmail.com', // sender address
+        to: this.email, // list of receivers
+        subject: 'Korjaamo laitila', // Subject line
+        text: '', // plain text body
+        html: `<b>Salasanasi on nyt nollattu</br></br>
+                              Uusi salasanasi on ${this.password}</br>
+                              Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
+                              ` // html body
+      }
+
+      mailer.transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log('Message %s sent: %s', info.messageId, info.response);
+      });
+
+      res.json({
+        success: true,
+        msg: "Salasana vaihdettu"
+      });
+
+    });
+  //}
+  });
+
 module.exports = router;
