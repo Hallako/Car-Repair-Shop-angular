@@ -23,7 +23,7 @@
 
                     <input class="form-control" id="search-boxi" (keyup)="searchTerm$.next($event.target.value)" autocomplete="off" placeholder="Hae käyttäjiä nimellä" />
                     <div class="search-box">
-                        <option class="form-control hover" *ngFor="let user of users" (click)="userSelectionClick(user);" onclick="document.getElementById('search-boxi').reset()">
+                        <option class="form-control hover" *ngFor="let user of users" (click)="userSelectionClick(user);">
                             {{ user.lastname }} {{user.firstname}}
                         </option>
                     </div>
