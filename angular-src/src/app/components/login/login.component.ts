@@ -14,17 +14,23 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 
 export class LoginComponent implements OnInit {
 
+  showReset: boolean = false;
+
   loginForm: FormGroup;
+  resetForm: FormGroup;
 
   constructor(private authService: AuthService,
     private router: Router,
     private flashMessage: FlashMessagesService,
     private location: Location,
-    private fb: FormBuilder)
-    {
+    private fb: FormBuilder) {
     this.loginForm = fb.group({
       login: ['', Validators.compose([Validators.required])],
-      password: ['', Validators.compose([Validators.required])]
+      password: ['', Validators.compose([Validators.required])],
+    })
+
+    this.resetForm = fb.group({
+      resetEmail: ['', Validators.compose([Validators.required, Validators.email])],
     })
   }
 
@@ -55,4 +61,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  //TODO: Salasanan resetointi
+  onResetSubmit() {
+
+    const email = this.resetForm.get('resetEmail').value;
+
+    this.authService.resetPassword(email).subscribe(data => {
+      if (data.success) {
+        console.log("toimii");
+      }
+      else {
+        console.log("ei toimi");
+      }
+    })
+  }
 }
