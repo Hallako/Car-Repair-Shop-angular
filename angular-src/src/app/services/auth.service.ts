@@ -167,15 +167,15 @@ export class AuthService {
   }
 
   confirmEvent(event): Observable<Event> {
+    
     return this.http.post(this.nodeUrl + 'events/confirm/' + event, { headers: this.headers })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
   resetPassword(email) {
-    let headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    console.log(email);
-    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: headers })
+    let heads = new Headers();
+    heads.append('Content-type', 'application/json');
+    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: heads })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 }
