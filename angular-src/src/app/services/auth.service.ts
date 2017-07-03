@@ -177,4 +177,12 @@ export class AuthService {
     return this.http.post(this.nodeUrl + 'users/resetPassword/' + email, { headers: headers })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
+
+  resetPassword(email) {
+    let headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    console.log(email);
+    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: headers })
+      .map((res: Response) => res.json()).catch(this.handleError);
+  }
 }
