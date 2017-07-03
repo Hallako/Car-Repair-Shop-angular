@@ -16,17 +16,23 @@ export class AuthService {
   nodeUrl: String;
   headers: any;
   authHeader: any;
+  authHeaderi: any; 
 
   constructor(private http: Http) {
     this.nodeUrl = 'http://localhost:8081/'; //'http://localhost:8081/' for local deployement empty for heroku.
+    
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));
     }
 
     this.loadToken();
+
     this.headers = new Headers();
     this.headers.append('Content-type', 'application/json');
-    this.authHeader = this.headers;
+
+    this.authHeaderi = new Headers();
+    this.authHeaderi.append('Authorization', this.authToken)
+    this.authHeaderi.append('Content-type', 'application/json');
   }
 
   //error handler
@@ -56,9 +62,7 @@ export class AuthService {
 
   //Gets user information
   getProfile() {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
-    return this.http.get(this.nodeUrl + 'users/profile/', { headers: authHeader })
+    return this.http.get(this.nodeUrl + 'users/profile/', { headers: this.authHeaderi })
       .map(res => res.json());
   }
 
@@ -70,9 +74,7 @@ export class AuthService {
 
   //Password change (id and new password is passed on "user" object)
   changePassword(user) {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
-    return this.http.post(this.nodeUrl + 'users/password/', user, { headers: authHeader })
+    return this.http.post(this.nodeUrl + 'users/password/', user, { headers: this.authHeaderi })
       .map(res => res.json());
   }
 
@@ -117,9 +119,7 @@ export class AuthService {
 
   //Returns all users
   getAllUser(): Observable<User[]> {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
-    return this.http.get(this.nodeUrl + 'users/admin', { headers: authHeader })
+    return this.http.get(this.nodeUrl + 'users/admin', { headers: this.authHeaderi })
       .map(res => res.json()).catch(this.handleError);
   }
 
@@ -144,38 +144,29 @@ export class AuthService {
 
   //Gets events in certain time range based on user, returns all users events if admin is passed and is true.
   getEvents(start, end, user, admin) {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
     return this.http.get(this.nodeUrl + 'events/getevents/'
-      + start + "/" + end + "/" + user + "/" + admin + "/", { headers: authHeader })
+      + start + "/" + end + "/" + user + "/" + admin + "/", { headers: this.authHeaderi })
       .map(res => res.json());
   }
 
   //Gets all events based on user
   getAllEvents(user): Observable<Event[]> {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
-    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: authHeader })
+    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
   getConfirmationEvents(): Observable<Event[]> {
-    this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
-    return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: authHeader })
+    return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
   confirmEvent(event): Observable<Event> {
-    
     return this.http.post(this.nodeUrl + 'events/confirm/' + event, { headers: this.headers })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
   resetPassword(email) {
-    let heads = new Headers();
-    heads.append('Content-type', 'application/json');
-    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: heads })
+    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: this.headers })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 }
