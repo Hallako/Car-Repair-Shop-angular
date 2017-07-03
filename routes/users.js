@@ -219,8 +219,7 @@ router.post('/resetPassword/', (req, res) => {
 
     console.log(email + ' ' + password);
 
-    User.findOneAndUpdate(query, { $set: { password: password } }, (user, err) => {
-
+    User.findOneAndUpdate(query, { $set: { password: password } }, (err, user) => {
         if (err) {
             return res.json({
                 success: false,
