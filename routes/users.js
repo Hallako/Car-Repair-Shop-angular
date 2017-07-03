@@ -204,28 +204,41 @@ router.post('/password', passport.authenticate('jwt', {
 });
 
 //Generate random new password
-router.post('/resetPassword/:term', (req, res) => {
-    User.findOne({
-        email: req.params.term
-    }, (err, user) => {
-        if (err) throw err;
+router.post('/resetPassword/', (req, res) => {
 
-        user.password = passgen.generate({
-            length: 8,
-            numbers: true
-        });
+    //if (err) throw err;
+
+    //else
+    //{
+    var email = req.body.email;
+    var query = { email: this.email };
+    var password = passgen.generate({
+        length: 8,
+        numbers: true
+    });
+    console.log(email);
+
+    User.findOneAndUpdate(query, { $set: { password: password } }, (user, err) => {
+
+        if (err) {
+            res.json({
+                success: false,
+                msg: "Salasanan vaihto epäonnistui"
+            });
+        }
 
         var mailOptions = {
+
             from: 'sukatesti@hotmail.com', // sender address
-            to: user.email, // list of receivers
+            to: email, // list of receivers
             subject: 'Korjaamo laitila', // Subject line
             text: '', // plain text body
-            html: `<b>Kiitos liittymisestäsi laitilaan </br></br>
-                            käyttäjä tunnuksesi on ${user.username}</br>
-                            ja salasanasi ${user.password}</b></br></br>
-                            Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
-                            ` // html body
+            html: `<b>Salasanasi on nyt nollattu</br></br>
+                              Uusi salasanasi on ${password}</br>
+                              Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
+                              ` // html body
         }
+
         mailer.transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return console.log(error);
@@ -233,22 +246,13 @@ router.post('/resetPassword/:term', (req, res) => {
             console.log('Message %s sent: %s', info.messageId, info.response);
         });
 
-        User.addUser(user, (err, user) => {
-            if (err) {
-                res.json({
-                    success: false,
-                    msg: 'Salasanan vaihto epäonnistui'
-                });
-            } else {
-                res.json({
-                    success: true,
-                    msg: 'Salasanan vaihto onnistui!'
-                });
-
-            }
+        res.json({
+            success: true,
+            msg: "Salasana vaihdettu"
         });
 
-    })
+    });
+    //}
 });
 
 module.exports = router;

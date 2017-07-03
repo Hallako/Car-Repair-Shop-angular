@@ -64,9 +64,11 @@ export class LoginComponent implements OnInit {
   //TODO: Salasanan resetointi
   onResetSubmit() {
 
-    const email = this.resetForm.get('resetEmail').value;
+    const user = {
+      email: this.resetForm.get('resetEmail').value
+    }
 
-    this.authService.resetPassword(email).subscribe(data => {
+    this.authService.resetPassword(user).subscribe(data => {
       if (data.success) {
         console.log("toimii");
       }
