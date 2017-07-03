@@ -1,10 +1,13 @@
 module.exports = function startChat(httpServer) {
+
     var io = require('socket.io').listen(httpServer);
 
     //Variables
     var SocketConnections = createArray(5, 3);
 
     // Socket io Signals
+
+    //connection
     io.on('connection', function(socket) {
 
         //Admin created room.
@@ -142,8 +145,6 @@ module.exports = function startChat(httpServer) {
                         socket.to(x).emit('userleavedroom', {
                             room: x
                         });
-
-
                         break;
                     }
                 }
