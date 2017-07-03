@@ -211,17 +211,16 @@ router.post('/resetPassword/', (req, res) => {
     //else
     //{
     var email = req.body.email;
-    var query = { email: this.email };
+    var query = { email: email };
     var password = passgen.generate({
         length: 8,
         numbers: true
     });
     console.log(email);
 
-    User.findOneAndUpdate(query, { $set: { password: password } }, (user, err) => {
-
+    User.findOneAndUpdate(query, { $set: { password: password } }, (err, user) => {
         if (err) {
-            res.json({
+            return res.json({
                 success: false,
                 msg: "Salasanan vaihto epäonnistui"
             });
@@ -246,7 +245,7 @@ router.post('/resetPassword/', (req, res) => {
             console.log('Message %s sent: %s', info.messageId, info.response);
         });
 
-        res.json({
+        return res.json({
             success: true,
             msg: "Salasana vaihdettu"
         });
