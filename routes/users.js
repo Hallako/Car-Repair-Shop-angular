@@ -205,21 +205,22 @@ router.post('/password', passport.authenticate('jwt', {
 });
 
 //Generate random new password
-router.post('/resetPassword/:term', (req, res) => {
+router.post('/resetPassword/', (req, res) => {
 
   //if (err) throw err;
 
   //else
   //{
-    var email = req.params;
+    var email = req.body.email;
     var query = { email: this.email };
     var password = passgen.generate(
       {
           length: 8,
           numbers: true
       });
+      console.log(email);
 
-    User.findOneAndUpdate( query, { password: this.password }, (user, err) => {
+    User.findOneAndUpdate( query, {$set: { password: password }}, (user, err) => {
 
       if (err) {
         res.json({
@@ -231,11 +232,11 @@ router.post('/resetPassword/:term', (req, res) => {
       var mailOptions = {
 
         from: 'sukatesti@hotmail.com', // sender address
-        to: this.email, // list of receivers
+        to: email, // list of receivers
         subject: 'Korjaamo laitila', // Subject line
         text: '', // plain text body
         html: `<b>Salasanasi on nyt nollattu</br></br>
-                              Uusi salasanasi on ${this.password}</br>
+                              Uusi salasanasi on ${password}</br>
                               Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
                               ` // html body
       }
