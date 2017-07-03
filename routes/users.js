@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const mailer = require('../config/mailer');
-const passgen = require('generate-password')
+const passgen = require('generate-password');
+const bcrypt = require('bcryptjs');
 
 
 //Register
@@ -217,9 +218,14 @@ router.post('/resetPassword/', (req, res) => {
         numbers: true
     });
 
-    console.log(email + ' ' + password);
+    bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hash) => {
+      if (err) throw err;
 
-    User.findOneAndUpdate(query, { $set: { password: password } }, (err, user) => {
+    console.log(email + ' ' + password + ' ' + hash);
+
+    User.findOneAndUpdate(query, { $set: { password: hash } }, (err, user) => {
+
         if (err) {
             return res.json({
                 success: false,
@@ -229,7 +235,7 @@ router.post('/resetPassword/', (req, res) => {
 
         var mailOptions = {
 
-            from: 'sukatesti@hotmail.com', // sender address
+            from: 'korjaamotesti@hotmail.com', // sender address
             to: email, // list of receivers
             subject: 'Korjaamo laitila', // Subject line
             text: '', // plain text body
@@ -246,6 +252,8 @@ router.post('/resetPassword/', (req, res) => {
             console.log('Message %s sent: %s', info.messageId, info.response);
         });
 
+
+
         return res.json({
             success: true,
             msg: "Salasana vaihdettu"
@@ -253,6 +261,8 @@ router.post('/resetPassword/', (req, res) => {
 
     });
     //}
+});
+});
 });
 
 module.exports = router;
