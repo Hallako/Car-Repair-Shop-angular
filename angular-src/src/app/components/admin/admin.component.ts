@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
 
   updateUser(): void {
     this.authService.update(this.selectedUser).subscribe();
-    location.reload()
+    this.selectedUser = null;
   }
 
   onEvents() {
