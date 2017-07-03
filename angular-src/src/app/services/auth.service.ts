@@ -57,7 +57,7 @@ export class AuthService {
   //Gets user information
   getProfile() {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.get(this.nodeUrl + 'users/profile/', { headers: authHeader })
       .map(res => res.json());
   }
@@ -71,7 +71,7 @@ export class AuthService {
   //Password change (id and new password is passed on "user" object)
   changePassword(user) {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.post(this.nodeUrl + 'users/password/', user, { headers: authHeader })
       .map(res => res.json());
   }
@@ -118,7 +118,7 @@ export class AuthService {
   //Returns all users
   getAllUser(): Observable<User[]> {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.get(this.nodeUrl + 'users/admin', { headers: authHeader })
       .map(res => res.json()).catch(this.handleError);
   }
@@ -145,7 +145,7 @@ export class AuthService {
   //Gets events in certain time range based on user, returns all users events if admin is passed and is true.
   getEvents(start, end, user, admin) {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.get(this.nodeUrl + 'events/getevents/'
       + start + "/" + end + "/" + user + "/" + admin + "/", { headers: authHeader })
       .map(res => res.json());
@@ -154,14 +154,14 @@ export class AuthService {
   //Gets all events based on user
   getAllEvents(user): Observable<Event[]> {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: authHeader })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
   getConfirmationEvents(): Observable<Event[]> {
     this.loadToken();
-    let authHeader = this.headers.append('Authorization', this.authToken)   
+    let authHeader = this.headers.append('Authorization', this.authToken)
     return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: authHeader })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
@@ -172,10 +172,10 @@ export class AuthService {
   }
 
   resetPassword(email) {
-    let headers = new Headers();
-    headers.append('Content-type', 'application/json');
+    let heads = new Headers();
+    heads.append('Content-type', 'application/json');
     console.log(email);
-    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: headers })
+    return this.http.post(this.nodeUrl + 'users/resetPassword/', email, { headers: heads })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 }
