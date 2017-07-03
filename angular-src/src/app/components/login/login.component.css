@@ -2,9 +2,7 @@
   width: 60%;
 }
 
-.login-form {
-
-}
+.login-form {}
 
 .form-group {
   padding-left: 15px;
@@ -26,4 +24,29 @@
 
 .btn-primary {
   margin-left: 15px;
+}
+
+.modal {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-inline {
+  display: inline-block;
+  position: relative;
+  width: 80%;
+}
+
+.btn-reset {
+  display: inline-block;
+  position: relative;
+}
+
+a {
+  margin-left: 1em;
+  color: blue;
+}
+
+a:hover {
+  cursor: pointer;
 }
