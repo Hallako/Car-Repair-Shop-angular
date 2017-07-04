@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+.click:hover {
+  cursor: pointer;
+}
+  
 #chatti {
     position: fixed;
     bottom: 0;
