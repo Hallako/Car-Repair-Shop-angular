@@ -70,10 +70,19 @@ export class LoginComponent implements OnInit {
 
     this.authService.resetPassword(user).subscribe(data => {
       if (data.success) {
-        console.log("toimii");
+        this.flashMessage.show('Uusi salasanasi on lähetetty sähköpostiisi. Vaihda salasana kirjauduttuasi sisään.', 
+        {
+          cssClass: 'alert-success',
+          timeout: 7000
+        });
+        this.showReset = false;
       }
       else {
-        console.log("ei toimi");
+        this.flashMessage.show('Salasanan nollauksessa tapahtui virhe. Yritä uudestaan hetken päästä.',
+        {
+          cssClass: 'alert-danger',
+          timeout: 7000
+        });
       }
     })
   }
