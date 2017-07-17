@@ -57,6 +57,7 @@ module.exports = function startChat(httpServer) {
 
                     SocketConnections[i][0] = roomid;
                     SocketConnections[i][1] = false;
+
                     socket.emit('userconn-response', {
                         message: data,
                         available: true,
