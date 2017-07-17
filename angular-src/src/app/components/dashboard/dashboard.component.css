@@ -66,6 +66,7 @@ footer {
     height: 46px;
     width: 20%;
     margin: 0;
+    cursor: pointer;
     padding: 3px 10px;
     align-content: center;
     color: #fff;
