@@ -60,7 +60,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.socket.on('new-message', function(data) {
       if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
-        console.log(data.message)
         this.chats.push(data.message);
         this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' }
         this.scrollToBottom();
@@ -113,9 +112,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
           localStorage.setItem("userr", JSON.stringify(this.newUser));
           this.getChatByRoom(this.newUser.room);
-
-          
-          console.log(this.newUser.room)
           this.chats.push({room : this.newUser.room,
                           nickname : "  ",
                           message : "Asiakas liittyi keskusteluun",
@@ -123,7 +119,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                           __v : 0,
                           _id: 'wefwwefw' 
           });
-          console.log(this.chats)
           this.flashMessage.show('Asiakas liittyi keskusteluun', { cssClass: 'alert-success', timeout: 3000 });
           
         } else {
