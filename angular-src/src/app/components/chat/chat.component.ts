@@ -109,12 +109,28 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
         if (this.user.admin) {
           this.socket.emit('adminjoin', data.room);
+
           localStorage.setItem("userr", JSON.stringify(this.newUser));
           this.getChatByRoom(this.newUser.room);
-
+          this.chats.push({room : this.newUser.room,
+                          nickname : "  ",
+                          message : "Asiakas liittyi keskusteluun",
+                          updated_at : Date.now(),
+                          __v : 0,
+                          _id: 'wefwwefw' 
+          });
+          this.flashMessage.show('Asiakas liittyi keskusteluun', { cssClass: 'alert-success', timeout: 3000 });
+          
         } else {
           localStorage.setItem("userr", JSON.stringify(this.newUser));
           this.getChatByRoom(this.newUser.room);
+                    this.chats.push({room : this.newUser.room,
+                          nickname : "  ",
+                          message : "Yhditetty asiakaspalveluun",
+                          updated_at : Date.now(),
+                          __v : 0,
+                          _id: 'wefwwefw' 
+          });
           this.flashMessage.show('Yhditetty asiakaspalveluun', { cssClass: 'alert-success', timeout: 3000 });
         }
       } else {
