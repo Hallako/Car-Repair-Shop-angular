@@ -27,40 +27,40 @@
   </div>
 </div>
 
-<form class="form-horizontal" id="addUserForm" (ngSubmit)="addUser()" [formGroup]="addUserForm" *ngIf="addCustomer">
+<form class="form-horizontal" id="addUserForm" (ngSubmit)="addUser(); addUserForm.reset()" [formGroup]="addUserForm" *ngIf="addCustomer">
   <div class="panel panel-success">
     <div class="panel-heading">
       <legend class="panel-title">Lisää käyttäjä</legend>
     </div>
     <div class="panel-body">
       <div class="col-md-4 fixed">
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('firstname').invalid && addUserForm.get('firstname').touched}">
           <label class="col-lg-2 control-label">Etunimi:</label>
           <input type="text" id="inputAdd" name="inputAdd" class="form-control form" formControlName="firstname" />
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('lastname').invalid && addUserForm.get('lastname').touched}">
           <label class="col-lg-2 control-label">Sukunimi:</label>
           <input type="text" id="inputAdd" name="inputAdd" class="form-control form" formControlName="lastname" />
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('email').invalid && addUserForm.get('email').touched}">
           <label class="col-lg-2 control-label">Email:</label>
           <input type="email" name="email" id="inputAdd" class="form-control form" formControlName="email" />
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('phone').invalid && addUserForm.get('phone').touched}">
           <label class="col-lg-2 control-label">Puhelin:</label>
           <input type="text" id="inputAdd" name="Phone" class="form-control form" formControlName="phone" />
         </div>
       </div>
       <div class="col-md-4 fixed">
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('address').invalid && addUserForm.get('address').touched}">
           <label class="col-lg-2 control-label">Osoite:</label>
           <input type="text" id="inputAdd" name="Address" class="form-control form" formControlName="address" />
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('area').invalid && addUserForm.get('area').touched}">
           <label class="col-lg-2 control-label">Postinumero:</label>
           <input type="text" id="inputAdd" name="Area" text="" class="form-control form" formControlName="area" />
         </div>
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('city').invalid && addUserForm.get('city').touched}">
           <label class="col-lg-2 control-label">Postitoimipaikka:</label>
           <input type="text" id="inputAdd" name="City" text="" class="form-control form" formControlName="city" />
         </div>
@@ -71,8 +71,8 @@
       </div>
     </div>
   </div>
-  <button type="reset" (click)="addCustomer = false" class="btn btn-default btn-sm">Peruuta</button>
-  <button type="submit" class="btn btn-primary btn-sm">Tallenna</button>
+  <button type="reset" (click)="addCustomer = false; addUserForm.reset()" class="btn btn-default btn-sm">Peruuta</button>
+  <button [disabled]="!addUserForm.valid" type="submit" class="btn btn-primary btn-sm">Tallenna</button>
 </form>
 
 

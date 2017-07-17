@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
 
-
 module.exports = {
-
     // create reusable transporter object using the default SMTP transport
     transporter: nodemailer.createTransport({
         host: 'smtp.live.com',
@@ -12,6 +10,5 @@ module.exports = {
             user: 'sukatesti@hotmail.com',
             pass: 'salasana123'
         }
-
     })
 }
