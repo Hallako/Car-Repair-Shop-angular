@@ -76,7 +76,8 @@ export class DashboardComponent implements OnInit {
         if (calEvent.user) {
           this.updatename(calEvent);
         } else {
-          
+          this.eventUsername.firstname = '';
+          this.eventUsername.lastname = '';
         }
         this.confirm = calEvent.confirm;
         this.id = calEvent._id;
@@ -88,7 +89,6 @@ export class DashboardComponent implements OnInit {
         this.calElement.fullCalendar('unselect')
         this.calElement.fullCalendar('renrender')
       }
-
     };
 
     let boundClick = clickFunc.bind(this);
@@ -172,8 +172,6 @@ export class DashboardComponent implements OnInit {
       //Event selection based on selected type of event.
       dayClick: (date, jsEvent, view) => {
 
-        
-
         this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
           if (view.type == 'month') {
@@ -196,7 +194,6 @@ export class DashboardComponent implements OnInit {
             }
 
             else if (res < 2) {
-
               if (moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
                 moment(date).add(this.duration, 'hours').get('minute') == 30 ||
                 moment(date).add(this.duration, 'hours').get('hour') > 18 ||
@@ -206,6 +203,7 @@ export class DashboardComponent implements OnInit {
                 this.start = null;
                 this.end = null;
               }
+
               else {
                 this.id = null;
                 this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
@@ -342,9 +340,10 @@ export class DashboardComponent implements OnInit {
   //gets name whoever owns event
   updatename(event) {
     this.authService.getUserById(event).subscribe(user => {
-      this.eventUsername.firstname = user.firstname;
-      this.eventUsername.lastname = user.lastname;
-
+      if(user.firstname && user.lastname){
+        this.eventUsername.firstname = user.firstname;
+        this.eventUsername.lastname = user.lastname;
+      }
     });
   }
 
