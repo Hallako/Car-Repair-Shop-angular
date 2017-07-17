@@ -4,10 +4,17 @@
     padding: 0;
 }
 
+
+/*
 .click:hover {
   cursor: pointer;
 }
-  
+  */
+
+.toggleHidden {
+    cursor: pointer;
+}
+
 #chatti {
     position: fixed;
     bottom: 0;
