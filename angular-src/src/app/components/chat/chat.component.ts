@@ -60,6 +60,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.socket.on('new-message', function(data) {
       if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
+        console.log(data.message)
         this.chats.push(data.message);
         this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' }
         this.scrollToBottom();
@@ -109,12 +110,32 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
         if (this.user.admin) {
           this.socket.emit('adminjoin', data.room);
+
           localStorage.setItem("userr", JSON.stringify(this.newUser));
           this.getChatByRoom(this.newUser.room);
 
+          
+          console.log(this.newUser.room)
+          this.chats.push({room : this.newUser.room,
+                          nickname : "  ",
+                          message : "Asiakas liittyi keskusteluun",
+                          updated_at : Date.now(),
+                          __v : 0,
+                          _id: 'wefwwefw' 
+          });
+          console.log(this.chats)
+          this.flashMessage.show('Asiakas liittyi keskusteluun', { cssClass: 'alert-success', timeout: 3000 });
+          
         } else {
           localStorage.setItem("userr", JSON.stringify(this.newUser));
           this.getChatByRoom(this.newUser.room);
+                    this.chats.push({room : this.newUser.room,
+                          nickname : "  ",
+                          message : "Yhditetty asiakaspalveluun",
+                          updated_at : Date.now(),
+                          __v : 0,
+                          _id: 'wefwwefw' 
+          });
           this.flashMessage.show('Yhditetty asiakaspalveluun', { cssClass: 'alert-success', timeout: 3000 });
         }
       } else {
