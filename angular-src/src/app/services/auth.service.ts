@@ -19,7 +19,7 @@ export class AuthService {
   authHeaderi: any;
 
   constructor(private http: Http) {
-    this.nodeUrl = ''; //'http://localhost:8081/' for local deployement empty for heroku.
+    this.nodeUrl = 'http://localhost:8081/'; //'http://localhost:8081/' for local deployement empty for heroku.
 
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));
