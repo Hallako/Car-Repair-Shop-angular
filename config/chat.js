@@ -159,6 +159,13 @@ module.exports = function startChat(httpServer) {
             });
         });
 
+        //Emits message about join !(to all on room)!
+        socket.on('connectmessage', function(data) {
+            socket.to(data).emit('connectinfo', {
+                message: 'sukanugeets'
+            });
+        });
+
         //######## SOCKETS END ###########
     });
 

@@ -1,6 +1,8 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, Input, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
+import { Observable }     from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router, NavigationStart, Event } from '@angular/router';
 import * as io from "socket.io-client";
@@ -11,18 +13,18 @@ import * as io from "socket.io-client";
   styleUrls: ['./chat.component.css']
 })
 
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterContentChecked {
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  chats: any = [];
 
   Admin: boolean;
   Hidden: boolean;
-  chats: any = [];
   user: any;
   joinned: boolean = false;
   newUser = { nickname: '', room: '' };
   msgData = { room: '', nickname: '', message: '' };
-  socket = io(''); //'http://localhost:8081/' for local deployement empty for heroku.
+  socket = io('http://localhost:8081/'); //'http://localhost:8081/' for local deployement empty for heroku.
 
   constructor(private chatService: ChatService,
     private authservice: AuthService,
@@ -52,8 +54,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     if (user !== null) {
       this.msgData = { room: null, nickname: this.newUser.nickname, message: '' }
-      //this.joinned = true;
-      this.scrollToBottom();
     }
 
     //###### SOCKETS ########
@@ -82,7 +82,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     //Admin connect callback
     this.socket.on('adminconn-response', function(data) {
       localStorage.setItem("userr", JSON.stringify(this.newUser));
-      this.getChatByRoom(this.newUser.room);
     }.bind(this));
 
     //Admin leave callback
@@ -109,29 +108,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
         if (this.user.admin) {
           this.socket.emit('adminjoin', data.room);
-
           localStorage.setItem("userr", JSON.stringify(this.newUser));
-          this.getChatByRoom(this.newUser.room);
-          this.chats.push({room : this.newUser.room,
-                          nickname : "  ",
-                          message : "Asiakas liittyi keskusteluun",
-                          updated_at : Date.now(),
-                          __v : 0,
-                          _id: 'wefwwefw' 
-          });
-          this.flashMessage.show('Asiakas liittyi keskusteluun', { cssClass: 'alert-success', timeout: 3000 });
+          this.getChatByRoom(this.newUser.room)
           
         } else {
+          this.getChatByRoom(this.newUser.room)
           localStorage.setItem("userr", JSON.stringify(this.newUser));
-          this.getChatByRoom(this.newUser.room);
-                    this.chats.push({room : this.newUser.room,
-                          nickname : "  ",
-                          message : "Yhditetty asiakaspalveluun",
-                          updated_at : Date.now(),
-                          __v : 0,
-                          _id: 'wefwwefw' 
-          });
-          this.flashMessage.show('Yhditetty asiakaspalveluun', { cssClass: 'alert-success', timeout: 3000 });
+          
         }
       } else {
         this.flashMessage.show('Henkilökuntaa ei ole tavoitettavissa', { cssClass: 'alert-danger', timeout: 3000 });
@@ -140,10 +123,33 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }
     }.bind(this));
 
+    //On connection message
+    this.socket.on('connectinfo', function(data) {
+      
+      if(this.user.admin){
+        this.chats.push({room : this.newUser.room,
+                nickname : " ",
+                message : "Asiakas liittyi keskusteluun",
+                updated_at : Date.now(),
+                __v : 0,
+                _id: 'wefwwefw' 
+        });
+      } else {
+        this.chats.push({room : this.newUser.room,
+              nickname : " ",
+              message : "Yhditetty asiakaspalveluun",
+              updated_at : Date.now(),
+              __v : 0,
+              _id: 'wefwwefw' 
+        });
+      }
+      this.scrollToBottom();
+    }.bind(this));
+
     //Ngoninit END
   }
 
-  ngAfterViewChecked() {
+  ngAfterContentChecked() {
     this.scrollToBottom();
   }
 
@@ -153,16 +159,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     } catch (err) { }
   }
 
-  getChatByRoom(room) {
+  getChatByRoom(room){
     this.chatService.getChatByRoom(room).then((res) => {
       if (res) {
         this.chats = res;
       } else {
         this.chats = [];
       }
+      this.socket.emit('connectmessage', room);
     }, (err) => {
       console.log(err);
     });
+    
   }
 
   admincreateRoom() {
