@@ -6,7 +6,6 @@ const config = require('../config/database');
 const event = require('../models/event');
 const mongoose = require('mongoose');
 
-
 //Add Post
 router.post('/addevent', (req, res, next) => {
 
@@ -37,11 +36,10 @@ router.delete('/deleteevent/:id', (req, res) => {
         if (err) {
             res.json({ success: false, msg: err });
         } else {
-            res.json({ success: true, msg: 'Removed succesfully' });
+            res.json({ success: true, msg: 'Poistettu onnistuneesti' });
         }
     });
 });
-
 
 //get posts
 router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
