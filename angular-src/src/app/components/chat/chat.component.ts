@@ -62,7 +62,7 @@ export class ChatComponent implements OnInit, AfterContentChecked {
       if (data.message.room === JSON.parse(localStorage.getItem("userr")).room) {
         this.chats.push(data.message);
         this.msgData = { room: this.newUser.room, nickname: this.newUser.nickname, message: '' }
-        this.scrollToBottom();
+        this.delay(20).then(()=>{this.scrollToBottom();});
       }
     }.bind(this));
 
@@ -143,14 +143,19 @@ export class ChatComponent implements OnInit, AfterContentChecked {
               _id: 'wefwwefw' 
         });
       }
-      this.scrollToBottom();
+      this.delay(20).then(()=>{this.scrollToBottom();});
+      
     }.bind(this));
 
     //Ngoninit END
   }
 
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   ngAfterContentChecked() {
-    this.scrollToBottom();
+    
   }
 
   scrollToBottom(): void {
