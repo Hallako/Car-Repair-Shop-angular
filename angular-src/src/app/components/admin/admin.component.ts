@@ -8,6 +8,8 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { SearchService } from '../../services/search.service';
 import 'rxjs/Rx'
 import { Subject }           from 'rxjs/Subject';
+import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
+
 
 @Component({
   selector: 'app-admin',
@@ -18,15 +20,17 @@ export class AdminComponent implements OnInit {
 
   users: User[]
   user: User
+  userList: User[]
   events: Event[]
   event: Event
   selectedUser: User
-  editUser: User
   start: String
   end: String
   search: Boolean
   username: String
-
+  showCustomers: Boolean
+  addUserForm: FormGroup
+  addCustomer: Boolean
 
   private searchTerm$ = new Subject<string>();
 
@@ -34,33 +38,39 @@ export class AdminComponent implements OnInit {
     private authService: AuthService,
     private flashMessage: FlashMessagesService,
     private searchService: SearchService,
+    private fb: FormBuilder
 
   ) {
     this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+    this.addUserForm = fb.group({
+      firstname: ['', Validators.compose([Validators.required])],
+      lastname: ['', Validators.compose([Validators.required])],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      phone: ['', Validators.compose([Validators.required, Validators.pattern("[+-\d]+")])],
+      address: ['', Validators.compose([Validators.required])],
+      area: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]+"), Validators.minLength(5)])],
+      city: ['', Validators.compose([Validators.required])],
+      notes: ['']
+    })
   }
 
 
   ngOnInit() {
-    this.getConfirms()
+    this.getConfirms();
     this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
 
   onSelect(user: User) {
     this.selectedUser = user
-    this.editUser = null
     this.onEvents();
-  }
-
-  editSelected() {
-    this.editUser = this.selectedUser
+    this.searchTerm$.next();
   }
 
   updateUser(): void {
     this.authService.update(this.selectedUser).subscribe();
-    location.reload()
+    this.selectedUser = null;
   }
-
 
   onEvents() {
     this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {
@@ -98,7 +108,7 @@ export class AdminComponent implements OnInit {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
-        this.user = user
+          this.user = user
           if (user != null) {
             event.user = this.user.username
           } else event.user = 'Hallinnon luoma'
@@ -139,8 +149,36 @@ export class AdminComponent implements OnInit {
 
   getEventUser(event) {
     this.authService.getUserById(event).subscribe(user => {
-    this.user = user
+      this.user = user
     })
+  }
+
+  getUsers() {
+    this.authService.getAllUser().subscribe(users => {
+      this.userList = users
+    });
+    this.showCustomers = true;
+  }
+
+  addUser() {
+    const user = new User
+    user.firstname = this.addUserForm.get('firstname').value
+    user.lastname = this.addUserForm.get('lastname').value
+    user.email = this.addUserForm.get('email').value
+    user.phone = this.addUserForm.get('phone').value
+    user.address = this.addUserForm.get('address').value
+    user.area = this.addUserForm.get('area').value
+    user.city = this.addUserForm.get('city').value
+    user.notes = this.addUserForm.get('notes').value
+
+    this.authService.registerUser(user).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Asiakas lisätty onnistuneesti', { cssClass: 'alert-success', timeout: 3000 });
+      } else {
+        this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
+      }
+    })
+    this.addCustomer = false;
   }
 
 }

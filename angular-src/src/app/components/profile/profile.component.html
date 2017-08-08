@@ -1,7 +1,7 @@
 <div class="profile-container">
 
   <div *ngIf='user' class="profile-block user-block">
-      <h2 class="page-header">{{user.name}}</h2>
+      <h2 class="page-header">{{user.firstname}} {{user.lastname}}</h2>
       <ul class="list-group">
           <li class="list-group-item">Username: {{user.username}}</li>
           <li class="list-group-item">email: {{user.email}}</li>
@@ -20,6 +20,7 @@
           <input type="password" class="form-control" formControlName="passwordConfirm" name="newPassword2" placeholder="Vahvista uusi salasana" [ngClass]="{'form-control-danger': changePwForm.get('passwordConfirm').invalid}">
         </div>
         <button [disabled]="!changePwForm.valid" type="submit" class="btn btn-primary">Vaihda</button>
+        <small *ngIf="changePwForm.get('passwordConfirm').hasError('areEqual') && changePwForm.get('passwordConfirm').touched" class="form-alert">Salasanat eivät täsmää</small>
     </form>
   </div>
 

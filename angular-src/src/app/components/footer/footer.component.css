@@ -14,12 +14,12 @@
 }
 
 .col-md-4 {
-  display: inline-block;
-  margin:auto;
-  max-width: 1140px;
-  width: 100%;
-  float:none;
-  padding: 0;
+    display: inline-block;
+    margin: auto;
+    max-width: 1140px;
+    width: 100%;
+    float: none;
+    padding: 0;
 }
 
 .text-container {
@@ -28,7 +28,8 @@
     width: 100%;
     padding-top: 10px;
     background-color: #202020;
-    float:left;
+    float: left;
+    margin-top: 6px;
 }
 
 .img-container {
@@ -43,15 +44,15 @@
     padding-top: 1em;
     padding-bottom: 1em;
     padding-right: 1em;
-    margin:auto;
+    margin: auto;
 }
 
 .left {
-  float:left;
+    float: left;
 }
 
 .right {
-  float:right;
+    float: right;
 }
 
 .footer-text {
@@ -70,5 +71,5 @@
 }
 
 a:hover {
-text-decoration: none;
+    text-decoration: none;
 }

@@ -1,10 +1,10 @@
 <div class="chatcont">
     <div class="container">
         <div class="row">
-            <div class="col-md-5" id="chatti">
+            <div class="col-md-5 click" id="chatti">
                 <div class="panel panel-primary" *ngIf="joinned; else createtemplate">
                     <div class="panel-heading" (click)="togglehide()">
-                        <span class="glyphicon glyphicon-comment"></span> Livechat
+                        <span class="glyphicon glyphicon-comment"></span> Asiakaspalvelu
                         <div class="btn-group pull-right">
                             <button type="button" class="btn btn-default btn-xs" (click)="logout(); togglehide()">
                               X
@@ -56,16 +56,16 @@
                     <div *ngIf="Admin; else joinroom">
                         <div class="panel panel-primary">
                             <div class="panel-body">
-                                <h4 (click)="togglehide()" [hidden]="Hidden">Avaa Keskustelu</h4>
-                                <h4 (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
+                                <h4 class="toggleHidden" (click)="togglehide()" [hidden]="Hidden">Käynnistä keskustelu</h4>
+                                <h4 class="toggleHidden" (click)="togglehide()" [hidden]="!Hidden">Sulje Keskustelu</h4>
                                 <div class="panel-body" [hidden]="!Hidden">
-                                    <h1>Luo Keskustelu</h1>
+                                    <h3>Nimi:</h3>
                                     <form (ngSubmit)="admincreateRoom()" #joinForm="ngForm">
                                         <div class="form-group">
                                             <input type="text" class="form-control" [(ngModel)]="newUser.nickname" name="nickname" required="" />
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success" [disabled]="!joinForm.form.valid">Luo</button>
+                                            <button type="submit" class="btn btn-success" [disabled]="!joinForm.form.valid">Aloita palvelu</button>
                                         </div>
                                     </form>
                                 </div>

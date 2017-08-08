@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+.toggleHidden {
+    cursor: pointer;
+}
+
 #chatti {
     position: fixed;
     bottom: 0;

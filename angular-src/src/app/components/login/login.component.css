@@ -1,3 +1,52 @@
-.login-form {
-    width: 30%;
+.logincontainer {
+  width: 60%;
+}
+
+.login-form {}
+
+.form-group {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.form-solo {
+  width: 50%;
+}
+
+.form-alert {
+  display: inline-block;
+  position: relative;
+  margin-left: 1em;
+  margin-bottom: 0;
+  height: 100%;
+  color: red;
+}
+
+.btn-primary {
+  margin-left: 15px;
+}
+
+.modal {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-inline {
+  display: inline-block;
+  position: relative;
+  width: 80%;
+}
+
+.btn-reset {
+  display: inline-block;
+  position: relative;
+}
+
+a {
+  margin-left: 1em;
+  color: blue;
+}
+
+a:hover {
+  cursor: pointer;
 }

@@ -4,23 +4,70 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const mailer = require('../config/mailer');
+const passgen = require('generate-password');
+const bcrypt = require('bcryptjs');
 
 
 //Register
 router.post('/register', (req, res, next) => {
     let newUser = new User({
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        area: req.body.area,
+        city: req.body.city,
         username: req.body.username,
         password: req.body.password,
         admin: false
     });
 
+    if (!newUser.username) {
+        var parts = newUser.email.split('@');
+        newUser.username = parts[0];
+    }
+
+    if (!newUser.password) {
+        newUser.password = passgen.generate({
+            length: 8,
+            numbers: true
+        });
+    }
+
+    var mailOptions = {
+        from: 'sukatesti@hotmail.com', // sender address
+        to: newUser.email, // list of receivers
+        subject: 'Korjaamo laitila', // Subject line
+        text: '', // plain text body
+        html: `<b>Kiitos liittymisestäsi laitilaan </br></br>
+                          käyttäjä tunnuksesi on ${newUser.username}</br>
+                          ja salasanasi ${newUser.password}</b></br></br>
+                          Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
+                          ` // html body
+    }
+
+
+
     User.addUser(newUser, (err, user) => {
         if (err) {
-            res.json({ success: false, msg: 'Failed to register' });
+            res.json({
+                success: false,
+                msg: 'Rekisteröityminen epäonnistui'
+            });
         } else {
-            res.json({ success: true, msg: 'User registered' });
+            res.json({
+                success: true,
+                msg: 'Rekisteröityminen onnistui!'
+            })
+            mailer.transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message %s sent: %s', info.messageId, info.response);
+            });;
+
         }
     });
 });
@@ -29,23 +76,30 @@ router.post('/register', (req, res, next) => {
 router.post('/checkname', (req, res) => {
     User.checkUsername(req.body.username, (err, user) => {
         if (user == 0) {
-            res.json({ exists: false });
+            res.json({
+                exists: false
+            });
 
         } else {
-            res.json({ exists: true });
+            res.json({
+                exists: true
+            });
         }
     });
 });
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-    const username = req.body.username;
+    const login = req.body.login;
     const password = req.body.password;
 
-    User.getUserByUsername(username, (err, user) => {
+    User.getUserByLogin(login, (err, user) => {
         if (err) throw err;
         if (!user) {
-            return res.json({ success: false, msg: 'User not found' });
+            return res.json({
+                success: false,
+                msg: 'Virheellinen käyttäjänimi tai salasana!'
+            });
         }
 
         User.comparePassword(password, user.password, (err, isMatch) => {
@@ -60,22 +114,30 @@ router.post('/authenticate', (req, res, next) => {
                     token: 'JWT ' + token,
                     user: {
                         id: user._id,
-                        name: user.name,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
                         username: user.username,
                         email: user.email,
                         admin: user.admin
                     }
                 });
             } else {
-                return res.json({ success: false, msg: 'Wrong password' });
+                return res.json({
+                    success: false,
+                    msg: 'Virheellinen käyttäjänimi tai salasana!'
+                });
             }
         });
     });
 });
 
 //Profile
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.json({ user: req.user });
+router.get('/profile', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    res.json({
+        user: req.user
+    });
 });
 
 //Returns user object bt passed id
@@ -87,7 +149,9 @@ router.post('/getuserbyid', (req, res) => {
 
 
 //Change password
-router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
+router.post('/password', passport.authenticate('jwt', {
+    session: false
+}), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
         if (err) throw err;
     });
@@ -95,7 +159,9 @@ router.post('/password', passport.authenticate('jwt', { session: false }), (req,
 });
 
 //admin route(returns all users)
-router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/admin', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
     User.find({}, (err, user) => {
         if (err) throw err;
         return res.json(user);
@@ -103,9 +169,20 @@ router.get('/admin', passport.authenticate('jwt', { session: false }), (req, res
 });
 
 //search router
-router.get('/search/:term?', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    User.find({ name: new RegExp(req.params.term, "i") }, function(err, user) {
-        if (err) throw err
+router.get('/search/:term?', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    var param = new RegExp(req.params.term, "i");
+    User.find({
+        $or: [{
+                'lastname': param
+            },
+            {
+                'firstname': param
+            }
+        ]
+    }, function(err, user) {
+        if (err) throw err;
         return res.json(user)
     });
 });
@@ -119,11 +196,71 @@ router.put('/update', (req, res) => {
 
 
 //Change password
-router.post('/password', passport.authenticate('jwt', { session: false }), (req, res, err) => {
+router.post('/password', passport.authenticate('jwt', {
+    session: false
+}), (req, res, err) => {
     User.changePassword(req.body.id, req.body.password, (err, res) => {
         if (err) throw err;
     });
     res.json('Salasana vaihdettu.');
+});
+
+//Generate random new password
+router.post('/resetPassword/', (req, res) => {
+
+    var email = req.body.email;
+    var query = {
+        email: email
+    };
+    var password = passgen.generate({
+        length: 8,
+        numbers: true
+    });
+
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+            if (err) throw err;
+
+            console.log(email + ' ' + password + ' ' + hash);
+
+            User.findOneAndUpdate(query, {
+                $set: {
+                    password: hash
+                }
+            }, (err, user) => {
+
+                if (err) {
+                    return res.json({
+                        success: false,
+                        msg: "Salasanan vaihto epäonnistui"
+                    });
+                }
+
+                var mailOptions = {
+
+                    from: 'korjaamotesti@hotmail.com', // sender address
+                    to: email, // list of receivers
+                    subject: 'Korjaamo laitila', // Subject line
+                    text: '', // plain text body
+                    html: `<b>Salasanasi on nyt nollattu</br></br>
+                              Uusi salasanasi on ${password}</br>
+                              Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
+                              ` // html body
+                }
+
+                mailer.transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                });
+
+                return res.json({
+                    success: true,
+                    msg: "Salasana vaihdettu"
+                });
+            });
+        });
+    });
 });
 
 module.exports = router;
