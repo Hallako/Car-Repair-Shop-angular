@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 
 @Component({
@@ -13,46 +14,76 @@ import { Location } from '@angular/common';
 
 export class LoginComponent implements OnInit {
 
-  username: String;
-  password: String;
+  showReset: boolean = false;
+
+  loginForm: FormGroup;
+  resetForm: FormGroup;
 
   constructor(private authService: AuthService,
     private router: Router,
     private flashMessage: FlashMessagesService,
-    private location: Location
-  ) { }
+    private location: Location,
+    private fb: FormBuilder) {
+    this.loginForm = fb.group({
+      login: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required])],
+    })
+
+    this.resetForm = fb.group({
+      resetEmail: ['', Validators.compose([Validators.required, Validators.email])],
+    })
+  }
 
   ngOnInit() {
   }
 
   onLoginSubmit() {
     const user = {
-      username: this.username,
-      password: this.password
+      login: this.loginForm.get('login').value,
+      password: this.loginForm.get('password').value
     }
-    if (this.username == undefined || this.password == undefined) {
-      this.flashMessage.show('Anna käyttäjänimi ja salasana!', {
-        cssClass: 'alert-success',
-        timeout: 3000
-      })
+
+    this.authService.authenticateUser(user).subscribe(data => {
+      if (data.success) {
+        this.authService.storeUserData(data.token, data.user);
+        this.flashMessage.show('Kirjautuminen onnistui', {
+          cssClass: 'alert-success',
+          timeout: 3000
+        });
+        this.router.navigate(['dashboard']);
+      } else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 3000
+        });
+        this.router.navigate(['login']);
+      }
+    });
+  }
+
+  //TODO: Salasanan resetointi
+  onResetSubmit() {
+
+    const user = {
+      email: this.resetForm.get('resetEmail').value
     }
-    else {
-      this.authService.authenticateUser(user).subscribe(data => {
-        if (data.success) {
-          this.authService.storeUserData(data.token, data.user);
-          this.flashMessage.show('you are now logged in', {
-            cssClass: 'alert-success',
-            timeout: 3000
-          });
-          this.router.navigate(['dashboard']);
-        } else {
-          this.flashMessage.show(data.msg, {
-            cssClass: 'alert-danger',
-            timeout: 3000
-          });
-          this.router.navigate(['login']);
-        }
-      });
-    }
+
+    this.authService.resetPassword(user).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Uusi salasanasi on lähetetty sähköpostiisi. Vaihda salasana kirjauduttuasi sisään.', 
+        {
+          cssClass: 'alert-success',
+          timeout: 7000
+        });
+        this.showReset = false;
+      }
+      else {
+        this.flashMessage.show('Salasanan nollauksessa tapahtui virhe. Yritä uudestaan hetken päästä.',
+        {
+          cssClass: 'alert-danger',
+          timeout: 7000
+        });
+      }
+    })
   }
 }

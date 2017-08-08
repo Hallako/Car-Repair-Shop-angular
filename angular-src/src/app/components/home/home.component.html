@@ -4,8 +4,8 @@
         <p class="lead">Tervetuloa autokorjaamo Laitilan verkkosivuille</p>
         <p *ngIf="!authService.loggedIn()">Voit jatkaa rekisteröitymällä tai kirjautumalla</p>
         <div>
-            <a *ngIf="!authService.loggedIn()" class="btn btn-primary" [routerLink]="['/register']"> Register</a>
-            <a *ngIf="!authService.loggedIn()" class="btn btn-default" [routerLink]="['/login']">Login</a>
+            <a *ngIf="!authService.loggedIn()" class="btn btn-primary" [routerLink]="['/register']">Rekisteröidy</a>
+            <a *ngIf="!authService.loggedIn()" class="btn btn-default" [routerLink]="['/login']">kirjaudu</a>
         </div>
     </div>
 </section>
@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Ammattitaitoa</h2>
-        <p>Omaamme erinomaista ammattitaitoa monipuolisesti erilaisiin vaatimuksiin</p>
+        <p>Omaamme erinomaista ammattitaitoa monipuolisesti alan vaatimuksiin</p>
     </div>
 
     <div class="col-md-4">

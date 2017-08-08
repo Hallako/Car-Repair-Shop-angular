@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewContainerRef, Input, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ValidateService } from '../../services/validate.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { SearchService } from '../../services/search.service';
 import { Router } from '@angular/router'
 import { Options } from 'fullcalendar';
-import {Observable} from 'rxjs/Rx';
+import { Observable, Subject} from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'fullcalendar';
 import _ from 'lodash';
@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
 
   //Variables
   duration: number;
+
   id: String;
   title: String;
   start: String;
@@ -32,23 +33,35 @@ export class DashboardComponent implements OnInit {
   color: String;
   description: String;
   rekisteriNro: String;
-  eventUsername: String;
+
+  eventUsername: User = new User;
   confirm: Boolean = true;
   admin: Boolean = false;
+  userSelectMenu: boolean = false;
   calElement = null;
+
   events: Event[];
   event: Event
 
+  users: User[]
+  user: User
+  private searchTerm$ = new Subject<string>();
 
-  constructor(private validateService: ValidateService,
-    private authService: AuthService,
-    private flashMessage: FlashMessagesService,
-    private router: Router) { }
+  constructor(
+       private authService: AuthService,
+       private flashMessage: FlashMessagesService,
+       private router: Router,
+       private searchService: SearchService) { 
+         this.searchService.search(this.searchTerm$).subscribe(users => this.users = users)
+       }
 
   ngOnInit() {
     var curuser = this.authService.getUser();
     var userId = curuser.id;
     this.admin = curuser.admin;
+
+    this.eventUsername.firstname = curuser.firstname;
+    this.eventUsername.lastname = curuser.lastname;
 
     this.calElement = $('#myCalendar');
 
@@ -63,7 +76,8 @@ export class DashboardComponent implements OnInit {
         if (calEvent.user) {
           this.updatename(calEvent);
         } else {
-          this.eventUsername = 'Hallinnon luoma';
+          this.eventUsername.firstname = '';
+          this.eventUsername.lastname = '';
         }
         this.confirm = calEvent.confirm;
         this.id = calEvent._id;
@@ -75,10 +89,10 @@ export class DashboardComponent implements OnInit {
         this.calElement.fullCalendar('unselect')
         this.calElement.fullCalendar('renrender')
       }
-
     };
 
     let boundClick = clickFunc.bind(this);
+
     //options
     let options: any = {
       header: {
@@ -93,7 +107,7 @@ export class DashboardComponent implements OnInit {
         start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
 
         $.ajax({
-          url: 'events/getevents/'
+          url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
           + start + "/" + end + "/" + userId + "/" + true,
           dataType: 'json',
           success: function(response) {
@@ -158,8 +172,6 @@ export class DashboardComponent implements OnInit {
       //Event selection based on selected type of event.
       dayClick: (date, jsEvent, view) => {
 
-        this.eventUsername = null;
-
         this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
           if (view.type == 'month') {
@@ -182,7 +194,6 @@ export class DashboardComponent implements OnInit {
             }
 
             else if (res < 2) {
-
               if (moment(date).add(this.duration, 'hours').get('hour') >= 18 &&
                 moment(date).add(this.duration, 'hours').get('minute') == 30 ||
                 moment(date).add(this.duration, 'hours').get('hour') > 18 ||
@@ -192,6 +203,7 @@ export class DashboardComponent implements OnInit {
                 this.start = null;
                 this.end = null;
               }
+
               else {
                 this.id = null;
                 this.start = moment(date).format('YYYY-MM-DD[T]HH:mm');
@@ -285,12 +297,18 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   //Event adding func
   onEventSubmit() {
     var curuser = this.authService.getUser();
-    var user: String;
-
+    let userid;
+    
+    if(this.admin){
+      userid = this.eventUsername._id;
+    } else {
+      userid = curuser.id
+    }
+  
+    
     const event = {
       _id: this.id,
       title: this.title,
@@ -300,8 +318,9 @@ export class DashboardComponent implements OnInit {
       rekisteriNro: this.rekisteriNro,
       description: this.description,
       confirm: false,
-      user: curuser['id']
+      user: userid
     }
+
     if (event.title && event.start) {
       this.authService.addEvent(event).subscribe(data => {
         if (data.success) {
@@ -321,7 +340,10 @@ export class DashboardComponent implements OnInit {
   //gets name whoever owns event
   updatename(event) {
     this.authService.getUserById(event).subscribe(user => {
-      this.eventUsername = user.username;
+      if(user.firstname && user.lastname){
+        this.eventUsername.firstname = user.firstname;
+        this.eventUsername.lastname = user.lastname;
+      }
     });
   }
 
@@ -378,7 +400,7 @@ export class DashboardComponent implements OnInit {
               overlapsCounter++;
             }
           });
-  
+
           let counter1 = 0;
 
           //jokaiselle eventille jotka ovat valinnan välissä.
@@ -411,5 +433,19 @@ export class DashboardComponent implements OnInit {
           resolve(Math.max.apply(null, overlaps));
         });
     });
+  }
+  
+  userSelectionClick(user){
+    if(this.userSelectMenu){
+      this.userSelectMenu = false;
+      if(user){
+        this.eventUsername.firstname = user.firstname;
+        this.eventUsername.lastname = user.lastname;
+        this.eventUsername._id = user._id;
+        this.searchTerm$.next();
+      }
+    } else { 
+      this.userSelectMenu = true;
+    }
   }
 }

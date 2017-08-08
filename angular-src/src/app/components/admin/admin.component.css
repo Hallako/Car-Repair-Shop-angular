@@ -9,18 +9,31 @@
   float: right;
 }
 
+.button-right {
+  float: right;
+}
+
 .form {
   float: right;
   margin-right: 16px;
+}
+
+textarea {
+  resize: none;
+  scroll-behavior: smooth;
+}
+
+#inputAdd {
+  width: 65%;
 }
 
 #input {
   padding-right: 16px;
 }
 
-#searchDiv {
-  float: right;
-  padding: 0px;
+#search-box {
+  display: inline-block;
+  margin-right: 1em;
 }
 
 #formSearch {
@@ -30,6 +43,17 @@
 
 .form-group {
   width: auto;
+}
+
+.fixed {
+  width: 50%;
+  position: relative;
+  float: left;
+}
+
+.top {
+  width: 100%;
+  position: relative;
 }
 
 .hover {
@@ -64,13 +88,12 @@
 .search-box {
   position: absolute;
   width: 50%;
-  z-index: 99999;
+  z-index: 10;
 }
 
 .col-md-4 {
-  position: relative;
-  width: 100%;
   margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .panel-primary {
@@ -95,14 +118,13 @@
 
 .btn {
   border-radius: 0px;
-  float: right;
 }
 
 .btn-primary {
   display: inline-block;
   border-radius: 6px;
-  margin-bottom: 10px;
-  float: right;
+  margin: auto;
+  max-width: 144px;
 }
 
 .btn-sm {
@@ -117,10 +139,6 @@
   min-width: 4.5em;
   float: right;
   border-radius: 3px;
-}
-
-.btn-ok {
-  float: right;
 }
 
 .btn-default {
@@ -152,10 +170,6 @@
   margin-top: 2em;
 }
 
-.form-control-left {
-  margin: auto;
-}
-
 .control-label {
   text-align: left;
 }
@@ -163,4 +177,12 @@
 .table-hover {
   position: relative;
   margin-top: 10em;
+}
+
+.table-hover:hover {
+  cursor: pointer;
+}
+
+.control-label {
+  text-align: left;
 }

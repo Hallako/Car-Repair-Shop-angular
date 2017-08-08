@@ -1,16 +1,19 @@
-<div class="col-md-4">
+<div class="col-md-4 top">
   <form id="form">
     <div class="search-box" id="search-component">
       <h4>Hae käyttäjiä</h4>
       <input #searchBox id="search-box" name="search-box" (keyup)="searchTerm$.next($event.target.value)" class="form-control" autocomplete="off" />
+      <button *ngIf="!showCustomers; else hide" (click)="showCustomers = true; getUsers(); selectedUser = null" class="btn btn-primary">Näytä asiakaslista</button>
+      <ng-template #hide> <button (click)="showCustomers = false;" class="btn btn-primary">Piilota asiakaslista</button></ng-template>
+      <button class="btn btn-primary" (click)="addCustomer = true">Lisää asiakas</button>
       <div *ngIf="users">
-        <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false;" onclick="document.getElementById('form').reset()">{{ user.name }}</option>
+        <option class="form-control hover" *ngFor="let user of users" (click)="onSelect(user); users=null; search = false; showCustomers = false" onclick="document.getElementById('form').reset()">{{ user.lastname }} {{user.firstname}}: {{user.email}}</option>
       </div>
     </div>
   </form>
 
 
-  <div class="form-horizontal right" id="formSearch" *ngIf="!selectedUser">
+  <div class="form-horizontal right" id="formSearch">
     <h4>Hae tapahtumia ajalla</h4>
     <div class="form-group">
       <label class="col-lg-2 control-label">Alkamisaika</label>
@@ -20,18 +23,73 @@
       <label class="col-lg-2 control-label ">Päättymisaika</label>
       <input type="datetime-local" step="1800" class="form-control form" id="input" [(ngModel)]="end" name="end" required>
     </div>
-    <input type="submit" (click)="eventSearch(start,end)" class="btn btn-primary" value="Päivitä">
+    <input type="submit" (click)="eventSearch(start,end); showCustomers = false; selectedUser=null" class="btn btn-primary button-right" value="Päivitä">
   </div>
+</div>
 
-  <form class="form-horizontal right" *ngIf="selectedUser" id="formSearch">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <legend class="panel-title">{{selectedUser.name}}</legend>
+<form class="form-horizontal" id="addUserForm" (ngSubmit)="addUser(); addUserForm.reset()" [formGroup]="addUserForm" *ngIf="addCustomer">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <legend class="panel-title">Lisää käyttäjä</legend>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-4 fixed">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('firstname').invalid && addUserForm.get('firstname').touched}">
+          <label class="col-lg-2 control-label">Etunimi:</label>
+          <input type="text" id="inputAdd" name="inputAdd" class="form-control form" formControlName="firstname" />
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('lastname').invalid && addUserForm.get('lastname').touched}">
+          <label class="col-lg-2 control-label">Sukunimi:</label>
+          <input type="text" id="inputAdd" name="inputAdd" class="form-control form" formControlName="lastname" />
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('email').invalid && addUserForm.get('email').touched}">
+          <label class="col-lg-2 control-label">Email:</label>
+          <input type="email" name="email" id="inputAdd" class="form-control form" formControlName="email" />
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('phone').invalid && addUserForm.get('phone').touched}">
+          <label class="col-lg-2 control-label">Puhelin:</label>
+          <input type="text" id="inputAdd" name="Phone" class="form-control form" formControlName="phone" />
+        </div>
       </div>
-      <div class="panel-body">
+      <div class="col-md-4 fixed">
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('address').invalid && addUserForm.get('address').touched}">
+          <label class="col-lg-2 control-label">Osoite:</label>
+          <input type="text" id="inputAdd" name="Address" class="form-control form" formControlName="address" />
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('area').invalid && addUserForm.get('area').touched}">
+          <label class="col-lg-2 control-label">Postinumero:</label>
+          <input type="text" id="inputAdd" name="Area" text="" class="form-control form" formControlName="area" />
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': addUserForm.get('city').invalid && addUserForm.get('city').touched}">
+          <label class="col-lg-2 control-label">Postitoimipaikka:</label>
+          <input type="text" id="inputAdd" name="City" text="" class="form-control form" formControlName="city" />
+        </div>
         <div class="form-group">
-          <label class="col-lg-2 control-label">Nimi:</label>
-          <input type="text" [(ngModel)]="selectedUser.name" id="inputName" name="name" placeholder="{{selectedUser.name}}" text="" class="form-control form" />
+          <label class="col-lg-2 control-label">Lisätietoja:</label>
+          <textarea name="notes" id="inputAdd" class="form-control form" rows="4" draggable="false" formControlName="notes"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="reset" (click)="addCustomer = false; addUserForm.reset()" class="btn btn-default btn-sm">Peruuta</button>
+  <button [disabled]="!addUserForm.valid" type="submit" class="btn btn-primary btn-sm">Tallenna</button>
+</form>
+
+
+<form class="form-horizontal" *ngIf="selectedUser" (ngSubmit)="updateUser()">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <legend class="panel-title">{{selectedUser.username}}</legend>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-4 fixed">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Etunimi:</label>
+          <input type="text" [(ngModel)]="selectedUser.firstname" id="inputFirstname" name="Firstname" placeholder="{{selectedUser.firstname}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Sukunimi:</label>
+          <input type="text" [(ngModel)]="selectedUser.lastname" id="inputLastname" name="Lastname" placeholder="{{selectedUser.lastname}}" text="" class="form-control form" />
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Käyttäjänimi:</label>
@@ -39,18 +97,76 @@
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Email:</label>
-          <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}" class="form-control form" />
+          <input type="email" [(ngModel)]="selectedUser.email" name="email" id="inputEmail" placeholder="{{selectedUser.email}}" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Puhelin:</label>
+          <input type="text" [(ngModel)]="selectedUser.phone" id="inputFirstname" name="Phone" placeholder="{{selectedUser.phone}}" text="" class="form-control form" />
         </div>
         <div class="form-group">
           <label class="col-lg-2 control-label">Admin:</label>
-          <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}}" class="checkbox" />
+          <input type="checkbox" [(ngModel)]="selectedUser.admin" name="admin" id="inputAdmin" placeholder="{{selectedUser.admin}}" class="form checkbox" />
+        </div>
+      </div>
+      <div class="col-md-4 fixed">
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Osoite:</label>
+          <input type="text" [(ngModel)]="selectedUser.address" id="inputAddress" name="Address" placeholder="{{selectedUser.address}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Postinumero:</label>
+          <input type="text" [(ngModel)]="selectedUser.area" id="inputArea" name="Area" placeholder="{{selectedUser.area}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Postitoimipaikka:</label>
+          <input type="text" [(ngModel)]="selectedUser.city" id="inputFirstname" name="City" placeholder="{{selectedUser.city}}" text="" class="form-control form" />
+        </div>
+        <div class="form-group">
+          <label class="col-lg-2 control-label">Lisätietoja:</label>
+          <textarea [(ngModel)]="selectedUser.notes" name="notes" id="inputNotes" placeholder="{{selectedUser.notes}}" class="form-control form" rows="5"></textarea>
         </div>
       </div>
     </div>
-    <button type="reset" (click)="selectedUser = null; getConfirms()" class="btn btn-default btn-xs">Peruuta</button>
-    <button type="submit" class="btn btn-primary btn-xs" (click)="updateUser()">Tallenna</button>
-  </form>
+  </div>
+  <button type="reset" (click)="selectedUser = null; getConfirms()" class="btn btn-default btn-xs">Peruuta</button>
+  <button type="submit" class="btn btn-primary btn-xs">Tallenna</button>
+</form>
+
+
+<div class="form-horizontal" *ngIf="showCustomers">
+  <table class="table table-hover">
+    <thead>
+      <legend>
+        Asiakkaat
+      </legend>
+      <tr>
+        <th>Asiakas</th>
+        <th>Etunimi</th>
+        <th>Sukunimi</th>
+        <th>Email</th>
+        <th>Puhelin</th>
+        <th>Osoite</th>
+        <th>Postinumero</th>
+        <th>Postitoimipaikka</th>
+        <th>Lisätietoja</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList" (click)="onSelect(user); showCustomers=false">
+        <td class="desc">{{user.username}}</td>
+        <td class="desc">{{user.firstname}}</td>
+        <td class="desc">{{user.lastname}}</td>
+        <td class="desc">{{user.email}}</td>
+        <td class="desc">{{user.phone}}</td>
+        <td class="desc">{{user.address}}</td>
+        <td class="desc">{{user.area}}</td>
+        <td class="desc">{{user.city}}</td>
+        <td class="desc">{{user.notes}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
 
 <div *ngIf="events?.length && !selectedUser && !search" class="form-horizontal">
   <table class="table table-hover">
@@ -63,6 +179,7 @@
         <th>Toimenpide</th>
         <th>Aloitusaika</th>
         <th>Päättymisaika</th>
+        <th>Rekisterinumero</th>
         <th>Lisätietoja</th>
         <th>Hyväksy/Poista</th>
       </tr>
@@ -73,6 +190,7 @@
         <td class="desc">{{event.title}}</td>
         <td class="desc">{{event.start}}</td>
         <td class="desc">{{event.end}}</td>
+        <td class="desc">{{event.rekisteriNro}}</td>
         <td class="table-text">{{event.description}}</td>
         <td class="table-last"><button (click)="deleteEvent(event)" class="btn btn-danger btn-sm">Poista</button>
           <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
@@ -89,6 +207,7 @@
         <th>Toimenpide</th>
         <th>Aloitusaika</th>
         <th>Päättymisaika</th>
+        <th>Rekisterinumero</th>
         <th>Lisätietoja</th>
         <th>Hyväksy/Poista</th>
 
@@ -100,6 +219,7 @@
         <td class="desc">{{event.title}}</td>
         <td class="desc">{{event.start}}</td>
         <td class="desc">{{event.end}}</td>
+        <td class="desc">{{event.rekisteriNro}}</td>
         <td class="table-text">{{event.description}}</td>
         <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button>
           <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>
@@ -108,7 +228,7 @@
   </table>
 </div>
 
-<div class="table-container" *ngIf="search">
+<div class="table-container" *ngIf="search && !selectedUser">
   <table class="table table-hover ">
     <thead>
       <tr>
@@ -116,6 +236,7 @@
         <th>Toimenpide</th>
         <th>Aloitusaika</th>
         <th>Päättymisaika</th>
+        <th>Rekisterinumero</th>
         <th>Lisätietoja</th>
         <th>Hyväksy/Poista</th>
       </tr>
@@ -126,6 +247,7 @@
         <td class="desc">{{event.title}}</td>
         <td class="desc">{{event.start}}</td>
         <td class="desc">{{event.end}}</td>
+        <td class="desc">{{event.rekisteriNro}}</td>
         <td class="table-text">{{event.description}}</td>
         <td class="table-last"><button (click)="(deleteEvent(event))" class="btn btn-danger btn-sm">Poista</button>
           <button (click)="confirmEvent(event)" class="btn btn-success btn-sm" *ngIf="!event.confirm">Hyväksy</button></td>

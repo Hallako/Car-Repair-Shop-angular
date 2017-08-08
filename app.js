@@ -10,10 +10,9 @@ const favicon = require('serve-favicon');
 const config = require('./config/database');
 const users = require('./routes/users');
 const events = require('./routes/events');
-const chat = require('./routes/chat');
+const chatroutes = require('./routes/chat');
+const chatconf = require('./config/chat')
 
-//Variables
-var SocketConnections = createArray(5, 3);
 
 //DB conf
 mongoose.connect(config.database);
@@ -47,7 +46,7 @@ app.use(passport.session());
 require('./config/passport')(passport);
 
 //routes
-app.use('/chat', chat);
+app.use('/chat', chatroutes);
 app.use('/users', users);
 app.use('/events', events);
 
@@ -64,6 +63,7 @@ app.get('*', (req, res) => {
 var httpServer = http.createServer(app);
 httpServer.listen(httpport);
 
+<<<<<<< HEAD
 //Start Socket.io
 var io = require('socket.io').listen(httpServer);
 
@@ -160,3 +160,7 @@ function createArray(length) {
     }
     return arr;
 }
+=======
+//Start Chat
+chatconf(httpServer);
+>>>>>>> master
