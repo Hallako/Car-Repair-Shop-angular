@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { SearchService } from '../../services/search.service';
 import 'rxjs/Rx'
-import { Subject }           from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 
 
@@ -31,6 +31,7 @@ export class AdminComponent implements OnInit {
   showCustomers: Boolean
   addUserForm: FormGroup
   addCustomer: Boolean
+  curuser: User;
 
   private searchTerm$ = new Subject<string>();
 
@@ -57,6 +58,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.getConfirms();
+    this.curuser = this.authService.getUser();
     this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
   }
@@ -73,7 +75,7 @@ export class AdminComponent implements OnInit {
   }
 
   onEvents() {
-    this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {
+    this.authService.getAllEvents(this.selectedUser._id, this.curuser.location).subscribe(events => {
       this.events = events
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
@@ -130,7 +132,7 @@ export class AdminComponent implements OnInit {
     start = moment(this.start).format('YYYY-MM-DD[T]HH:mm');
     var userId = null
     var admin = true
-    this.authService.getEvents(start, end, userId, admin).subscribe(events => {
+    this.authService.getEvents(start, end, userId, this.curuser.location , admin).subscribe(events => {
       this.events = events
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');

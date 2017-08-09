@@ -13,12 +13,16 @@ export class NavbarComponent implements OnInit {
 
   admin: Boolean = false;
   subscription: Subscription
+  location : string;
 
   constructor(private authService:AuthService,
               private router:Router,
               private flashMessage:FlashMessagesService) {}
               
   ngOnInit() {
+    this.location = this.authService.getUser().location;
+
+
   }
 
   onLogoutClick(){

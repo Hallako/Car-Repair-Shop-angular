@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages'
 import { Router } from '@angular/router'
 import { Event } from '../../variables/event'
+import { User } from '../../variables/user'
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
@@ -15,7 +16,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 export class ProfileComponent implements OnInit {
 
   user: Object;
-
+  curuser: User;
   events: Event[];
   changePwForm : FormGroup;
 
@@ -32,11 +33,12 @@ export class ProfileComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.curuser = this.authService.getUser();
     this.authService.getProfile().subscribe(profile => {
       this.user = profile.user;
     });
 
-    this.authService.getAllEvents(this.authService.getUser().id).subscribe(events => {
+    this.authService.getAllEvents(this.authService.getUser().id, this.curuser.location).subscribe(events => {
       this.events = events;
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
