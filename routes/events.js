@@ -18,7 +18,8 @@ router.post('/addevent', (req, res, next) => {
         backgroundColor: req.body.backgroundColor,
         description: req.body.description,
         confirm: false,
-        user: req.body.user
+        user: req.body.user,
+        location : req.body.location
     });
 
     event.addEvent(newEvent, (err, event) => {
@@ -42,24 +43,28 @@ router.delete('/deleteevent/:id', (req, res) => {
 });
 
 //get posts
-router.get('/getevents/:start/:end?/:user?/:admin?', (req, res, next) => {
+router.get('/getevents/:start/:end?/:user?/:location?/:admin?', (req, res, next) => {
     if (req.params.admin == "true") {
-        event.find({ start: { $gte: req.params.start, $lt: req.params.end } }, function(req, event) {
+        event.find({ start: { $gte: req.params.start, $lt: req.params.end },
+           location : req.params.location 
+          },
+            function(req, event) {
             res.json(event);
         });
     } else {
         var User = mongoose.mongo.ObjectID(req.params.user);
         event.find({
             start: { $gte: req.params.start, $lt: req.params.end },
-            user: { $in: [User, null] }
+            user: { $in: [User, null] },
+            location : req.params.location
         }, function(req, event) {
             res.json(event);
         });
     }
 });
 
-router.get('/getuserevents/:user/', (req, res, next) => {
-    event.find({ user: req.params.user }, (err, event) => {
+router.get('/getuserevents/:user/:location?', (req, res, next) => {
+    event.find({ user: req.params.user, location: req.params.location }, (err, event) => {
         if (err) throw err
         return res.json(event)
     })

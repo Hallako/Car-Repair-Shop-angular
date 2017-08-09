@@ -143,15 +143,15 @@ export class AuthService {
   }
 
   //Gets events in certain time range based on user, returns all users events if admin is passed and is true.
-  getEvents(start, end, user, admin) {
+  getEvents(start, end, user, location , admin) {
     return this.http.get(this.nodeUrl + 'events/getevents/'
-      + start + "/" + end + "/" + user + "/" + admin + "/", { headers: this.authHeaderi })
+      + start + "/" + end + "/" + user +"/" + location + "/" + admin + "/", { headers: this.authHeaderi })
       .map(res => res.json());
   }
 
   //Gets all events based on user
-  getAllEvents(user): Observable<Event[]> {
-    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: this.authHeaderi })
+  getAllEvents(user, location): Observable<Event[]> {
+    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/" + location + "/", { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 

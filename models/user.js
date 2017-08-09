@@ -45,6 +45,9 @@ const UserSchema = mongoose.Schema({
   },
   admin: {
     type: Boolean
+  },
+  location:{
+    type: String
   }
 });
 

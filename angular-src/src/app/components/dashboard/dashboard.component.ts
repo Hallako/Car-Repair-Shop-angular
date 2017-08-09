@@ -44,7 +44,8 @@ export class DashboardComponent implements OnInit {
   event: Event
 
   users: User[]
-  user: User
+  location : string;
+  user: User;
   private searchTerm$ = new Subject<string>();
 
   constructor(
@@ -57,7 +58,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     var curuser = this.authService.getUser();
+    
     var userId = curuser.id;
+    
     this.admin = curuser.admin;
 
     this.eventUsername.firstname = curuser.firstname;
@@ -105,10 +108,11 @@ export class DashboardComponent implements OnInit {
 
         end = moment(end).add(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
         start = moment(start).subtract(6, 'hours').format('YYYY-MM-DD[T]HH:mm');
+        
 
         $.ajax({
           url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
-          + start + "/" + end + "/" + userId + "/" + true,
+          + start + "/" + end + "/" + userId + "/"+ curuser.location + "/" + true,
           dataType: 'json',
           success: function(response) {
             if (!curuser.admin) {
@@ -318,7 +322,8 @@ export class DashboardComponent implements OnInit {
       rekisteriNro: this.rekisteriNro,
       description: this.description,
       confirm: false,
-      user: userid
+      user: userid,
+      location: curuser.location
     }
 
     if (event.title && event.start) {
@@ -369,7 +374,7 @@ export class DashboardComponent implements OnInit {
 
       this.authService.getEvents(moment(queryStart).format('YYYY-MM-DD[T]HH:mm'),
         moment(queryEnd).format('YYYY-MM-DD[T]HH:mm'),
-        user, admin).subscribe(events => {
+        user,this.location, admin).subscribe(events => {
           events.forEach(event => {
             if (moment(start).isBetween(event.start, event.end)) {
 
