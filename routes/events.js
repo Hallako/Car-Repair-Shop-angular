@@ -67,15 +67,15 @@ router.get('/getuserevents/:user/:location?', (req, res, next) => {
     event.find({ user: req.params.user, location: req.params.location }, (err, event) => {
         if (err) throw err
         return res.json(event)
-    })
-})
+    });
+});
 
-router.get('/getconfirmevents/', (req, res, next) => {
-    event.find({ confirm: false }, (err, event) => {
+router.get('/getconfirmevents/:location?', (req, res, next) => {
+    event.find({ confirm: false, location: req.params.location }, (err, event) => {
         if (err) throw err
         return res.json(event)
-    })
-})
+    });
+});
 
 router.post('/confirm/:id', (req, res) => {
     event.findById(req.params.id, (err, event) => {
