@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   place: string; 
   loginForm: FormGroup;
   resetForm: FormGroup;
+  
 
   constructor(private authService: AuthService,
     private router: Router,
@@ -44,6 +45,8 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.get('password').value,
       location: this.loginForm.get('location').value
     }
+
+    
 
     this.authService.authenticateUser(user).subscribe(data => {
       if (data.success) {

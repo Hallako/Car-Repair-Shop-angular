@@ -155,8 +155,8 @@ export class AuthService {
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
-  getConfirmationEvents(): Observable<Event[]> {
-    return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: this.authHeaderi })
+  getConfirmationEvents(location): Observable<Event[]> {
+    return this.http.get(this.nodeUrl + 'events/getconfirmevents/'+ location + "/", { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
