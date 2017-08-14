@@ -75,18 +75,23 @@ export class AdminComponent implements OnInit {
 
   onEvents() {
     this.authService.getAllEvents(this.selectedUser._id, this.curuser.location).subscribe(events => {
-      this.events = events
-      this.events.forEach(event => {
+      var eventit = events
+      
+      eventit.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        
         this.authService.getUserById(event).subscribe(user => {
-          if (user != null) {
+          if (user != null && event.confirm == false) {
             this.user = user
-            event.user = this.user.username
-          } else event.user = 'Hallinnon luoma'
-        })
+            event.user = this.user.username;
+          } else {
+            eventit.splice(eventit.indexOf(event),1);
+          }
+        });
       });
-    })
+      this.events = eventit;
+    });
   }
 
   deleteEvent(event) {
@@ -102,17 +107,19 @@ export class AdminComponent implements OnInit {
 
   getConfirms() {
     this.authService.getConfirmationEvents(this.curuser.location).subscribe(events => {
-      this.events = events;
-      this.events.forEach(event => {
+      
+      var eventit = events;
+      eventit.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
           this.user = user
           if (user != null) {
             event.user = this.user.username
-          } else event.user = 'Hallinnon luoma'
+          } else eventit.splice(eventit.indexOf(event),1);
         })
       });
+      this.events = eventit
       return this.events
     })
   }

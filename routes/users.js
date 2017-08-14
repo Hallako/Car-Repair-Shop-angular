@@ -8,7 +8,6 @@ const mailer = require('../config/mailer');
 const passgen = require('generate-password');
 const bcrypt = require('bcryptjs');
 
-
 //Register
 router.post('/register', (req, res, next) => {
   let newUser = new User({
@@ -48,8 +47,6 @@ router.post('/register', (req, res, next) => {
                           Vaihda salasanasi profiili sivulta heti kirjauduttuasi.
                           ` // html body
   }
-
-
 
   User.addUser(newUser, (err, user) => {
     if (err) {
