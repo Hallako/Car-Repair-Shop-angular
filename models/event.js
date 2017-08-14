@@ -42,13 +42,15 @@ const EventSchema = mongoose.Schema({
     user: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'User'
+    },
+    location:{
+      type: String
     }
 });
 
 const event = module.exports = mongoose.model('Event', EventSchema);
 
 module.exports.getEvents = function(event, callback) {
-
     event.find(event, callback);
 }
 

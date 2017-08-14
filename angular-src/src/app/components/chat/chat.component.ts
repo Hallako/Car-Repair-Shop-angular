@@ -82,6 +82,7 @@ export class ChatComponent implements OnInit, AfterContentChecked {
     //Admin connect callback
     this.socket.on('adminconn-response', function(data) {
       localStorage.setItem("userr", JSON.stringify(this.newUser));
+      
     }.bind(this));
 
     //Admin leave callback

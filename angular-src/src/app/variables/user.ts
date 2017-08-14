@@ -11,4 +11,5 @@ export class User {
   password: String
   admin: Boolean
   notes: String
+  location: string
 }
