@@ -92,7 +92,7 @@ router.post('/checkname', (req, res) => {
 router.post('/authenticate', (req, res, next) => {
     const login = req.body.login;
     const password = req.body.password;
-
+    
     User.getUserByLogin(login, (err, user) => {
         if (err) throw err;
         if (!user) {
@@ -118,7 +118,8 @@ router.post('/authenticate', (req, res, next) => {
                         lastname: user.lastname,
                         username: user.username,
                         email: user.email,
-                        admin: user.admin
+                        admin: user.admin,
+                        location: req.body.location
                     }
                 });
             } else {
