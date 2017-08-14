@@ -52,7 +52,6 @@ export class AdminComponent implements OnInit {
       area: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]+"), Validators.minLength(5)])],
       city: ['', Validators.compose([Validators.required])],
       notes: [''],
-      location: ['']
     })
   }
 
@@ -111,10 +110,10 @@ export class AdminComponent implements OnInit {
           this.user = user
           if (user != null) {
             event.user = this.user.username
-          } else event.user = 'Hallinnon luoma'
+          } else this.events.splice(this.events.indexOf(event), 1)
         })
       });
-      return this.events
+
     })
   }
 
@@ -171,7 +170,7 @@ export class AdminComponent implements OnInit {
     user.area = this.addUserForm.get('area').value
     user.city = this.addUserForm.get('city').value
     user.notes = this.addUserForm.get('notes').value
-    user.location = this.addUserForm.get(this.curuser.location).value
+    user.location = this.curuser.location
 
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {
