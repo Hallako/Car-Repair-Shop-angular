@@ -91,45 +91,54 @@ router.post('/checkname', (req, res) => {
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
-  const login = req.body.login;
-  const password = req.body.password;
+    const login = req.body.login;
+    const password = req.body.password;
+    const location = req.body.location;
+    
+    User.getUserByLogin(login, (err, user) => {
+        if (err) throw err;
 
-  User.getUserByLogin(login, (err, user) => {
-    if (err) throw err;
-    if (!user) {
-      return res.json({
-        success: false,
-        msg: 'Virheellinen käyttäjänimi tai salasana!'
-      });
-    }
+        if (!user) {
+            return res.json({
+                success: false,
+                msg: 'Virheellinen käyttäjänimi tai salasana!'
+            });
+        }
 
-    User.comparePassword(password, user.password, (err, isMatch) => {
-      if (err) throw err;
-      if (isMatch) {
-        const token = jwt.sign(user, config.secret, {
-          expiresIn: 604800 //1 week
-        });
+        if(user.location != location){
+          return res.json({
+                success: false,
+                msg: 'Rekisteröitynyttä käyttäjää ei löytynyt tälle korjaamolle'
+            });
+        }
+        
+        User.comparePassword(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+                const token = jwt.sign(user, config.secret, {
+                    expiresIn: 604800 //1 week
+                });
 
-        res.json({
-          success: true,
-          token: 'JWT ' + token,
-          user: {
-            id: user._id,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            username: user.username,
-            email: user.email,
-            admin: user.admin,
-            location: req.body.location
-          }
+                res.json({
+                    success: true,
+                    token: 'JWT ' + token,
+                    user: {
+                        id: user._id,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        username: user.username,
+                        email: user.email,
+                        admin: user.admin,
+                        location: req.body.location
+                    }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    msg: 'Virheellinen käyttäjänimi tai salasana!'
+                });
+            }
         });
-      } else {
-        return res.json({
-          success: false,
-          msg: 'Virheellinen käyttäjänimi tai salasana!'
-        });
-      }
-    });
   });
 });
 
@@ -160,14 +169,12 @@ router.post('/password', passport.authenticate('jwt', {
   res.json('Salasana vaihdettu.');
 });
 
-//admin route(returns all users)
-router.get('/admin', passport.authenticate('jwt', {
-  session: false
-}), (req, res, next) => {
-  User.find({}, (err, user) => {
-    if (err) throw err;
-    return res.json(user);
-  });
+//(returns all users)
+router.post('/admin', (req, res, next) => {
+    User.find({ location: req.body.location }, (err, user) => {
+        if (err) throw err;
+        return res.json(user);
+    });
 });
 
 //search router

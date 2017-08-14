@@ -142,7 +142,6 @@ export class AdminComponent implements OnInit {
         })
       });
     });
-
     this.search = true;
   }
 
@@ -153,8 +152,11 @@ export class AdminComponent implements OnInit {
   }
 
   getUsers() {
-    this.authService.getAllUser().subscribe(users => {
-      this.userList = users
+    var location = {
+      location: this.curuser.location
+    }
+    this.authService.getAllUser(location).subscribe(users => {
+      this.userList = users;
     });
     this.showCustomers = true;
   }
