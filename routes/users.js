@@ -92,9 +92,11 @@ router.post('/checkname', (req, res) => {
 router.post('/authenticate', (req, res, next) => {
     const login = req.body.login;
     const password = req.body.password;
+    const location = req.body.location;
     
     User.getUserByLogin(login, (err, user) => {
         if (err) throw err;
+
         if (!user) {
             return res.json({
                 success: false,
@@ -102,6 +104,13 @@ router.post('/authenticate', (req, res, next) => {
             });
         }
 
+        if(user.location != location){
+          return res.json({
+                success: false,
+                msg: 'Rekisteröitynyttä käyttäjää ei löytynyt tälle korjaamolle'
+            });
+        }
+        
         User.comparePassword(password, user.password, (err, isMatch) => {
             if (err) throw err;
             if (isMatch) {
@@ -159,11 +168,9 @@ router.post('/password', passport.authenticate('jwt', {
     res.json('Salasana vaihdettu.');
 });
 
-//admin route(returns all users)
-router.get('/admin', passport.authenticate('jwt', {
-    session: false
-}), (req, res, next) => {
-    User.find({}, (err, user) => {
+//(returns all users)
+router.post('/admin', (req, res, next) => {
+    User.find({ location: req.body.location }, (err, user) => {
         if (err) throw err;
         return res.json(user);
     });

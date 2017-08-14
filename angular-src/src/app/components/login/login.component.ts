@@ -45,14 +45,11 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.get('password').value,
       location: this.loginForm.get('location').value
     }
-
-    
-
     this.authService.authenticateUser(user).subscribe(data => {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
         this.flashMessage.show('Kirjautuminen onnistui', {
-          cssClass: 'alert-success',
+          cssClass: 'alert-success', 
           timeout: 3000
         });
         this.router.navigate(['dashboard']);
