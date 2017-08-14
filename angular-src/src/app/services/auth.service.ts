@@ -114,12 +114,12 @@ export class AuthService {
   //Returns boolean based on if user is admin
   getAdmin() {
     if (this.loggedIn())
-      return this.getUser().admin
+      return this.getUser().admin;
   }
 
   //Returns all users
-  getAllUser(): Observable<User[]> {
-    return this.http.get(this.nodeUrl + 'users/admin', { headers: this.authHeaderi })
+  getAllUser(location): Observable<User[]> {
+    return this.http.post(this.nodeUrl + 'users/admin' , location, { headers: this.authHeaderi })
       .map(res => res.json()).catch(this.handleError);
   }
 

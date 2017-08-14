@@ -118,11 +118,15 @@ export class DashboardComponent implements OnInit {
             if (!curuser.admin) {
               response.forEach(event => {
 
-                if ((event.user != curuser.id || event.user == null)) {
+                if ((event.user != curuser.id )) {
                   event.backgroundColor = '#71893f';
                   event.rendering = 'background';
                 }
-                else if (event.confirm == false) {
+                if(event.user == null ){
+                  event.backgroundColor = '#81495f';
+                  event.rendering = null;
+                }
+                else if(event.confirm == false) {
                   event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
                   event.textColor = '#111'
                 }
