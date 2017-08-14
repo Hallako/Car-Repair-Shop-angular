@@ -51,7 +51,8 @@ export class AdminComponent implements OnInit {
       address: ['', Validators.compose([Validators.required])],
       area: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]+"), Validators.minLength(5)])],
       city: ['', Validators.compose([Validators.required])],
-      notes: [''] 
+      notes: [''],
+      location: ['']
     })
   }
 
@@ -128,7 +129,7 @@ export class AdminComponent implements OnInit {
     start = moment(this.start).format('YYYY-MM-DD[T]HH:mm');
     var userId = null
     var admin = true
-    this.authService.getEvents(start, end, userId, this.curuser.location , admin).subscribe(events => {
+    this.authService.getEvents(start, end, userId, this.curuser.location, admin).subscribe(events => {
       this.events = events
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
@@ -168,6 +169,7 @@ export class AdminComponent implements OnInit {
     user.area = this.addUserForm.get('area').value
     user.city = this.addUserForm.get('city').value
     user.notes = this.addUserForm.get('notes').value
+    user.location = this.addUserForm.get(this.curuser.location).value
 
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {
