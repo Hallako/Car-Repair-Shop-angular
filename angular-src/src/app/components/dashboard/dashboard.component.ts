@@ -70,6 +70,7 @@ export class DashboardComponent implements OnInit {
 
     //Event click function
     let clickFunc = function(calEvent, jsEvent, view) {
+      
       if (calEvent.title) {
 
         var tempcolor = calEvent.backgroundColor;
@@ -123,22 +124,26 @@ export class DashboardComponent implements OnInit {
                   event.rendering = 'background';
                 }
                 if(event.user == null ){
-                  event.backgroundColor = '#81495f';
+                  event.backgroundColor = 'rgba(0, 170, 0, 0.5)';
                   event.rendering = null;
                 }
                 else if(event.confirm == false) {
-                  event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                  event.backgroundColor = 'rgba(10, 150, 150, 0.4)';
                   event.textColor = '#111'
                 }
                 else if (event.confirm == true) {
-                  event.backgroundColor = 'rgba(0, 170, 0, 0.7)';
+                  event.backgroundColor = '#3a87ad';
                 }
 
               });
             } else {
               response.forEach(event => {
-                if (event.confirm == false) {
+                if (event.confirm == false && event.user == null) {
                   event.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                  event.textColor = '#111'
+                }
+                else if (event.confirm == false && event.user != null) {
+                  event.backgroundColor = 'rgba(90, 160, 90, 0.8)';
                   event.textColor = '#111'
                 }
               });
@@ -179,7 +184,7 @@ export class DashboardComponent implements OnInit {
       eventClick: boundClick,
       //Event selection based on selected type of event.
       dayClick: (date, jsEvent, view) => {
-
+        if(this.admin != true){return;}
         this.checkOverlap(date, moment(date).add(this.duration, 'hours')).then(res => {
 
           if (view.type == 'month') {
@@ -271,7 +276,7 @@ export class DashboardComponent implements OnInit {
       }
       case 'huolto': {
         this.color = '#cc0000';
-        this.duration = 6;
+        this.duration = 4;
         break;
       }
       case 'korjaus': {
@@ -313,7 +318,7 @@ export class DashboardComponent implements OnInit {
     if(this.admin){
       userid = this.eventUsername._id;
     } else {
-      userid = curuser.id
+      userid = curuser.id;
     }
   
     
