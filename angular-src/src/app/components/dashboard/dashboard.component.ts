@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
         
 
         $.ajax({
-          url: 'events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
+          url: 'http://localhost:8081/events/getevents/' //'http://localhost:8081/' for local deployement empty for heroku.
           + start + "/" + end + "/" + userId + "/"+ curuser.location + "/" + true,
           dataType: 'json',
           success: function(response) {
