@@ -15,9 +15,10 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 export class LoginComponent implements OnInit {
 
   showReset: boolean = false;
-
+  place: string; 
   loginForm: FormGroup;
   resetForm: FormGroup;
+  
 
   constructor(private authService: AuthService,
     private router: Router,
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = fb.group({
       login: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
+      location: ['', Validators.compose([Validators.required])]
     })
 
     this.resetForm = fb.group({
@@ -40,14 +42,14 @@ export class LoginComponent implements OnInit {
   onLoginSubmit() {
     const user = {
       login: this.loginForm.get('login').value,
-      password: this.loginForm.get('password').value
+      password: this.loginForm.get('password').value,
+      location: this.loginForm.get('location').value
     }
-
     this.authService.authenticateUser(user).subscribe(data => {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
         this.flashMessage.show('Kirjautuminen onnistui', {
-          cssClass: 'alert-success',
+          cssClass: 'alert-success', 
           timeout: 3000
         });
         this.router.navigate(['dashboard']);

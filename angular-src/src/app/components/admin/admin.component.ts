@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { SearchService } from '../../services/search.service';
 import 'rxjs/Rx'
-import { Subject }           from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 
 
@@ -18,19 +18,20 @@ import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 })
 export class AdminComponent implements OnInit {
 
-  users: User[]
-  user: User
-  userList: User[]
-  events: Event[]
-  event: Event
-  selectedUser: User
-  start: String
-  end: String
-  search: Boolean
-  username: String
-  showCustomers: Boolean
-  addUserForm: FormGroup
-  addCustomer: Boolean
+  users: User[];
+  user: User;
+  userList: User[];
+  events: Event[];
+  event: Event;
+  selectedUser: User;
+  start: String;
+  end: String;
+  search: Boolean;
+  username: String;
+  showCustomers: Boolean;
+  addUserForm: FormGroup;
+  addCustomer: Boolean;
+  curuser: User;
 
   private searchTerm$ = new Subject<string>();
 
@@ -50,15 +51,15 @@ export class AdminComponent implements OnInit {
       address: ['', Validators.compose([Validators.required])],
       area: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]+"), Validators.minLength(5)])],
       city: ['', Validators.compose([Validators.required])],
-      notes: ['']
+      notes: [''],
     })
   }
 
-
   ngOnInit() {
-    this.getConfirms();
+    this.curuser = this.authService.getUser();
     this.start = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
     this.end = moment(new Date()).format('YYYY-MM-DD[T]HH:mm');
+    this.getConfirms();
   }
 
   onSelect(user: User) {
@@ -73,19 +74,24 @@ export class AdminComponent implements OnInit {
   }
 
   onEvents() {
-    this.authService.getAllEvents(this.selectedUser._id).subscribe(events => {
-      this.events = events
-      this.events.forEach(event => {
+    this.authService.getAllEvents(this.selectedUser._id, this.curuser.location).subscribe(events => {
+      var eventit = events
+      
+      eventit.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
+        
         this.authService.getUserById(event).subscribe(user => {
-          if (user != null) {
+          if (user != null && event.confirm == false) {
             this.user = user
-            event.user = this.user.username
-          } else event.user = 'Hallinnon luoma'
-        })
+            event.user = this.user.username;
+          } else {
+            eventit.splice(eventit.indexOf(event),1);
+          }
+        });
       });
-    })
+      this.events = eventit;
+    });
   }
 
   deleteEvent(event) {
@@ -96,27 +102,25 @@ export class AdminComponent implements OnInit {
       } else {
         this.flashMessage.show('Jokin meni vikaan', { cssClass: 'alert-danger', timeout: 3000 });
       }
-
-    })
-
+    });
   }
 
   getConfirms() {
-    this.authService.getConfirmationEvents().subscribe(events => {
-      this.events = events;
-      this.events.forEach(event => {
+    this.authService.getConfirmationEvents(this.curuser.location).subscribe(events => {
+      
+      var eventit = events;
+      eventit.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
         event.end = moment(event.end).format('DD.MM.YYYY [klo] HH:mm');
         this.authService.getUserById(event).subscribe(user => {
           this.user = user
           if (user != null) {
             event.user = this.user.username
-          } else event.user = 'Hallinnon luoma'
+          } else eventit.splice(eventit.indexOf(event),1);
         })
       });
-      return this.events
+      this.events = eventit
     })
-
   }
 
   confirmEvent(event) {
@@ -130,7 +134,7 @@ export class AdminComponent implements OnInit {
     start = moment(this.start).format('YYYY-MM-DD[T]HH:mm');
     var userId = null
     var admin = true
-    this.authService.getEvents(start, end, userId, admin).subscribe(events => {
+    this.authService.getEvents(start, end, userId, this.curuser.location, admin).subscribe(events => {
       this.events = events
       this.events.forEach(event => {
         event.start = moment(event.start).format('DD.MM.YYYY [klo] HH:mm');
@@ -143,7 +147,6 @@ export class AdminComponent implements OnInit {
         })
       });
     });
-
     this.search = true;
   }
 
@@ -154,8 +157,11 @@ export class AdminComponent implements OnInit {
   }
 
   getUsers() {
-    this.authService.getAllUser().subscribe(users => {
-      this.userList = users
+    var location = {
+      location: this.curuser.location
+    }
+    this.authService.getAllUser(location).subscribe(users => {
+      this.userList = users;
     });
     this.showCustomers = true;
   }
@@ -170,6 +176,7 @@ export class AdminComponent implements OnInit {
     user.area = this.addUserForm.get('area').value
     user.city = this.addUserForm.get('city').value
     user.notes = this.addUserForm.get('notes').value
+    user.location = this.curuser.location
 
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {

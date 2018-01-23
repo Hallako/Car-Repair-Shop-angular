@@ -19,7 +19,7 @@ export class AuthService {
   authHeaderi: any;
 
   constructor(private http: Http) {
-    this.nodeUrl = 'http://localhost:8081/'; //'http://localhost:8081/' for local deployement empty for heroku.
+    this.nodeUrl = ''; //'http://localhost:8081/' for local deployement empty for heroku.
 
     if (this.user == null) {
       this.user = JSON.parse(localStorage.getItem('user'));
@@ -114,12 +114,12 @@ export class AuthService {
   //Returns boolean based on if user is admin
   getAdmin() {
     if (this.loggedIn())
-      return this.getUser().admin
+      return this.getUser().admin;
   }
 
   //Returns all users
-  getAllUser(): Observable<User[]> {
-    return this.http.get(this.nodeUrl + 'users/admin', { headers: this.authHeaderi })
+  getAllUser(location): Observable<User[]> {
+    return this.http.post(this.nodeUrl + 'users/admin' , location, { headers: this.authHeaderi })
       .map(res => res.json()).catch(this.handleError);
   }
 
@@ -143,20 +143,20 @@ export class AuthService {
   }
 
   //Gets events in certain time range based on user, returns all users events if admin is passed and is true.
-  getEvents(start, end, user, admin) {
+  getEvents(start, end, user, location , admin) {
     return this.http.get(this.nodeUrl + 'events/getevents/'
-      + start + "/" + end + "/" + user + "/" + admin + "/", { headers: this.authHeaderi })
+      + start + "/" + end + "/" + user +"/" + location + "/" + admin + "/", { headers: this.authHeaderi })
       .map(res => res.json());
   }
 
   //Gets all events based on user
-  getAllEvents(user): Observable<Event[]> {
-    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/", { headers: this.authHeaderi })
+  getAllEvents(user, location): Observable<Event[]> {
+    return this.http.get(this.nodeUrl + 'events/getuserevents/' + user + "/" + location + "/", { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
-  getConfirmationEvents(): Observable<Event[]> {
-    return this.http.get(this.nodeUrl + 'events/getconfirmevents/', { headers: this.authHeaderi })
+  getConfirmationEvents(location): Observable<Event[]> {
+    return this.http.get(this.nodeUrl + 'events/getconfirmevents/'+ location + "/", { headers: this.authHeaderi })
       .map((res: Response) => res.json()).catch(this.handleError);
   }
 
